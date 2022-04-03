@@ -34,11 +34,11 @@ namespace ObligatorioP3
 
             if (tipo == "ADO") //Es de tipo base de datos con ADO.NET
             {
-                services.AddScoped<IManejadorTipos, RepositorioTiposADO>();
+                services.AddScoped<IRepositorioTipos, RepositorioTiposADO>();
             }
             else if (tipo == "MEMORIA") //Es de tipo persistencia en memoria
             {
-                services.AddScoped<IManejadorTipos, RepositorioTiposMemoria>();
+                services.AddScoped<IRepositorioTipos, RepositorioTiposMemoria>();
             }
             else
             {
