@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ObligatorioP3.Models
+namespace Dominio.Entidades
 {
     public class Usuario
     {
