@@ -69,7 +69,7 @@ namespace Datos
                     ok = true;
                 }
             }
-            return true;
+            return ok;
         }
         public bool ActualizarDescripcion(string nombre)
         {
@@ -82,7 +82,7 @@ namespace Datos
                 //aModificar.Descripcion = "";
                 ok = true;
             }
-            return true;
+            return ok;
         }
         #endregion
 

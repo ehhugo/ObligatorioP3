@@ -14,7 +14,7 @@ namespace Datos
     class RepositorioTiposADO : IRepositorioTipos
 
     {
-
+        #region Add/Delete
         public bool Add(Tipo obj)
         {
             bool ok = false;
@@ -34,7 +34,7 @@ namespace Datos
                 {
                     Conexion.AbrirConexion(con);
                     int id = (int)SQLcom.ExecuteScalar();
-                    obj.idTipo = id;
+                    obj.IdTipo = id;
                     ok = true;
                 }
                 catch
@@ -49,6 +49,56 @@ namespace Datos
             return ok;
         }
 
+        public bool Remove(int id)
+        {
+            bool ok = false;
+            SqlConnection con = Conexion.ObtenerConexion();
+            string sql = $"DELETE FROM Tipos WHERE  idTipo ={id};";
+            SqlCommand SQLCom = new SqlCommand(sql, con);
+
+            try
+            {
+                Conexion.AbrirConexion(con);
+                int filasAfectadas = SQLCom.ExecuteNonQuery();
+                ok = filasAfectadas == 1;
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                Conexion.CerrarYTerminarConexion(con);
+            }
+            return ok;
+        }
+        public bool EliminarPorNombre(string nombre)
+        {
+            bool ok = false;
+            SqlConnection con = Conexion.ObtenerConexion();
+            string sql = $"DELETE FROM Tipos WHERE  Nombre= '{nombre}';";
+            SqlCommand SQLCom = new SqlCommand(sql, con);
+
+            try
+            {
+                Conexion.AbrirConexion(con);
+                int filasAfectadas = SQLCom.ExecuteNonQuery();
+                ok = filasAfectadas == 1;
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                Conexion.CerrarYTerminarConexion(con);
+            }
+            return ok;
+        }
+        #endregion
+
+
+        #region Buscar
         public IEnumerable<Tipo> FindAll()
         {
             List<Tipo> tipos = new List<Tipo>();
@@ -86,36 +136,121 @@ namespace Datos
             return tipos;
         }
 
-        public Tipo BuscarPorNombre(string nombre)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool EliminarPorNombre(string nombre)
-        {
-            throw new NotImplementedException();
-        }
-
-
-
         public Tipo FindById(int id)
         {
-            throw new NotImplementedException();
+            Tipo buscado = null;
+
+            SqlConnection con = Conexion.ObtenerConexion();
+
+            string sql = $"SELECT * FROM Tipos WHERE idTipo = {id};";
+            SqlCommand SQLCom = new SqlCommand(sql, con);
+
+            try
+            {
+                Conexion.AbrirConexion(con);
+                SqlDataReader reader = SQLCom.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    buscado = new Tipo()
+                    {
+                        IdTipo = reader.GetInt32(reader.GetOrdinal("idTipo")),
+                        Nombre = reader.GetString(1),
+                        Descripcion = reader.GetString(2)
+                    };
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                Conexion.CerrarYTerminarConexion(con);
+            }
+
+            return buscado;
+
         }
 
-        public bool Remove(int id)
+
+        public Tipo BuscarPorNombre(string nombre)
         {
-            throw new NotImplementedException();
+            Tipo buscado = null;
+
+            SqlConnection con = Conexion.ObtenerConexion();
+
+            string sql = $"SELECT * FROM Tipos WHERE Nombre = '{nombre}';";
+            SqlCommand SQLCom = new SqlCommand(sql, con);
+
+            try
+            {
+                Conexion.AbrirConexion(con);
+                SqlDataReader reader = SQLCom.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    buscado = new Tipo()
+                    {
+                        IdTipo = reader.GetInt32(reader.GetOrdinal("idTipo")),
+                        Nombre = reader.GetString(1),
+                        Descripcion = reader.GetString(2)
+                    };
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                Conexion.CerrarYTerminarConexion(con);
+            }
+
+            return buscado;
+
         }
+
+        #endregion
+
+        #region Update
 
         public bool update(Tipo obj)
         {
-            throw new NotImplementedException();
+            bool ok = false;
+            SqlConnection con = Conexion.ObtenerConexion();
+
+            if (obj.Validar())
+            {
+                string sql = "UPDATE Tipos SET Nombre=@nom, Descripcion=@des WHERE idTipo =@IdTipo";
+                SqlCommand SQLCom = new SqlCommand(sql, con);
+
+                SQLCom.Parameters.AddWithValue("@nom", obj.Nombre);
+                SQLCom.Parameters.AddWithValue("@des", obj.Descripcion);
+                SQLCom.Parameters.AddWithValue("@IdTipo", obj.IdTipo);
+
+                try
+                {
+                    Conexion.AbrirConexion(con);
+                    int afectadas = SQLCom.ExecuteNonQuery();
+                    ok = afectadas == 1;
+                }
+                catch
+                {
+                    throw;
+                }
+                finally
+                {
+                    Conexion.CerrarYTerminarConexion(con);
+                }
+            }
+            return ok;
         }
 
         public bool ActualizarDescripcion(string nombre)
         {
             throw new NotImplementedException();
         }
+        #endregion
     }
 }
