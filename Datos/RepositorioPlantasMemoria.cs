@@ -83,27 +83,27 @@ namespace Datos
             return modificadoOK;
         }
 
-        IEnumerable<Planta> IRepositorioPlantas.BuscarPlantasMasAltas(double alturaCm)
+        public IEnumerable<Planta> BuscarPlantasMasAltas(double alturaCm)
         {
             throw new NotImplementedException();
         }
 
-        IEnumerable<Planta> IRepositorioPlantas.BuscarPlantasMasBajas(double alturaCm)
+        public IEnumerable<Planta> BuscarPlantasMasBajas(double alturaCm)
         {
             throw new NotImplementedException();
         }
 
-        IEnumerable<Planta> IRepositorioPlantas.BuscarPorAmbiente(string ambiente)
+        public IEnumerable<Planta> BuscarPorAmbiente(string ambiente)
         {
             throw new NotImplementedException();
         }
 
-        IEnumerable<Planta> IRepositorioPlantas.BuscarPorTexto(string texto)
+        public IEnumerable<Planta> BuscarPorTexto(string texto)
         {
             throw new NotImplementedException();
         }
 
-        IEnumerable<Planta> IRepositorioPlantas.BuscarPorTipo(string tipoPlanta)
+        public IEnumerable<Planta> BuscarPorTipo(string tipoPlanta)
         {
             throw new NotImplementedException();
         }
