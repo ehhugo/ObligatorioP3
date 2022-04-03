@@ -65,7 +65,7 @@ namespace Datos
         }
         #endregion
 
-        public bool Update(Ambiente obj)
+        public bool update(Ambiente obj)
         {
             throw new NotImplementedException();
         }

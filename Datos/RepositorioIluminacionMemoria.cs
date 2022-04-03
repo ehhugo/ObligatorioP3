@@ -15,7 +15,7 @@ namespace Datos
         {
             bool altaOK = false;
 
-            if (obj != null && obj.IdIluminacion != 0 && obj.TipoIluminacion != null)
+            if (obj != null && obj.IdIluminacion != 0 && obj.Tipo != null)
             {
                 obj.IdIluminacion = UltId++;
                 TiposIluminacion.Add(obj);
@@ -57,7 +57,7 @@ namespace Datos
             return eliminarOK;
         }
 
-        public bool Update(Iluminacion obj)
+        public bool update(Iluminacion obj)
         {
             throw new NotImplementedException();
         }

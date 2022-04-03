@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Dominio.InterfacesRepositorio;
 
 namespace Dominio.Entidades
 {
-    public class Planta
+    public class Planta : IValidate<Planta>
 
     {
         public int IdPlanta { get; set; }
@@ -29,5 +30,10 @@ namespace Dominio.Entidades
         public Iluminacion TipoIluminacion { get; set; }
 
         public int TemperaturaMantenimiento { get; set; }
+
+        public bool Validar(Planta obj)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
