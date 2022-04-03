@@ -44,6 +44,7 @@ namespace Datos
                 Ambiente ambiente = TiposAmbiente[i];
                 if (id == ambiente.IdAmbiente)
                 {
+                    ambienteBuscado = ambiente;
                     i++;
                 }
             }
