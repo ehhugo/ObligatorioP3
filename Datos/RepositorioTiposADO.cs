@@ -11,7 +11,7 @@ using Microsoft.Data.SqlClient;
 
 namespace Datos
 {
-    class RepositorioTiposADO : IRepositorioTipos
+    public class RepositorioTiposADO : IRepositorioTipos
 
     {
         #region Add/Delete
