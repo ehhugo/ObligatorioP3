@@ -15,13 +15,72 @@ namespace Datos
         {
             bool okAlta = false;
 
-            if (obj.Validar(obj) && FindById(obj.IdPlanta) == null) // ver validar
+            if (obj.Validar(obj) && FindById(obj.IdPlanta) == null)
             {
                 obj.IdPlanta = UltId++;
                 Plantas.Add(obj);
                 okAlta = true;
             }
             return okAlta;
+        }
+
+        public IEnumerable<Planta> FindAll()
+        {
+            return Plantas;
+        }
+
+        public Planta FindById(int id)
+        {
+            Planta buscada = null;
+            int i = 0;
+
+            while (buscada == null && i > Plantas.Count)
+            {
+                Planta planta = Plantas[i];
+                if (planta.IdPlanta == id)
+                {
+                    buscada = planta;
+                    i++;
+                }
+            }
+            return buscada;
+        }
+
+        public bool Remove(int id)
+        {
+            bool eliminadoOK = false;
+            Planta aBorrar = FindById(id);
+
+            if (aBorrar != null)
+            {
+                eliminadoOK = Plantas.Remove(aBorrar);
+            }
+            return eliminadoOK;
+        }
+
+        public bool update(Planta obj)
+        {
+            bool modificadoOK = false;
+            if (obj.Validar(obj))
+            {
+                Planta aModificar = FindById(obj.IdPlanta);
+                if (aModificar != null)
+                {
+                    aModificar.TipoPlanta = obj.TipoPlanta;
+                    aModificar.NombreCientifico = obj.NombreCientifico;
+                    aModificar.NombreVulgar = obj.NombreVulgar;
+                    aModificar.Descripcion = obj.Descripcion;
+                    aModificar.Ambiente = obj.Ambiente;
+                    aModificar.AlturaMaxima = obj.AlturaMaxima;
+                    aModificar.Foto = obj.Foto;
+                    aModificar.FrecuenciaRiego = obj.FrecuenciaRiego;
+                    aModificar.TipoIluminacion = obj.TipoIluminacion;
+                    aModificar.TemperaturaMantenimiento = obj.TemperaturaMantenimiento;
+
+                    modificadoOK = true;
+                }
+            }
+            return modificadoOK;
         }
 
         IEnumerable<Planta> IRepositorioPlantas.BuscarPlantasMasAltas(double alturaCm)
@@ -45,26 +104,6 @@ namespace Datos
         }
 
         IEnumerable<Planta> IRepositorioPlantas.BuscarPorTipo(string tipoPlanta)
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerable<Planta> IRepositorio<Planta>.FindAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Planta FindById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        bool IRepositorio<Planta>.Remove(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool update(Planta obj)
         {
             throw new NotImplementedException();
         }

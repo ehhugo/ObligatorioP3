@@ -39,6 +39,7 @@ namespace Datos
                 Iluminacion iluminacion = TiposIluminacion[i];
                 if (id == iluminacion.IdIluminacion)
                 {
+                    iluminacionBuscada = iluminacion;
                     i++;
                 }
             }
