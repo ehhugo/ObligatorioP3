@@ -6,7 +6,7 @@ using Dominio.InterfacesRepositorio;
 
 namespace Datos
 {
-    class RepositorioTiposMemoria : IRepositorioTipos
+    public class RepositorioTiposMemoria : IRepositorioTipos
     {
 
         public List<Tipo> Tipos { get; set; } = new List<Tipo>();

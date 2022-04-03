@@ -8,6 +8,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CasosUso;
+using Dominio.InterfacesRepositorio;
+using Datos;
 
 namespace ObligatorioP3
 {
@@ -24,6 +27,23 @@ namespace ObligatorioP3
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.AddScoped<IManejadorTipos, ManejadorTipos>();
+
+            string tipo = Configuration.GetSection("TipoRepo").Value;
+
+            if (tipo == "ADO") //Es de tipo base de datos con ADO.NET
+            {
+                services.AddScoped<IRepositorioTipos, RepositorioTiposADO>();
+            }
+            else if (tipo == "MEMORIA") //Es de tipo persistencia en memoria
+            {
+                services.AddScoped<IRepositorioTipos, RepositorioTiposMemoria>();
+            }
+            else
+            {
+                throw new Exception("No se especificó tipo de repositorio o no es válido el tipo especificado");
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
