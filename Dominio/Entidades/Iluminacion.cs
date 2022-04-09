@@ -10,5 +10,18 @@ namespace Dominio.Entidades
         public int IdIluminacion { get; set; }
 
         public string Tipo { get; set; }
+
+        public bool Validar()
+        {
+            if (Tipo != null)
+            {
+                if (Tipo.Trim().Length > 0)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
+
 }
