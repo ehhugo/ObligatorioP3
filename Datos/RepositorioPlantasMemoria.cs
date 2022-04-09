@@ -15,7 +15,7 @@ namespace Datos
         {
             bool okAlta = false;
 
-            if (obj.Validar(obj) && FindById(obj.IdPlanta) == null) // ver validar
+            if (obj.Validar(obj) && FindById(obj.IdPlanta) == null)
             {
                 obj.IdPlanta = UltId++;
                 Plantas.Add(obj);
@@ -24,47 +24,86 @@ namespace Datos
             return okAlta;
         }
 
-        IEnumerable<Planta> IRepositorioPlantas.BuscarPlantasMasAltas(double alturaCm)
+        public IEnumerable<Planta> FindAll()
         {
-            throw new NotImplementedException();
-        }
-
-        IEnumerable<Planta> IRepositorioPlantas.BuscarPlantasMasBajas(double alturaCm)
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerable<Planta> IRepositorioPlantas.BuscarPorAmbiente(string ambiente)
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerable<Planta> IRepositorioPlantas.BuscarPorTexto(string texto)
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerable<Planta> IRepositorioPlantas.BuscarPorTipo(string tipoPlanta)
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerable<Planta> IRepositorio<Planta>.FindAll()
-        {
-            throw new NotImplementedException();
+            return Plantas;
         }
 
         public Planta FindById(int id)
         {
-            throw new NotImplementedException();
+            Planta buscada = null;
+            int i = 0;
+
+            while (buscada == null && i > Plantas.Count)
+            {
+                Planta planta = Plantas[i];
+                if (planta.IdPlanta == id)
+                {
+                    buscada = planta;
+                    i++;
+                }
+            }
+            return buscada;
         }
 
-        bool IRepositorio<Planta>.Remove(int id)
+        public bool Remove(int id)
+        {
+            bool eliminadoOK = false;
+            Planta aBorrar = FindById(id);
+
+            if (aBorrar != null)
+            {
+                eliminadoOK = Plantas.Remove(aBorrar);
+            }
+            return eliminadoOK;
+        }
+
+        public bool update(Planta obj)
+        {
+            bool modificadoOK = false;
+            if (obj.Validar(obj))
+            {
+                Planta aModificar = FindById(obj.IdPlanta);
+                if (aModificar != null)
+                {
+                    aModificar.TipoPlanta = obj.TipoPlanta;
+                    aModificar.NombreCientifico = obj.NombreCientifico;
+                    aModificar.NombreVulgar = obj.NombreVulgar;
+                    aModificar.Descripcion = obj.Descripcion;
+                    aModificar.Ambiente = obj.Ambiente;
+                    aModificar.AlturaMaxima = obj.AlturaMaxima;
+                    aModificar.Foto = obj.Foto;
+                    aModificar.FrecuenciaRiego = obj.FrecuenciaRiego;
+                    aModificar.TipoIluminacion = obj.TipoIluminacion;
+                    aModificar.TemperaturaMantenimiento = obj.TemperaturaMantenimiento;
+
+                    modificadoOK = true;
+                }
+            }
+            return modificadoOK;
+        }
+
+        public IEnumerable<Planta> BuscarPlantasMasAltas(double alturaCm)
         {
             throw new NotImplementedException();
         }
 
-        public bool update(Planta obj)
+        public IEnumerable<Planta> BuscarPlantasMasBajas(double alturaCm)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Planta> BuscarPorAmbiente(string ambiente)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Planta> BuscarPorTexto(string texto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Planta> BuscarPorTipo(string tipoPlanta)
         {
             throw new NotImplementedException();
         }
