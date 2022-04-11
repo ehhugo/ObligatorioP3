@@ -11,6 +11,6 @@ namespace Dominio.InterfacesRepositorio
 
         bool EliminarPorNombre(string nombre);
 
-        bool ActualizarDescripcion(string nombre);
+        bool ActualizarDescripcion(Tipo tipo);
     }
 }

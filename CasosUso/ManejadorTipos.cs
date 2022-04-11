@@ -37,9 +37,9 @@ namespace CasosUso
             return RepoTipos.BuscarPorNombre(nombre);
         }
 
-        public bool ActualizarDescripcionTipo(string nombre)
+        public bool ActualizarDescripcionTipo(Tipo tipo)
         {
-            return RepoTipos.ActualizarDescripcion(nombre);
+            return RepoTipos.ActualizarDescripcion(tipo);
         }
     }
 }
