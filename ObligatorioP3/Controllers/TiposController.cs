@@ -25,8 +25,8 @@ namespace ObligatorioP3.Controllers
         {
             IEnumerable<Tipo> tipos = ManejadorTipos.TraerTodos();
             if (tipos.Count() == 0)
-            {            
-                ViewBag.Resultado = "No hay tipos de plantas ingresados.";                
+            {
+                ViewBag.Resultado = "No hay tipos de plantas ingresados.";
             }
             return View(tipos);
         }
@@ -70,9 +70,9 @@ namespace ObligatorioP3.Controllers
         }
 
         // GET: TipoController/Edit/5
-        public ActionResult Edit(string name)
+        public ActionResult Edit(string nombre)
         {
-            Tipo tipo= ManejadorTipos.BuscarTipoPorNombre(name);
+            Tipo tipo = ManejadorTipos.BuscarTipoPorNombre(nombre);
             return View(tipo);
         }
 
@@ -100,10 +100,11 @@ namespace ObligatorioP3.Controllers
             }
         }
 
+
         // GET: TipoController/Delete/5
-        public ActionResult Delete(string name)
+        public ActionResult Delete(string nombre)
         {
-            Tipo tipo = ManejadorTipos.BuscarTipoPorNombre(name);
+            Tipo tipo = ManejadorTipos.BuscarTipoPorNombre(nombre);
             return View(tipo);
         }
 
@@ -115,7 +116,6 @@ namespace ObligatorioP3.Controllers
             try
             {
                 bool ok = ManejadorTipos.DarDeBajaTipo(tipo.Nombre);
-
                 if (ok)
                 {
                     return RedirectToAction(nameof(Index));
@@ -123,13 +123,13 @@ namespace ObligatorioP3.Controllers
                 else
                 {
                     ViewBag.Resultado = "No se pudo eliminar el tipo";
-                    return View();
+                    return View(tipo);
                 }
             }
             catch
             {
                 return View();
-            }        
+            }
         }
     }
 }
