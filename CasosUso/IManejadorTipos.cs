@@ -11,7 +11,7 @@ namespace CasosUso
         bool DarDeBajaTipo(string  nombre);
         IEnumerable<Tipo> TraerTodos();
         Tipo BuscarTipoPorNombre(string nombre);
-        bool ActualizarDescripcionTipo(string nombre);
+        bool ActualizarDescripcionTipo(Tipo tipo);
 
         //RESTO DE CASOS DE USO (FUNCIONALIDADES) DE TIPOS
     }

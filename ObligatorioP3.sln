@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Datos", "Datos\Datos.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dominio", "Dominio\Dominio.csproj", "{10F1E76A-1ADF-4EA5-A421-E8E50A37E4DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CasosUso", "CasosUso\CasosUso.csproj", "{D851F6A1-968C-49FC-A40E-5E456D959894}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CasosUso", "CasosUso\CasosUso.csproj", "{D851F6A1-968C-49FC-A40E-5E456D959894}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

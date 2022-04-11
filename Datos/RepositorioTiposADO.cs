@@ -19,11 +19,11 @@ namespace Datos
         {
             bool ok = false;
 
-            if (obj != null && obj.Validar() && FindById(obj.IdTipo) == null)
+            if (obj != null && obj.Validar() && BuscarPorNombre(obj.Nombre) == null)
             {
                 SqlConnection con = Conexion.ObtenerConexion();
 
-                string sql = "INSERT INTO Tipos VALUES (@nom, @des); SELECT CAST (SCOPE_IDENTITY() AS INT);";
+                string sql = "INSERT INTO TiposDePLanta VALUES (@nom, @des); SELECT CAST (SCOPE_IDENTITY() AS INT);";
 
                 SqlCommand SQLcom = new SqlCommand(sql, con);
 
@@ -72,11 +72,11 @@ namespace Datos
             }
             return ok;
         }
-        public bool EliminarPorNombre(string nombre)
+        public bool EliminarPorNombre(string name)
         {
             bool ok = false;
             SqlConnection con = Conexion.ObtenerConexion();
-            string sql = $"DELETE FROM Tipos WHERE  Nombre= '{nombre}';";
+            string sql = $"DELETE FROM TiposDePlanta WHERE  Nombre= '{name}';";
             SqlCommand SQLCom = new SqlCommand(sql, con);
 
             try
@@ -104,7 +104,7 @@ namespace Datos
 
             SqlConnection con = Conexion.ObtenerConexion();
 
-            string sql = "SELECT * FROM Tipos;";
+            string sql = "SELECT * FROM TiposDePlanta;";
             SqlCommand SQLCom = new SqlCommand(sql, con);
 
             try
@@ -141,7 +141,7 @@ namespace Datos
 
             SqlConnection con = Conexion.ObtenerConexion();
 
-            string sql = $"SELECT * FROM Tipos WHERE idTipo = {id};";
+            string sql = $"SELECT * FROM TipoDePlanta WHERE idTipo = {id};";
             SqlCommand SQLCom = new SqlCommand(sql, con);
 
             try
@@ -179,7 +179,7 @@ namespace Datos
 
             SqlConnection con = Conexion.ObtenerConexion();
 
-            string sql = $"SELECT * FROM Tipos WHERE Nombre = '{nombre}';";
+            string sql = $"SELECT * FROM TiposDePlanta WHERE Nombre = '{nombre}';";
             SqlCommand SQLCom = new SqlCommand(sql, con);
 
             try
@@ -221,7 +221,7 @@ namespace Datos
 
             if (obj.Validar())
             {
-                string sql = "UPDATE Tipos SET Nombre=@nom, Descripcion=@des WHERE idTipo =@IdTipo";
+                string sql = "UPDATE TiposDePlanta SET Nombre=@nom, Descripcion=@des WHERE idTipo =@IdTipo";
                 SqlCommand SQLCom = new SqlCommand(sql, con);
 
                 SQLCom.Parameters.AddWithValue("@nom", obj.Nombre);
@@ -246,9 +246,35 @@ namespace Datos
             return ok;
         }
 
-        public bool ActualizarDescripcion(string nombre)
+        public bool ActualizarDescripcion(Tipo obj)
         {
-            throw new NotImplementedException();
+            bool ok = false;
+            SqlConnection con = Conexion.ObtenerConexion();
+
+            if (obj.Descripcion.Length >=10 && obj.Descripcion.Length <= 200)
+            {
+                string sql = $"UPDATE TiposDePlanta SET Descripcion=@des WHERE idTipo =@IdTipo";
+                SqlCommand SQLCom = new SqlCommand(sql, con);
+
+                SQLCom.Parameters.AddWithValue("@des", obj.Descripcion);
+                SQLCom.Parameters.AddWithValue("@IdTipo", obj.IdTipo);
+
+                try
+                {
+                    Conexion.AbrirConexion(con);
+                    int afectadas = SQLCom.ExecuteNonQuery();
+                    ok = afectadas == 1;
+                }
+                catch
+                {
+                    throw;
+                }
+                finally
+                {
+                    Conexion.CerrarYTerminarConexion(con);
+                }
+            }
+            return ok;
         }
         #endregion
     }
