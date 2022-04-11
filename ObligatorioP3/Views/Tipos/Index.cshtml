@@ -1,0 +1,48 @@
+﻿@model IEnumerable<Dominio.Entidades.Tipo>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Tipos de plantas</h1>
+
+<p>
+    <a asp-action="Create">Nuevo tipo de planta</a>
+</p>
+<span class="text-danger">@ViewBag.Resultado</span>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IdTipo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descripcion)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdTipo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descripcion)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new {  nombre =item.Nombre  }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { nombre = item.Nombre })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
