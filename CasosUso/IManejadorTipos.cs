@@ -13,6 +13,8 @@ namespace CasosUso
         Tipo BuscarTipoPorNombre(string nombre);
         bool ActualizarDescripcionTipo(Tipo tipo);
 
+        Tipo buscarPorId(int id);
+
         //RESTO DE CASOS DE USO (FUNCIONALIDADES) DE TIPOS
     }
 }

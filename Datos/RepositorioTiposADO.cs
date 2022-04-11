@@ -141,7 +141,7 @@ namespace Datos
 
             SqlConnection con = Conexion.ObtenerConexion();
 
-            string sql = $"SELECT * FROM TipoDePlanta WHERE idTipo = {id};";
+            string sql = $"SELECT * FROM TiposDePlanta WHERE idTipo = {id};";
             SqlCommand SQLCom = new SqlCommand(sql, con);
 
             try
