@@ -19,7 +19,7 @@ namespace Datos
         {
             bool ok = false;
 
-            if (obj != null && obj.Validar())
+            if (obj != null && obj.Validar() && FindById(obj.IdTipo) == null)
             {
                 SqlConnection con = Conexion.ObtenerConexion();
 
@@ -53,7 +53,7 @@ namespace Datos
         {
             bool ok = false;
             SqlConnection con = Conexion.ObtenerConexion();
-            string sql = $"DELETE FROM Tipos WHERE  idTipo ={id};";
+            string sql = $"DELETE FROM Tipos WHERE idTipo ={id};";
             SqlCommand SQLCom = new SqlCommand(sql, con);
 
             try
@@ -96,7 +96,6 @@ namespace Datos
             return ok;
         }
         #endregion
-
 
         #region Buscar
         public IEnumerable<Tipo> FindAll()
