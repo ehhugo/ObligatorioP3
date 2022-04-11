@@ -41,5 +41,10 @@ namespace CasosUso
         {
             return RepoTipos.ActualizarDescripcion(tipo);
         }
+
+        public Tipo buscarPorId(int id)
+        {
+            return RepoTipos.FindById(id);
+        }
     }
 }
