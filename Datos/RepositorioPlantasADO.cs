@@ -23,16 +23,16 @@ namespace Datos
 
                 SqlCommand SQLcom = new SqlCommand(sql, con);
 
-                SQLcom.Parameters.AddWithValue("@tipoPlanta", obj.TipoPlanta);
+                SQLcom.Parameters.AddWithValue("@tipoPlanta", obj.TipoPlanta.IdTipo);
                 SQLcom.Parameters.AddWithValue("@nomCientifico", obj.NombreCientifico);
                 SQLcom.Parameters.AddWithValue("@nomVulgar", obj.NombreVulgar); // list
                 SQLcom.Parameters.AddWithValue("@descripcion", obj.Descripcion);
-                SQLcom.Parameters.AddWithValue("@ambiente", obj.Ambiente);
+                SQLcom.Parameters.AddWithValue("@ambiente", obj.Ambiente.IdAmbiente);
                 SQLcom.Parameters.AddWithValue("@alturaMaxima", obj.AlturaMaxima);
                 SQLcom.Parameters.AddWithValue("@nomVulgar", obj.NombreVulgar);
                 SQLcom.Parameters.AddWithValue("@foto", obj.Foto); // list
                 SQLcom.Parameters.AddWithValue("@frecuenciaRiego", obj.FrecuenciaRiego);
-                SQLcom.Parameters.AddWithValue("@tipoIluminacion", obj.TipoIluminacion);
+                SQLcom.Parameters.AddWithValue("@tipoIluminacion", obj.TipoIluminacion.IdIluminacion);
                 SQLcom.Parameters.AddWithValue("@tempMantenimiento", obj.TemperaturaMantenimiento);                
 
                 try
