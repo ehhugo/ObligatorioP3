@@ -23,7 +23,7 @@ namespace Dominio.Entidades
 
         public decimal AlturaMaxima { get; set; }
 
-        public List<string> Foto { get; set; }
+        public string Foto { get; set; }
 
         public string FrecuenciaRiego { get; set; }
 

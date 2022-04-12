@@ -6,12 +6,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using CasosUso;
 using Dominio.Entidades;
+using ObligatorioP3.Models;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace ObligatorioP3.Controllers
 {
     public class PlantasController : Controller
     {
         public IManejadorPlantas ManejadorPlantas { get; set; }
+        public IWebHostEnvironment WebHostEnvironment { get; private set; }
+
         public PlantasController (IManejadorPlantas manejador)
         {
             ManejadorPlantas = manejador;
@@ -34,26 +39,40 @@ namespace ObligatorioP3.Controllers
         // GET: PlantasController/Create
         public ActionResult Create()
         {
-            Planta planta = new Planta();
-            return View(planta);
+            ViewModelPlanta vmp = new ViewModelPlanta();
+            vmp.Tipos = ManejadorPlantas.TraerTodosLosTipos();
+            vmp.Ambientes = ManejadorPlantas.TraerTodosLosAmbientes();
+            vmp.Iluminaciones = ManejadorPlantas.TraerTodasLasIluminaciones();
+            return View(vmp);
         }
 
         // POST: PlantasController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Planta plantaACrear)
+        public ActionResult Create(ViewModelPlanta vmp)
         {
             try
             {
-                bool creadaOK = ManejadorPlantas.AgregarNuevaPlanta(plantaACrear);
+                string nombreArchivo = vmp.Imagen.FileName;
+                nombreArchivo = vmp.Planta.IdPlanta + "_" + nombreArchivo;
+                vmp.Planta.Foto = nombreArchivo;
+
+                bool creadaOK = ManejadorPlantas.AgregarNuevaPlanta(vmp.Planta, vmp.IdTipoSeleccionado, vmp.IdAmbienteSeleccionado, vmp.IdIluminacionSeleccionada);
                 if (creadaOK)
                 {
+                    string rutaRaizApp = WebHostEnvironment.WebRootPath;
+                    rutaRaizApp = Path.Combine(rutaRaizApp, "imagenes");
+                    string rutaCompleta = Path.Combine(rutaRaizApp, nombreArchivo);
+                    FileStream stream = new FileStream(rutaCompleta, FileMode.Create);
+                    vmp.Imagen.CopyTo(stream);
+
+                    ViewBag.Resultado = "Planta dada de alta correctamente";
                     return RedirectToAction(nameof(Index));
                 }
                 else
                 {
-                    ViewBag.Error = "Error al dar el alta";
-                    return View(plantaACrear);
+                    ViewBag.Resultado = "Error al dar el alta";
+                    return View(vmp);
                 }
             }
             catch
@@ -63,9 +82,9 @@ namespace ObligatorioP3.Controllers
         }
 
         // GET: PlantasController/Edit/5
-        public ActionResult Edit(int idPlantaAEditar)
+        public ActionResult Edit(int id)
         {
-            Planta plantaAEditar = ManejadorPlantas.BuscarPlantaPorId(idPlantaAEditar);
+            Planta plantaAEditar = ManejadorPlantas.BuscarPlantaPorId(id);
             return View(plantaAEditar);
         }
 
@@ -94,9 +113,9 @@ namespace ObligatorioP3.Controllers
         }
 
         // GET: PlantasController/Delete/5
-        public ActionResult Delete(int idPlanta)
+        public ActionResult Delete(int id)
         {
-            Planta plantaABorrar = ManejadorPlantas.BuscarPlantaPorId(idPlanta);
+            Planta plantaABorrar = ManejadorPlantas.BuscarPlantaPorId(id);
             return View(plantaABorrar);
         }
 
