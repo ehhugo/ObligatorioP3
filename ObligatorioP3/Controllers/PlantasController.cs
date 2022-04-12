@@ -39,8 +39,11 @@ namespace ObligatorioP3.Controllers
         // GET: PlantasController/Create
         public ActionResult Create()
         {
-            Planta planta = new Planta();
-            return View(planta);
+            ViewModelPlanta vmp = new ViewModelPlanta();
+            vmp.Tipos = ManejadorPlantas.TraerTodosLosTipos();
+            vmp.Ambientes = ManejadorPlantas.TraerTodosLosAmbientes();
+            vmp.Iluminaciones = ManejadorPlantas.TraerTodasLasIluminaciones();
+            return View(vmp);
         }
 
         // POST: PlantasController/Create
