@@ -1,0 +1,77 @@
+﻿@model IEnumerable<Dominio.Entidades.Planta>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Crear nueva Planta</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IdPlanta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NombreCientifico)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descripcion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AlturaMaxima)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FrecuenciaRiego)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TemperaturaMantenimiento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TipoIluminacion.Tipo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ambiente.TipoAmbiente)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TipoPlanta.Nombre)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdPlanta)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreCientifico)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AlturaMaxima)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FrecuenciaRiego)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TemperaturaMantenimiento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoIluminacion.Tipo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ambiente.TipoAmbiente)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoPlanta.Nombre)
+            </td>
+        </tr>}
+    </tbody>
+</table>

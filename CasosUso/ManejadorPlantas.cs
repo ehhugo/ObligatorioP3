@@ -20,7 +20,7 @@ namespace CasosUso
             return RepoPlantas.update(p);
         }
 
-        public bool AgregarNuevaPlanta(Planta p)
+        public bool AgregarNuevaPlanta(Planta p, int idTipo, int idAmbiente, int idIluminacion)
         {
             return RepoPlantas.Add(p);
         }

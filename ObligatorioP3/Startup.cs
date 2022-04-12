@@ -28,11 +28,11 @@ namespace ObligatorioP3
         {
             services.AddControllersWithViews();
 
-            services.AddScoped<IManejadorTipos, ManejadorTipos>();
+            services.AddScoped<IManejadorTipos, ManejadorTipos>();            
+            services.AddScoped<IRepositorioTipos, RepositorioTiposADO>();
+            services.AddScoped<IManejadorPlantas, ManejadorPlantas>();
+            services.AddScoped<IRepositorioPlantas, RepositorioPlantasADO>();
 
-            
-                services.AddScoped<IRepositorioTipos, RepositorioTiposADO>();
-            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,7 +59,7 @@ namespace ObligatorioP3
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Tipos}/{action=Index}/{id?}");
+                    pattern: "{controller=Plantas}/{action=Index}/{id?}");
             });
         }
     }

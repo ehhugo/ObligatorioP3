@@ -7,7 +7,7 @@ namespace CasosUso
 {
     public interface IManejadorPlantas
     {
-        bool AgregarNuevaPlanta(Planta p);
+        bool AgregarNuevaPlanta(Planta p, int idTipo, int idAmbiente, int idIluminacion);
 
         bool DarDeBajaPlanta(int idPlanta);
 
