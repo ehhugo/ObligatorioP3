@@ -12,9 +12,6 @@ namespace CasosUso
         IEnumerable<Tipo> TraerTodos();
         Tipo BuscarTipoPorNombre(string nombre);
         bool ActualizarDescripcionTipo(Tipo tipo);
-
         Tipo buscarPorId(int id);
-
-        //RESTO DE CASOS DE USO (FUNCIONALIDADES) DE TIPOS
     }
 }
