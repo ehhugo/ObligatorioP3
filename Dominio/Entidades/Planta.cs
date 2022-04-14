@@ -33,7 +33,7 @@ namespace Dominio.Entidades
 
         public bool Validar(Planta obj)
         {
-            throw new NotImplementedException();
+            return true;
         }
     }
 }

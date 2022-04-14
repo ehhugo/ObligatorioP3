@@ -10,7 +10,7 @@ using Microsoft.Data.SqlClient;
 
 namespace Datos
 {
-    class RepositorioAmbientesADO : IRepositorio<Ambiente>
+    public class RepositorioAmbientesADO : IRepositorioAmbientes
     {
 
         #region Add/Delete
@@ -111,7 +111,7 @@ namespace Datos
 
             SqlConnection con = Conexion.ObtenerConexion();
 
-            string sql = $"SELECT * FROM Ambiente WHERE idAmbiente = {id};";
+            string sql = $"SELECT * FROM Ambientes WHERE idAmbiente = {id};";
             SqlCommand SQLCom = new SqlCommand(sql, con);
 
             try
