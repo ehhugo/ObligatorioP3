@@ -19,20 +19,20 @@ namespace Datos
             {
                 SqlConnection con = Conexion.ObtenerConexion();
 
-                string sql = "INSERT INTO Plantas VALUES (@tipoPlanta, @nomCientifico, @nomVulgar, @descripcion, @ambiente, @alturaMaxima, @foto, @frecuenciaRiego, @tipoIluminacion, @tempMantenimiento); SELECT CAST (SCOPE_IDENTITY() AS INT);";
+                string sql = "INSERT INTO Plantas VALUES " +
+                    "(@tipoPlanta, @nomCientifico, @descripcion, @ambiente, @alturaMaxima, @foto, @tipoIluminacion, @frecuenciaRiego, @tempMantenimiento); " +
+                    "SELECT CAST (SCOPE_IDENTITY() AS INT);";
 
                 SqlCommand SQLcom = new SqlCommand(sql, con);
 
                 SQLcom.Parameters.AddWithValue("@tipoPlanta", obj.TipoPlanta.IdTipo);
                 SQLcom.Parameters.AddWithValue("@nomCientifico", obj.NombreCientifico);
-                //SQLcom.Parameters.AddWithValue("@nomVulgar", obj.NombreVulgar); // list
                 SQLcom.Parameters.AddWithValue("@descripcion", obj.Descripcion);
                 SQLcom.Parameters.AddWithValue("@ambiente", obj.Ambiente.IdAmbiente);
                 SQLcom.Parameters.AddWithValue("@alturaMaxima", obj.AlturaMaxima);
-                SQLcom.Parameters.AddWithValue("@nomVulgar", obj.NombreVulgar);
-                SQLcom.Parameters.AddWithValue("@foto", obj.Foto); // list
-                SQLcom.Parameters.AddWithValue("@frecuenciaRiego", obj.FrecuenciaRiego);
+                SQLcom.Parameters.AddWithValue("@foto", obj.Foto);
                 SQLcom.Parameters.AddWithValue("@tipoIluminacion", obj.TipoIluminacion.IdIluminacion);
+                SQLcom.Parameters.AddWithValue("@frecuenciaRiego", obj.FrecuenciaRiego);
                 SQLcom.Parameters.AddWithValue("@tempMantenimiento", obj.TemperaturaMantenimiento);
 
                 try
@@ -79,22 +79,6 @@ namespace Datos
                     planta.NombreVulgar = TraerNombresVulgaresDePlantas(planta.IdPlanta);
                     planta.Ambiente = CrearAmbiente(reader);
                     planta.TipoIluminacion = CrearIluminacion(reader);
-
-                 /*   Planta planta = new Planta()
-                    {
-                        IdPlanta = reader.GetInt32(reader.GetOrdinal("idPlanta")),
-                        TipoPlanta = CrearTipo(reader),
-                        NombreCientifico = reader.GetString(reader.GetOrdinal("NombreCientifico")),
-                        NombreVulgar = TraerNombresVulgaresDePlantas(),
-                        Descripcion = reader.GetString(4),
-                        Ambiente = CrearAmbiente(reader),
-                        AlturaMaxima = reader.GetDecimal(6),
-                        Foto = reader.GetString(7),
-                        FrecuenciaRiego = reader.GetString(8),
-                        TipoIluminacion = CrearIluminacion(reader),
-                        TemperaturaMantenimiento = reader.GetInt32(10)
-                    };*/
-
                     plantas.Add(planta);
                 }
             }
@@ -410,8 +394,7 @@ namespace Datos
         }
         #endregion
 
-
-        #region Métodos para Crear Ambiente, NombreVulgar, iluminación Tipo y Planta
+        #region Métodos para Crear Ambiente, NombreVulgar, iluminación, Tipo y Planta
         private List<string> TraerNombresVulgaresDePlantas(int id)
         {
             List<string> nombresVulgares = new List<String>();
@@ -484,6 +467,7 @@ namespace Datos
                 NombreCientifico = reader.GetString(reader.GetOrdinal("NombreCientifico")),
                 Descripcion = reader.GetString(reader.GetOrdinal("Descripcion")),
                 AlturaMaxima = reader.GetDecimal(reader.GetOrdinal("Altura")),
+                FrecuenciaRiego = reader.GetString(reader.GetOrdinal("FrecuenciaDeRiego")),
                 Foto = reader.GetString(reader.GetOrdinal("Foto")),
                 TemperaturaMantenimiento = reader.GetInt32(reader.GetOrdinal("TempMantenimiento"))
             };

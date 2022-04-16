@@ -13,34 +13,31 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.IdPlanta)
+                Nombre Científico
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NombreCientifico)
+                Tipo de Planta
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Descripcion)
+                Descripción
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AlturaMaxima)
+                Altura Máxima(cm)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FrecuenciaRiego)
+                Frecuencia de Riego
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TemperaturaMantenimiento)
+                Temp. Manteniento (c)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TipoIluminacion.Tipo)
+                Iluminación
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Ambiente.TipoAmbiente)
+                Ambiente
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TipoPlanta.Nombre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NombreVulgar)
+                Nombre Vulgar
             </th>
         </tr>
     </thead>
@@ -48,10 +45,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.IdPlanta)
+                @Html.DisplayFor(modelItem => item.NombreCientifico)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.NombreCientifico)
+                @Html.DisplayFor(modelItem => item.TipoPlanta.Nombre)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Descripcion)
@@ -72,7 +69,7 @@
                 @Html.DisplayFor(modelItem => item.Ambiente.TipoAmbiente)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TipoPlanta.Nombre)
+                @Html.DisplayFor(modelItem => item.NombreVulgar)
             </td>
         </tr>}
     </tbody>

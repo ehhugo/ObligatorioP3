@@ -66,12 +66,12 @@ namespace ObligatorioP3.Controllers
                     FileStream stream = new FileStream(rutaCompleta, FileMode.Create);
                     vmp.Imagen.CopyTo(stream);
 
-                    ViewBag.Resultado = "Planta dada de alta correctamente";
+                    //ViewBag.Resultado = "Planta dada de alta correctamente";
                     return RedirectToAction(nameof(Index));
                 }
                 else
                 {
-                    ViewBag.Resultado = "Error al dar el alta";
+                    //ViewBag.Resultado = "Error al dar el alta";
                     return View(vmp);
                 }
             }
