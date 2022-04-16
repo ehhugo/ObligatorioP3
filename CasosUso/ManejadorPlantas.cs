@@ -13,9 +13,12 @@ namespace CasosUso
         public IRepositorioAmbientes RepoAmbientes { get; set; }
         public IRepositorioIluminaciones RepoIluminacion { get; set; }
 
-        public ManejadorPlantas (IRepositorioPlantas repo)
+        public ManejadorPlantas (IRepositorioPlantas repo, IRepositorioTipos repoTipos, IRepositorioAmbientes repoAmbientes, IRepositorioIluminaciones repoIluminacion)
         {
             RepoPlantas = repo;
+            RepoTipos = repoTipos;
+            RepoAmbientes = repoAmbientes;
+            RepoIluminacion = repoIluminacion;
         }
 
         public bool ActualizarPlanta(Planta p)
@@ -25,7 +28,23 @@ namespace CasosUso
 
         public bool AgregarNuevaPlanta(Planta p, int idTipo, int idAmbiente, int idIluminacion)
         {
-            return RepoPlantas.Add(p);
+            bool ok = false;
+            Tipo t = RepoTipos.FindById(idTipo);
+
+            if (t != null)
+            {
+                Ambiente a = RepoAmbientes.FindById(idAmbiente);
+                Iluminacion i = RepoIluminacion.FindById(idIluminacion);
+
+                if (a != null && i != null)
+                {                    
+                    p.TipoPlanta = t;
+                    p.Ambiente = a;
+                    p.TipoIluminacion = i;
+                    ok = RepoPlantas.Add(p);
+                }
+            }
+            return ok;
         }
 
         public Planta BuscarPlantaPorId(int idPlanta)
