@@ -19,21 +19,21 @@ namespace Datos
             {
                 SqlConnection con = Conexion.ObtenerConexion();
 
-                string sql = "INSERT INTO Plantas VALUES (@tipoPlanta, @nomCientifico, @nomVulgar, @descripcion, @ambiente, @alturaMaxima, @foto, @frecuenciaRiego, @tipoIluminacion, @tempMantenimiento); SELECT CAST (SCOPE_IDENTITY() AS INT);";
+                string sql = "INSERT INTO Plantas VALUES " +
+                    "(@tipoPlanta, @nomCientifico, @descripcion, @ambiente, @alturaMaxima, @foto, @frecuenciaRiego, @tipoIluminacion, @tempMantenimiento); " +
+                    "SELECT CAST (SCOPE_IDENTITY() AS INT);";
 
                 SqlCommand SQLcom = new SqlCommand(sql, con);
 
                 SQLcom.Parameters.AddWithValue("@tipoPlanta", obj.TipoPlanta.IdTipo);
                 SQLcom.Parameters.AddWithValue("@nomCientifico", obj.NombreCientifico);
-                SQLcom.Parameters.AddWithValue("@nomVulgar", obj.NombreVulgar); // list
                 SQLcom.Parameters.AddWithValue("@descripcion", obj.Descripcion);
                 SQLcom.Parameters.AddWithValue("@ambiente", obj.Ambiente.IdAmbiente);
                 SQLcom.Parameters.AddWithValue("@alturaMaxima", obj.AlturaMaxima);
-                SQLcom.Parameters.AddWithValue("@nomVulgar", obj.NombreVulgar);
-                SQLcom.Parameters.AddWithValue("@foto", obj.Foto); // list
+                SQLcom.Parameters.AddWithValue("@foto", obj.Foto);
                 SQLcom.Parameters.AddWithValue("@frecuenciaRiego", obj.FrecuenciaRiego);
                 SQLcom.Parameters.AddWithValue("@tipoIluminacion", obj.TipoIluminacion.IdIluminacion);
-                SQLcom.Parameters.AddWithValue("@tempMantenimiento", obj.TemperaturaMantenimiento);                
+                SQLcom.Parameters.AddWithValue("@tempMantenimiento", obj.TemperaturaMantenimiento);
 
                 try
                 {
@@ -59,13 +59,11 @@ namespace Datos
         public IEnumerable<Planta> FindAll()
         {
             List<Planta> plantas = new List<Planta>();
-            List<string> aux = new List<string>();
-
             SqlConnection con = Conexion.ObtenerConexion();
 
-            string sql = "SELECT P.*, TP.Nombre, TP.Descripcion, A.TipoAmbiente, TI.TipoIluminacion FROM Plantas P " +
-                "LEFT JOIN TiposDePlanta TP ON P.TipoPlanta = TP.idTipo " + "LEFT JOIN Ambientes A ON P.Ambiente = A.idAmbiente " +
-                "LEFT JOIN TiposDeIluminacion TI on P.Iluminacion = TI.idIluminacion;";
+            string sql = "SELECT P.*, TP.Nombre AS TipoDePlanta, TP.Descripcion AS DescripcionDeTipo, A.TipoAmbiente, TI.TipoIluminacion FROM Plantas P " +
+                         "LEFT JOIN TiposDePlanta TP ON P.TipoPlanta = TP.idTipo " + "LEFT JOIN Ambientes A ON P.Ambiente = A.idAmbiente " +
+                         "LEFT JOIN TiposDeIluminacion TI on P.Iluminacion = TI.idIluminacion;";
 
             SqlCommand SQLCom = new SqlCommand(sql, con);
 
@@ -76,20 +74,11 @@ namespace Datos
 
                 while (reader.Read())
                 {
-                    Planta planta = new Planta()
-                    {     
-                        IdPlanta = reader.GetInt32(reader.GetOrdinal("idPlanta")),
-                        TipoPlanta = CrearTipo(reader),
-                        NombreCientifico = reader.GetString(reader.GetOrdinal("NombreCientifico")),
-                        NombreVulgar= aux, //reader.GetString(reader.GetOrdinal("NombreVulgar"))
-                        Descripcion = reader.GetString(4),
-                        Ambiente = CrearAmbiente(reader),
-                        AlturaMaxima = reader.GetDecimal(6),
-                        Foto = reader.GetString(7),
-                        FrecuenciaRiego = reader.GetString(8),
-                        TipoIluminacion = CrearIluminacion(reader),
-                        TemperaturaMantenimiento = reader.GetInt32(10)
-                    };
+                    Planta planta = CrearPlanta(reader);
+                    planta.TipoPlanta = CrearTipo(reader);
+                    planta.NombreVulgar = TraerNombresVulgaresDePlantas(planta.IdPlanta);
+                    planta.Ambiente = CrearAmbiente(reader);
+                    planta.TipoIluminacion = CrearIluminacion(reader);
                     plantas.Add(planta);
                 }
             }
@@ -104,42 +93,12 @@ namespace Datos
             return plantas;
         }
 
-        private Tipo CrearTipo(SqlDataReader reader)
-        {
-            Tipo tipoBuscado = new Tipo()
-            {
-                IdTipo = reader.GetInt32(1),
-                Nombre = reader.GetString(11),
-                Descripcion = reader.GetString(12),                
-            };
-            return tipoBuscado;
-        }
 
-        private Ambiente CrearAmbiente(SqlDataReader reader)
-        {
-            Ambiente ambienteBuscado = new Ambiente()
-            {
-                IdAmbiente = reader.GetInt32(5),
-                TipoAmbiente = reader.GetString(13),
-            };
-            return ambienteBuscado;
-        }
-
-        private Iluminacion CrearIluminacion(SqlDataReader reader)
-        {
-            Iluminacion iluminacionBuscada = new Iluminacion()
-            {
-                IdIluminacion = reader.GetInt32(9),
-                Tipo = reader.GetString(14),
-            };
-            return iluminacionBuscada;
-        }
 
         public Planta FindById(int id)
         {
-            Planta  buscada = null;
-            List<string> aux = new List<string>();
-
+            Planta buscada = null;
+           
             SqlConnection con = Conexion.ObtenerConexion();
             string sql = $"SELECT * FROM Plantas WHERE idPlanta = {id};";
             SqlCommand SQLCom = new SqlCommand(sql, con);
@@ -151,19 +110,11 @@ namespace Datos
 
                 if (reader.Read())
                 {
-                    buscada = new Planta()
-                    {
-                        IdPlanta = reader.GetInt32(reader.GetOrdinal("idPlanta")),
-                        NombreCientifico = reader.GetString(reader.GetOrdinal("NombreCientifico")),
-                        NombreVulgar = aux, //reader.GetString(reader.GetOrdinal("NombreVulgar"))
-                        Descripcion = reader.GetString(3),
-                        Ambiente = null,
-                        AlturaMaxima = reader.GetInt32(5),
-                        Foto = reader.GetString(6),
-                        FrecuenciaRiego = reader.GetString(7),
-                        TipoIluminacion = null,
-                        TemperaturaMantenimiento = reader.GetInt32(9)
-                    };
+                    buscada = CrearPlanta(reader);
+                    buscada.TipoPlanta = CrearTipo(reader);
+                    buscada.NombreVulgar = TraerNombresVulgaresDePlantas(buscada.IdPlanta);
+                    buscada.Ambiente = CrearAmbiente(reader);
+                    buscada.TipoIluminacion = CrearIluminacion(reader);
                 }
             }
             catch
@@ -178,7 +129,7 @@ namespace Datos
             return buscada;
         }
 
-        #endregion // quitar auxiliares
+        #endregion
 
         #region Remove
         public bool Remove(int id)
@@ -203,7 +154,7 @@ namespace Datos
                 Conexion.CerrarYTerminarConexion(con);
             }
             return eliminadoOK;
-            
+
         }
         #endregion
 
@@ -220,12 +171,12 @@ namespace Datos
 
                 SQLCom.Parameters.AddWithValue("@tipoPlanta", obj.TipoPlanta);
                 SQLCom.Parameters.AddWithValue("@nomCientifico", obj.NombreCientifico);
-                SQLCom.Parameters.AddWithValue("@nomVulgar", obj.NombreVulgar); // list
+                //SQLCom.Parameters.AddWithValue("@nomVulgar", obj.NombreVulgar); // list
                 SQLCom.Parameters.AddWithValue("@descripcion", obj.Descripcion);
                 SQLCom.Parameters.AddWithValue("@ambiente", obj.Ambiente);
                 SQLCom.Parameters.AddWithValue("@alturaMaxima", obj.AlturaMaxima);
                 SQLCom.Parameters.AddWithValue("@nomVulgar", obj.NombreVulgar);
-                SQLCom.Parameters.AddWithValue("@foto", obj.Foto); // list
+                SQLCom.Parameters.AddWithValue("@foto", obj.Foto);
                 SQLCom.Parameters.AddWithValue("@frecuenciaRiego", obj.FrecuenciaRiego);
                 SQLCom.Parameters.AddWithValue("@tipoIluminacion", obj.TipoIluminacion);
                 SQLCom.Parameters.AddWithValue("@tempMantenimiento", obj.TemperaturaMantenimiento);
@@ -255,7 +206,7 @@ namespace Datos
             List<Planta> plantasMasAltas = new List<Planta>();
 
             if (alturaCm > 0)
-            {           
+            {
                 SqlConnection con = Conexion.ObtenerConexion();
                 string sql = @"SELECT * FROM Plantas WHERE alturaMaxima >= " + alturaCm;
                 SqlCommand SQLCom = new SqlCommand(sql, con);
@@ -267,19 +218,12 @@ namespace Datos
 
                     while (reader.Read())
                     {
-                        Planta p = new Planta()
-                        {
-                            IdPlanta = reader.GetInt32(reader.GetOrdinal("idTipo")),
-                            NombreCientifico = reader.GetString(1),
-                            //NombreVulgar= reader.GetString(2), // list
-                            Descripcion = reader.GetString(3),
-                            //Ambiente = RepositorioAmbienteMemoria.FindById(reader.GetInt32(reader.GetOrdinal("TipoAmbiente"))),
-                            AlturaMaxima = reader.GetInt32(5),
-                            //Foto = // lista
-                            FrecuenciaRiego = reader.GetString(7),
-                            //TipoIluminacion = mismo que ambiente
-                            TemperaturaMantenimiento = reader.GetInt32(9)
-                        };
+                        Planta p = CrearPlanta(reader);
+                        p.TipoPlanta = CrearTipo(reader);
+                        p.NombreVulgar = TraerNombresVulgaresDePlantas(p.IdPlanta);
+                        p.Ambiente = CrearAmbiente(reader);
+                        p.TipoIluminacion = CrearIluminacion(reader);
+
                         plantasMasAltas.Add(p);
                     }
                 }
@@ -290,7 +234,7 @@ namespace Datos
                 finally
                 {
                     Conexion.CerrarYTerminarConexion(con);
-                }                
+                }
             }
             return plantasMasAltas;
         }
@@ -302,7 +246,7 @@ namespace Datos
             if (alturaCm > 0)
             {
                 SqlConnection con = Conexion.ObtenerConexion();
-                string sql = @"SELECT * FROM Plantas WHERE alturaMaxima < " + alturaCm;
+                string sql = $"SELECT * FROM Plantas WHERE alturaMaxima < {alturaCm}";
                 SqlCommand SQLCom = new SqlCommand(sql, con);
 
                 try
@@ -312,21 +256,14 @@ namespace Datos
 
                     while (reader.Read())
                     {
-                        Planta p = new Planta()
-                        {
-                            IdPlanta = reader.GetInt32(reader.GetOrdinal("idTipo")),
-                            NombreCientifico = reader.GetString(1),
-                            //NombreVulgar= reader.GetString(2), // list
-                            Descripcion = reader.GetString(3),
-                            //Ambiente = RepositorioAmbienteMemoria.FindById(reader.GetInt32(reader.GetOrdinal("TipoAmbiente"))),
-                            AlturaMaxima = reader.GetInt32(5),
-                            //Foto = // lista
-                            FrecuenciaRiego = reader.GetString(7),
-                            //TipoIluminacion = mismo que ambiente
-                            TemperaturaMantenimiento = reader.GetInt32(9)
-                        };
+                        Planta p = CrearPlanta(reader);
+                        p.TipoPlanta = CrearTipo(reader);
+                        p.NombreVulgar = TraerNombresVulgaresDePlantas(p.IdPlanta);
+                        p.Ambiente = CrearAmbiente(reader);
+                        p.TipoIluminacion = CrearIluminacion(reader);
+
                         plantasMasBajas.Add(p);
-                    }
+                    }   
                 }
                 catch
                 {
@@ -349,7 +286,7 @@ namespace Datos
             if (ambiente != null)
             {
                 SqlConnection con = Conexion.ObtenerConexion();
-                string sql = @"SELECT * FROM Plantas WHERE ambiente = " + ambiente;
+                string sql = $"SELECT * FROM Plantas WHERE ambiente = {ambiente};";
                 SqlCommand SQLCom = new SqlCommand(sql, con);
 
                 try
@@ -359,19 +296,12 @@ namespace Datos
 
                     while (reader.Read())
                     {
-                        Planta p = new Planta()
-                        {
-                            IdPlanta = reader.GetInt32(reader.GetOrdinal("idTipo")),
-                            NombreCientifico = reader.GetString(1),
-                            //NombreVulgar= reader.GetString(2), // list
-                            Descripcion = reader.GetString(3),
-                            //Ambiente = RepositorioAmbienteMemoria.FindById(reader.GetInt32(reader.GetOrdinal("TipoAmbiente"))),
-                            AlturaMaxima = reader.GetInt32(5),
-                            //Foto = // lista
-                            FrecuenciaRiego = reader.GetString(7),
-                            //TipoIluminacion = mismo que ambiente
-                            TemperaturaMantenimiento = reader.GetInt32(9)
-                        };
+                        Planta p = CrearPlanta(reader);
+                        p.TipoPlanta = CrearTipo(reader);
+                        p.NombreVulgar = TraerNombresVulgaresDePlantas(p.IdPlanta);
+                        p.Ambiente = CrearAmbiente(reader);
+                        p.TipoIluminacion = CrearIluminacion(reader);
+
                         plantasPorMabiente.Add(p);
                     }
                 }
@@ -394,7 +324,7 @@ namespace Datos
             if (texto != null)
             {
                 SqlConnection con = Conexion.ObtenerConexion();
-                string sql = @"SELECT * FROM Plantas WHERE nombreVulgar LIKE " + texto + "OR nombreCientifico LIKE " + texto; // armar consulta bien
+                string sql = $"SELECT * FROM Plantas WHERE nombreVulgar LIKE {texto} OR nombreCientifico LIKE {texto};";// armar consulta bien
                 SqlCommand SQLCom = new SqlCommand(sql, con);
 
                 try
@@ -404,19 +334,12 @@ namespace Datos
 
                     while (reader.Read())
                     {
-                        Planta p = new Planta()
-                        {
-                            IdPlanta = reader.GetInt32(reader.GetOrdinal("idTipo")),
-                            NombreCientifico = reader.GetString(1),
-                            //NombreVulgar= reader.GetString(2), // list
-                            Descripcion = reader.GetString(3),
-                            //Ambiente = RepositorioAmbienteMemoria.FindById(reader.GetInt32(reader.GetOrdinal("TipoAmbiente"))),
-                            AlturaMaxima = reader.GetInt32(5),
-                            //Foto = // lista
-                            FrecuenciaRiego = reader.GetString(7),
-                            //TipoIluminacion = mismo que ambiente
-                            TemperaturaMantenimiento = reader.GetInt32(9)
-                        };
+                        Planta p = CrearPlanta(reader);
+                        p.TipoPlanta = CrearTipo(reader);
+                        p.NombreVulgar = TraerNombresVulgaresDePlantas(p.IdPlanta);
+                        p.Ambiente = CrearAmbiente(reader);
+                        p.TipoIluminacion = CrearIluminacion(reader);
+
                         plantasConTextoEnNombre.Add(p);
                     }
                 }
@@ -439,7 +362,7 @@ namespace Datos
             if (tipoPlanta != null)
             {
                 SqlConnection con = Conexion.ObtenerConexion();
-                string sql = @"SELECT * FROM Plantas WHERE tipoPlanta =" + tipoPlanta;
+                string sql = $"SELECT * FROM Plantas WHERE tipoPlanta ={tipoPlanta}";
                 SqlCommand SQLCom = new SqlCommand(sql, con);
 
                 try
@@ -449,19 +372,12 @@ namespace Datos
 
                     while (reader.Read())
                     {
-                        Planta p = new Planta()
-                        {
-                            IdPlanta = reader.GetInt32(reader.GetOrdinal("idTipo")),
-                            NombreCientifico = reader.GetString(1),
-                            //NombreVulgar= reader.GetString(2), // list
-                            Descripcion = reader.GetString(3),
-                            //Ambiente = RepositorioAmbienteMemoria.FindById(reader.GetInt32(reader.GetOrdinal("TipoAmbiente"))),
-                            AlturaMaxima = reader.GetInt32(5),
-                            //Foto = // lista
-                            FrecuenciaRiego = reader.GetString(7),
-                            //TipoIluminacion = mismo que ambiente
-                            TemperaturaMantenimiento = reader.GetInt32(9)
-                        };
+                        Planta p = CrearPlanta(reader);
+                        p.TipoPlanta = CrearTipo(reader);
+                        p.NombreVulgar = TraerNombresVulgaresDePlantas(p.IdPlanta);
+                        p.Ambiente = CrearAmbiente(reader);
+                        p.TipoIluminacion = CrearIluminacion(reader);
+
                         plantasPorTipo.Add(p);
                     }
                 }
@@ -475,6 +391,89 @@ namespace Datos
                 }
             }
             return plantasPorTipo;
+        }
+        #endregion
+
+        #region Métodos para Crear Ambiente, NombreVulgar, iluminación, Tipo y Planta
+        private List<string> TraerNombresVulgaresDePlantas(int id)
+        {
+            List<string> nombresVulgares = new List<String>();
+
+            SqlConnection con = Conexion.ObtenerConexion();
+            string SQL = $"SELECT * FROM NombresVulgares WHERE idPlanta ={id}";
+
+            SqlCommand SQLcom = new SqlCommand(SQL, con);
+
+            try
+            {
+                Conexion.AbrirConexion(con);
+                SqlDataReader reader = SQLcom.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    string nombreVulgar = reader.GetString(reader.GetOrdinal("NombreVulgar"));
+                    nombresVulgares.Add(nombreVulgar);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                Conexion.CerrarYTerminarConexion(con);
+            }
+
+            return nombresVulgares;
+        }
+
+        private Tipo CrearTipo(SqlDataReader reader)
+        {
+            Tipo tipoBuscado = new Tipo()
+            {
+                IdTipo = reader.GetInt32(reader.GetOrdinal("TipoPlanta")),
+                Nombre = reader.GetString(reader.GetOrdinal("TipoDePlanta")),
+                Descripcion = reader.GetString(reader.GetOrdinal("DescripcionDeTipo")),
+            };
+            return tipoBuscado;
+        }
+
+        private Ambiente CrearAmbiente(SqlDataReader reader)
+        {
+            Ambiente ambienteBuscado = new Ambiente()
+            {
+                IdAmbiente = reader.GetInt32(reader.GetOrdinal("Ambiente")),
+                TipoAmbiente = reader.GetString(reader.GetOrdinal("TipoAmbiente")),
+            };
+            return ambienteBuscado;
+        }
+
+        private Iluminacion CrearIluminacion(SqlDataReader reader)
+        {
+            Iluminacion iluminacionBuscada = new Iluminacion()
+            {
+                IdIluminacion = reader.GetInt32(reader.GetOrdinal("Iluminacion")),
+                Tipo = reader.GetString(reader.GetOrdinal("TipoIluminacion")),
+            };
+            return iluminacionBuscada;
+        }
+
+
+        private Planta CrearPlanta(SqlDataReader reader)
+        {
+            Planta p = new Planta()
+            {
+                IdPlanta = reader.GetInt32(reader.GetOrdinal("idPlanta")),
+                NombreCientifico = reader.GetString(reader.GetOrdinal("NombreCientifico")),
+                Descripcion = reader.GetString(reader.GetOrdinal("Descripcion")),
+                AlturaMaxima = reader.GetDecimal(reader.GetOrdinal("Altura")),
+                FrecuenciaRiego = reader.GetString(reader.GetOrdinal("FrecuenciaDeRiego")),
+                Foto = reader.GetString(reader.GetOrdinal("Foto")),
+                TemperaturaMantenimiento = reader.GetInt32(reader.GetOrdinal("TempMantenimiento"))
+            };
+
+            return p;
+            
         }
         #endregion
     }

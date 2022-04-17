@@ -14,30 +14,31 @@
         <form enctype="multipart/form-data" asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Planta.NombreCientifico" class="control-label"></label>
-                <input asp-for="Planta.NombreCientifico" class="form-control" />
+                <label asp-for="Planta.NombreCientifico" class="control-label">Nombre Científico</label>
+                <input asp-for="Planta.NombreCientifico" value="Planta De Prueba" class="form-control" />
                 <span asp-validation-for="Planta.NombreCientifico" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Planta.Descripcion" class="control-label"></label>
-                <input asp-for="Planta.Descripcion" class="form-control" />
+                <label asp-for="Planta.Descripcion" class="control-label">Descripción</label>
+                <input asp-for="Planta.Descripcion" value="Descripción de la planta de Prueba" class="form-control" />
                 <span asp-validation-for="Planta.Descripcion" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Planta.AlturaMaxima" class="control-label"></label>
-                <input asp-for="Planta.AlturaMaxima" class="form-control" />
+                <label asp-for="Planta.AlturaMaxima" class="control-label">Altura Máxima</label>
+                <input type="number" asp-for="Planta.AlturaMaxima" value="300" class="form-control" />
                 <span asp-validation-for="Planta.AlturaMaxima" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Planta.FrecuenciaRiego" class="control-label"></label>
-                <input asp-for="Planta.FrecuenciaRiego" class="form-control" />
+                <label asp-for="Planta.FrecuenciaRiego" class="control-label">Frecuencia de riego</label>
+                <input asp-for="Planta.FrecuenciaRiego" value="15 días" class="form-control" />
                 <span asp-validation-for="Planta.FrecuenciaRiego" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Planta.TemperaturaMantenimiento" class="control-label"></label>
-                <input asp-for="Planta.TemperaturaMantenimiento" class="form-control" />
+                <label asp-for="Planta.TemperaturaMantenimiento" class="control-label">Temperatura de Mantenimiento</label>
+                <input type="number" asp-for="Planta.TemperaturaMantenimiento" value="25" class="form-control" />
                 <span asp-validation-for="Planta.TemperaturaMantenimiento" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Imagen" class="control-label"></label>
                 <input asp-for="Imagen" class="form-control" />
