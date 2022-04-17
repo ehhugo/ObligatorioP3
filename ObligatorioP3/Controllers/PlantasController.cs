@@ -15,11 +15,12 @@ namespace ObligatorioP3.Controllers
     public class PlantasController : Controller
     {
         public IManejadorPlantas ManejadorPlantas { get; set; }
-        public IWebHostEnvironment WebHostEnvironment { get; private set; }
+        public IWebHostEnvironment WebHostEnvironment { get; set; }
 
-        public PlantasController (IManejadorPlantas manejador)
+        public PlantasController (IManejadorPlantas manejador, IWebHostEnvironment whenv)
         {
             ManejadorPlantas = manejador;
+            WebHostEnvironment = whenv;
         }
 
         // GET: PlantasController
@@ -53,13 +54,19 @@ namespace ObligatorioP3.Controllers
         {
             try
             {
-                string nombreArchivo = vmp.Imagen.FileName;
-                nombreArchivo = vmp.Planta.IdPlanta + "_" + nombreArchivo;
+                //string nombreArchivo = vmp.Imagen.FileName;
+                string nombreArchivo = vmp.Planta.NombreCientifico + "001.jpg";
+               
+                if (nombreArchivo.Contains(" "))
+                {
+                    nombreArchivo = nombreArchivo.Replace(" ", "_");
+                }
                 vmp.Planta.Foto = nombreArchivo;
-
+                
                 bool creadaOK = ManejadorPlantas.AgregarNuevaPlanta(vmp.Planta, vmp.IdTipoSeleccionado, vmp.IdAmbienteSeleccionado, vmp.IdIluminacionSeleccionada);
                 if (creadaOK)
                 {
+                   
                     string rutaRaizApp = WebHostEnvironment.WebRootPath;
                     rutaRaizApp = Path.Combine(rutaRaizApp, "imagenes");
                     string rutaCompleta = Path.Combine(rutaRaizApp, nombreArchivo);

@@ -20,9 +20,4 @@
     </Content>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\imagenes\" />
-    <Folder Include="wwwroot\imagenes\" />
-  </ItemGroup>
-
 </Project>
