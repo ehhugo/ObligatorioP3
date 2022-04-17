@@ -52,6 +52,7 @@ namespace ObligatorioP3.Controllers
             Usuario usuario = new Usuario();
                 return View(usuario);           
             }
+            else
             {
                 return RedirectToAction("Index", "Home");
             }

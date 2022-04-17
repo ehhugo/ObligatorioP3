@@ -23,12 +23,19 @@ namespace ObligatorioP3.Controllers
         // GET: TipoController
         public ActionResult Index()
         {
-            IEnumerable<Tipo> tipos = ManejadorTipos.TraerTodos();
-            if (tipos.Count() == 0)
+            if (HttpContext.Session.GetString("UL") != null)
             {
-                ViewBag.Resultado = "No hay tipos de plantas ingresados.";
+                IEnumerable<Tipo> tipos = ManejadorTipos.TraerTodos();
+                if (tipos.Count() == 0)
+                {
+                    ViewBag.Resultado = "No hay tipos de plantas ingresados.";
+                }
+                return View(tipos);
             }
-            return View(tipos);
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
         }
 
         // GET: TipoController/Details/5
@@ -40,8 +47,15 @@ namespace ObligatorioP3.Controllers
         // GET: TipoController/Create
         public ActionResult Create()
         {
-            Tipo tipo = new Tipo();
-            return View(tipo);
+            if (HttpContext.Session.GetString("UL") != null)
+            {
+                Tipo tipo = new Tipo();
+                return View(tipo);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
         }
 
         // POST: TipoController/Create
@@ -49,31 +63,46 @@ namespace ObligatorioP3.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Tipo tipo)
         {
-            try
+            if (HttpContext.Session.GetString("UL") != null)
             {
-                bool ok = ManejadorTipos.AgregarNuevoTipo(tipo);
+                try
+                {
+                    bool ok = ManejadorTipos.AgregarNuevoTipo(tipo);
 
-                if (ok)
-                {
-                    return RedirectToAction(nameof(Index));
+                    if (ok)
+                    {
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        ViewBag.Resultado = "No se pudo ingresar el tipo.";
+                        return View(tipo);
+                    }
                 }
-                else
+                catch
                 {
-                    ViewBag.Resultado = "No se pudo ingresar el tipo.";
                     return View(tipo);
                 }
             }
-            catch
+            else
             {
-                return View(tipo);
+                return RedirectToAction("Login", "Home");
             }
+
         }
 
         // GET: TipoController/Edit/5
         public ActionResult Edit(string nombre)
         {
-            Tipo tipo = ManejadorTipos.BuscarTipoPorNombre(nombre);
-            return View(tipo);
+            if (HttpContext.Session.GetString("UL") != null)
+            {
+                Tipo tipo = ManejadorTipos.BuscarTipoPorNombre(nombre);
+                return View(tipo);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
         }
 
         // POST: TipoController/Edit/5
@@ -81,22 +110,29 @@ namespace ObligatorioP3.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Tipo tipo)
         {
-            try
+            if (HttpContext.Session.GetString("UL") != null)
             {
-                bool ok = ManejadorTipos.ActualizarDescripcionTipo(tipo);
-                if (ok)
+                try
                 {
-                    return RedirectToAction(nameof(Index));
+                    bool ok = ManejadorTipos.ActualizarDescripcionTipo(tipo);
+                    if (ok)
+                    {
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        ViewBag.Resultado = "No se pudo realizar la actualización de la descripción.";
+                        return View(tipo);
+                    }
                 }
-                else
+                catch
                 {
-                    ViewBag.Resultado = "No se pudo realizar la actualización de la descripción.";
-                    return View(tipo);
+                    return View();
                 }
             }
-            catch
+            else
             {
-                return View();
+                return RedirectToAction("Login", "Home");
             }
         }
 
@@ -104,8 +140,15 @@ namespace ObligatorioP3.Controllers
         // GET: TipoController/Delete/5
         public ActionResult Delete(string nombre)
         {
-            Tipo tipo = ManejadorTipos.BuscarTipoPorNombre(nombre);
-            return View(tipo);
+            if (HttpContext.Session.GetString("UL") != null)
+            {
+                Tipo tipo = ManejadorTipos.BuscarTipoPorNombre(nombre);
+                return View(tipo);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
         }
 
         // POST: TipoController/Delete/5
@@ -113,22 +156,29 @@ namespace ObligatorioP3.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(Tipo tipo)
         {
-            try
+            if (HttpContext.Session.GetString("UL") != null)
             {
-                bool ok = ManejadorTipos.DarDeBajaTipo(tipo.Nombre);
-                if (ok)
+                try
                 {
-                    return RedirectToAction(nameof(Index));
+                    bool ok = ManejadorTipos.DarDeBajaTipo(tipo.Nombre);
+                    if (ok)
+                    {
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        ViewBag.Resultado = "No se pudo eliminar el tipo";
+                        return View(tipo);
+                    }
                 }
-                else
+                catch
                 {
-                    ViewBag.Resultado = "No se pudo eliminar el tipo";
-                    return View(tipo);
+                    return View();
                 }
             }
-            catch
+            else
             {
-                return View();
+                return RedirectToAction("Login", "Home");
             }
         }
     }
