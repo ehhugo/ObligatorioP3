@@ -27,12 +27,15 @@ namespace ObligatorioP3
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddSession();
 
             services.AddScoped<IManejadorTipos, ManejadorTipos>();            
             services.AddScoped<IRepositorioTipos, RepositorioTiposADO>();
 
             services.AddScoped<IManejadorPlantas, ManejadorPlantas>();
             services.AddScoped<IRepositorioPlantas, RepositorioPlantasADO>();
+            services.AddScoped<IManejadorUsuarios, ManejadorUsuarios>();
+            services.AddScoped<IRepositorioUsuarios, RepositorioUsuariosADO>();
 
             services.AddScoped<IRepositorioIluminaciones, RepositorioIluminacionADO>();
             services.AddScoped<IRepositorioAmbientes, RepositorioAmbientesADO>();
@@ -52,7 +55,7 @@ namespace ObligatorioP3
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseRouting();
 
             app.UseAuthorization();
@@ -61,6 +64,7 @@ namespace ObligatorioP3
             {
                 endpoints.MapControllerRoute(
                     name: "default",
+
                     pattern: "{controller=Plantas}/{action=Create}/");
             });
         }
