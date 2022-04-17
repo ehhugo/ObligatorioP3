@@ -15,11 +15,13 @@ namespace ObligatorioP3.Controllers
     public class PlantasController : Controller
     {
         public IManejadorPlantas ManejadorPlantas { get; set; }
-        public IWebHostEnvironment WebHostEnvironment { get; private set; }
+        public IWebHostEnvironment WebHostEnvironment { get; set; }
 
-        public PlantasController(IManejadorPlantas manejador)
+        public PlantasController (IManejadorPlantas manejador, IWebHostEnvironment whenv)
+
         {
             ManejadorPlantas = manejador;
+            WebHostEnvironment = whenv;
         }
 
         // GET: PlantasController
@@ -74,33 +76,33 @@ namespace ObligatorioP3.Controllers
         {
             if (HttpContext.Session.GetString("UL") != null)
             {
-                try
+                //string nombreArchivo = vmp.Imagen.FileName;
+                string nombreArchivo = vmp.Planta.NombreCientifico + "001.jpg";
+               
+                if (nombreArchivo.Contains(" "))
                 {
-                    string nombreArchivo = vmp.Imagen.FileName;
-                    nombreArchivo = vmp.Planta.IdPlanta + "_" + nombreArchivo;
-                    vmp.Planta.Foto = nombreArchivo;
+                    nombreArchivo = nombreArchivo.Replace(" ", "_");
+                }
+                vmp.Planta.Foto = nombreArchivo;
+                
+                bool creadaOK = ManejadorPlantas.AgregarNuevaPlanta(vmp.Planta, vmp.IdTipoSeleccionado, vmp.IdAmbienteSeleccionado, vmp.IdIluminacionSeleccionada);
+                if (creadaOK)
+                {
+                   
+                    string rutaRaizApp = WebHostEnvironment.WebRootPath;
+                    rutaRaizApp = Path.Combine(rutaRaizApp, "imagenes");
+                    string rutaCompleta = Path.Combine(rutaRaizApp, nombreArchivo);
+                    FileStream stream = new FileStream(rutaCompleta, FileMode.Create);
+                    vmp.Imagen.CopyTo(stream);
 
-                    bool creadaOK = ManejadorPlantas.AgregarNuevaPlanta(vmp.Planta, vmp.IdTipoSeleccionado, vmp.IdAmbienteSeleccionado, vmp.IdIluminacionSeleccionada);
-                    if (creadaOK)
-                    {
-                        string rutaRaizApp = WebHostEnvironment.WebRootPath;
-                        rutaRaizApp = Path.Combine(rutaRaizApp, "imagenes");
-                        string rutaCompleta = Path.Combine(rutaRaizApp, nombreArchivo);
-                        FileStream stream = new FileStream(rutaCompleta, FileMode.Create);
-                        vmp.Imagen.CopyTo(stream);
+                    //ViewBag.Resultado = "Planta dada de alta correctamente";
+                    return RedirectToAction(nameof(Index));
 
-                        ViewBag.Resultado = "Planta dada de alta correctamente";
-                        return RedirectToAction(nameof(Index));
-                    }
-                    else
-                    {
-                        ViewBag.Resultado = "Error al dar el alta";
-                        return View(vmp);
-                    }
                 }
                 catch
                 {
-                    return View();
+                    return View(vmp);
+
                 }
             }
             else

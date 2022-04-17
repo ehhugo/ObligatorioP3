@@ -31,6 +31,7 @@ namespace ObligatorioP3
 
             services.AddScoped<IManejadorTipos, ManejadorTipos>();            
             services.AddScoped<IRepositorioTipos, RepositorioTiposADO>();
+
             services.AddScoped<IManejadorPlantas, ManejadorPlantas>();
             services.AddScoped<IRepositorioPlantas, RepositorioPlantasADO>();
             services.AddScoped<IManejadorUsuarios, ManejadorUsuarios>();
@@ -50,7 +51,6 @@ namespace ObligatorioP3
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
@@ -64,7 +64,8 @@ namespace ObligatorioP3
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Login}/{id?}");
+
+                    pattern: "{controller=Plantas}/{action=Create}/");
             });
         }
     }
