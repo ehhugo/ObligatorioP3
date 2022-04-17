@@ -198,5 +198,18 @@ namespace ObligatorioP3.Controllers
                 return RedirectToAction("Login", "Home");
             }
         }
+
+        public ActionResult BuscarPorTexto(string texto)
+        {
+            if (HttpContext.Session.GetString("UL") != null)
+            {
+                IEnumerable<Planta> plantasBuscada = ManejadorPlantas.BuscarPlantasPorTexto(texto);
+                return View(plantasBuscada);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
     }
 }
