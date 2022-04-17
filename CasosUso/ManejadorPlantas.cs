@@ -81,5 +81,10 @@ namespace CasosUso
         {
             return RepoPlantas.BuscarPorTexto(texto);
         }
+
+        public IEnumerable<Planta> BuscarPlantasPorTipo(int tipo)
+        {
+            return RepoPlantas.BuscarPorTipo(tipo); 
+        }
     }
 }

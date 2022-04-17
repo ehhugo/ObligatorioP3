@@ -324,7 +324,7 @@ namespace Datos
             if (texto != null)
             {
                 SqlConnection con = Conexion.ObtenerConexion();
-                string sql = $"SELECT * FROM Plantas WHERE nombreVulgar LIKE {texto} OR nombreCientifico LIKE {texto};";// armar consulta bien
+                string sql = $"SELECT * FROM Plantas WHERE nombreCientifico LIKE '%{texto}%';";
                 SqlCommand SQLCom = new SqlCommand(sql, con);
 
                 try
@@ -355,11 +355,11 @@ namespace Datos
             return plantasConTextoEnNombre;
         }
 
-        public IEnumerable<Planta> BuscarPorTipo(string tipoPlanta)
+        public IEnumerable<Planta> BuscarPorTipo(int tipoPlanta)
         {
             List<Planta> plantasPorTipo = new List<Planta>();
 
-            if (tipoPlanta != null)
+            if (tipoPlanta != 0)
             {
                 SqlConnection con = Conexion.ObtenerConexion();
                 string sql = $"SELECT * FROM Plantas WHERE tipoPlanta ={tipoPlanta}";

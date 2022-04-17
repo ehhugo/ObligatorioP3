@@ -1,0 +1,29 @@
+﻿@model ObligatorioP3.Models.ViewModelPlanta
+@using Dominio.Entidades
+
+@{
+    ViewData["Title"] = "BuscarPorTipo";
+}
+
+<h1>Busca por tipo</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="BuscarPorTipo">
+            <div class="form-group">
+                <label class="control-label">Tipo:</label>
+                <select name="IdTipoSeleccionado">
+                    @foreach (Tipo t in Model.Tipos)
+                    {
+                        <option value="@t.IdTipo">@t.Nombre</option>
+                    }
+                </select>
+                <div class="form-group">
+                    <input type="submit" value="Buscar" class="btn btn-primary" />
+                </div>
+            </div>
+        </form>
+    </div>
+
+   
+</div>

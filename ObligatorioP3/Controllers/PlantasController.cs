@@ -209,12 +209,88 @@ namespace ObligatorioP3.Controllers
             }
         }
 
-        public ActionResult BuscarPorTexto(string texto)
+        public ActionResult BuscarPorTexto()
         {
             if (HttpContext.Session.GetString("UL") != null)
             {
-                IEnumerable<Planta> plantasBuscada = ManejadorPlantas.BuscarPlantasPorTexto(texto);
-                return View(plantasBuscada);
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
+
+        // POST: PlantasController/BuscarPorTexto
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult BuscarPorTexto(string textoBuscado)
+        {
+            if (HttpContext.Session.GetString("UL") != null)
+            {
+                try
+                {
+                    IEnumerable<Planta> plantasBuscadas = ManejadorPlantas.BuscarPlantasPorTexto(textoBuscado);
+                    if (plantasBuscadas != null)
+                    {
+                        return View(plantasBuscadas);
+                    }
+                    else
+                    {
+                        ViewBag.Error = "No se encontraron plantas";
+                        return View();
+                    }
+                }
+                catch
+                {
+                    return View();
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
+
+        public ActionResult BuscarPorTipo()
+        {
+            if (HttpContext.Session.GetString("UL") != null)
+            {
+                ViewModelPlanta vmp = new ViewModelPlanta();
+                vmp.Tipos = ManejadorPlantas.TraerTodosLosTipos();
+                return View(vmp);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
+
+
+        // POST: PlantasController/BuscarPorTexto
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult BuscarPorTipo(int IdTipoSeleccionado)
+        {
+            if (HttpContext.Session.GetString("UL") != null)
+            {
+                try
+                {
+                    IEnumerable<Planta> plantasBuscadas = ManejadorPlantas.BuscarPlantasPorTipo(IdTipoSeleccionado);
+                    if (plantasBuscadas != null)
+                    {
+                        return View(plantasBuscadas);
+                    }
+                    else
+                    {
+                        ViewBag.Error = "No se encontraron plantas";
+                        return View();
+                    }
+                }
+                catch
+                {
+                    return View();
+                }
             }
             else
             {
