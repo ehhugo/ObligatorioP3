@@ -15,32 +15,57 @@ namespace ObligatorioP3.Controllers
     public class PlantasController : Controller
     {
         public IManejadorPlantas ManejadorPlantas { get; set; }
-        public IWebHostEnvironment WebHostEnvironment { get; private set; }
+        public IWebHostEnvironment WebHostEnvironment { get; set; }
 
-        public PlantasController (IManejadorPlantas manejador)
+        public PlantasController(IManejadorPlantas manejador, IWebHostEnvironment whenv)
         {
             ManejadorPlantas = manejador;
+            WebHostEnvironment = whenv;
         }
 
         // GET: PlantasController
         public ActionResult Index()
         {
-            IEnumerable<Planta> listaPlantas = ManejadorPlantas.TraerTodasLasPlantas();
-            return View(listaPlantas);
+            if (HttpContext.Session.GetString("UL") != null)
+            {
+                IEnumerable<Planta> listaPlantas = ManejadorPlantas.TraerTodasLasPlantas();
+                return View(listaPlantas);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
         }
 
         // GET: PlantasController/Details/5
         public ActionResult Details(int idPlanta)
         {
-            Planta plantaBuscada = ManejadorPlantas.BuscarPlantaPorId(idPlanta);
-            return View(plantaBuscada);
+            if (HttpContext.Session.GetString("UL") != null)
+            {
+                Planta plantaBuscada = ManejadorPlantas.BuscarPlantaPorId(idPlanta);
+                return View(plantaBuscada);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
         }
 
         // GET: PlantasController/Create
         public ActionResult Create()
         {
-            Planta planta = new Planta();
-            return View(planta);
+            if (HttpContext.Session.GetString("UL") != null)
+            {
+                ViewModelPlanta vmp = new ViewModelPlanta();
+                vmp.Tipos = ManejadorPlantas.TraerTodosLosTipos();
+                vmp.Ambientes = ManejadorPlantas.TraerTodosLosAmbientes();
+                vmp.Iluminaciones = ManejadorPlantas.TraerTodasLasIluminaciones();
+                return View(vmp);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
         }
 
         // POST: PlantasController/Create
@@ -48,41 +73,64 @@ namespace ObligatorioP3.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(ViewModelPlanta vmp)
         {
-            try
+            if (HttpContext.Session.GetString("UL") != null)
             {
-                string nombreArchivo = vmp.Imagen.FileName;
-                nombreArchivo = vmp.Planta.IdPlanta + "_" + nombreArchivo;
-                vmp.Planta.Foto = nombreArchivo;
-
-                bool creadaOK = ManejadorPlantas.AgregarNuevaPlanta(vmp.Planta, vmp.IdTipoSeleccionado, vmp.IdAmbienteSeleccionado, vmp.IdIluminacionSeleccionada);
-                if (creadaOK)
+                try
                 {
-                    string rutaRaizApp = WebHostEnvironment.WebRootPath;
-                    rutaRaizApp = Path.Combine(rutaRaizApp, "imagenes");
-                    string rutaCompleta = Path.Combine(rutaRaizApp, nombreArchivo);
-                    FileStream stream = new FileStream(rutaCompleta, FileMode.Create);
-                    vmp.Imagen.CopyTo(stream);
+                    //string nombreArchivo = vmp.Imagen.FileName;
+                    string nombreArchivo = vmp.Planta.NombreCientifico + "001.jpg";
 
-                    ViewBag.Resultado = "Planta dada de alta correctamente";
-                    return RedirectToAction(nameof(Index));
+                    if (nombreArchivo.Contains(" "))
+                    {
+                        nombreArchivo = nombreArchivo.Replace(" ", "_");
+                    }
+
+                    vmp.Planta.Foto = nombreArchivo;
+
+                    bool creadaOK = ManejadorPlantas.AgregarNuevaPlanta(vmp.Planta, vmp.IdTipoSeleccionado, vmp.IdAmbienteSeleccionado, vmp.IdIluminacionSeleccionada);
+                    if (creadaOK)
+                    {
+
+                        string rutaRaizApp = WebHostEnvironment.WebRootPath;
+                        rutaRaizApp = Path.Combine(rutaRaizApp, "imagenes");
+                        string rutaCompleta = Path.Combine(rutaRaizApp, nombreArchivo);
+                        FileStream stream = new FileStream(rutaCompleta, FileMode.Create);
+                        vmp.Imagen.CopyTo(stream);
+
+                        ViewBag.Resultado = "Planta dada de alta correctamente";
+                        return RedirectToAction(nameof(Index));
+
+                    }
+                    else
+                    {
+                        ViewBag.Resultado = "Error al dar el alta";
+                        return View(vmp);
+                    }
                 }
-                else
+                catch
                 {
-                    ViewBag.Resultado = "Error al dar el alta";
                     return View(vmp);
+
                 }
             }
-            catch
+            else
             {
-                return View();
+                return RedirectToAction("Login", "Home");
             }
         }
 
         // GET: PlantasController/Edit/5
         public ActionResult Edit(int id)
         {
-            Planta plantaAEditar = ManejadorPlantas.BuscarPlantaPorId(id);
-            return View(plantaAEditar);
+            if (HttpContext.Session.GetString("UL") != null)
+            {
+                Planta plantaAEditar = ManejadorPlantas.BuscarPlantaPorId(id);
+                return View(plantaAEditar);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
         }
 
         // POST: PlantasController/Edit/5
@@ -90,30 +138,44 @@ namespace ObligatorioP3.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Planta plantaAEditar)
         {
-            try
+            if (HttpContext.Session.GetString("UL") != null)
             {
-                bool modificadoOK = ManejadorPlantas.ActualizarPlanta(plantaAEditar);
-                if (modificadoOK)
+                try
                 {
-                    return RedirectToAction(nameof(Index));
+                    bool modificadoOK = ManejadorPlantas.ActualizarPlanta(plantaAEditar);
+                    if (modificadoOK)
+                    {
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        ViewBag.Error = "No se pudo editar la planta";
+                    }
+                    return View(plantaAEditar);
                 }
-                else
+                catch
                 {
-                    ViewBag.Error = "No se pudo editar la planta";
+                    return View();
                 }
-                return View(plantaAEditar);
             }
-            catch
+            else
             {
-                return View();
+                return RedirectToAction("Login", "Home");
             }
         }
 
         // GET: PlantasController/Delete/5
         public ActionResult Delete(int id)
         {
-            Planta plantaABorrar = ManejadorPlantas.BuscarPlantaPorId(id);
-            return View(plantaABorrar);
+            if (HttpContext.Session.GetString("UL") != null)
+            {
+                Planta plantaABorrar = ManejadorPlantas.BuscarPlantaPorId(id);
+                return View(plantaABorrar);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
         }
 
         // POST: PlantasController/Delete/5
@@ -121,22 +183,42 @@ namespace ObligatorioP3.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(Planta plantaABorrar)
         {
-            try
+            if (HttpContext.Session.GetString("UL") != null)
             {
-                bool eliminadoOK = ManejadorPlantas.DarDeBajaPlanta(plantaABorrar.IdPlanta);
-                if (eliminadoOK)
+                try
                 {
-                    return RedirectToAction(nameof(Index));
+                    bool eliminadoOK = ManejadorPlantas.DarDeBajaPlanta(plantaABorrar.IdPlanta);
+                    if (eliminadoOK)
+                    {
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        ViewBag.Error = "No se pudo eliminar la planta";
+                        return View();
+                    }
                 }
-                else
+                catch
                 {
-                    ViewBag.Error = "No se pudo eliminar la planta";
                     return View();
                 }
             }
-            catch
+            else
             {
-                return View();
+                return RedirectToAction("Login", "Home");
+            }
+        }
+
+        public ActionResult BuscarPorTexto(string texto)
+        {
+            if (HttpContext.Session.GetString("UL") != null)
+            {
+                IEnumerable<Planta> plantasBuscada = ManejadorPlantas.BuscarPlantasPorTexto(texto);
+                return View(plantasBuscada);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
             }
         }
     }

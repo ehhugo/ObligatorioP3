@@ -27,12 +27,18 @@ namespace ObligatorioP3
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddSession();
 
             services.AddScoped<IManejadorTipos, ManejadorTipos>();            
             services.AddScoped<IRepositorioTipos, RepositorioTiposADO>();
+
             services.AddScoped<IManejadorPlantas, ManejadorPlantas>();
             services.AddScoped<IRepositorioPlantas, RepositorioPlantasADO>();
+            services.AddScoped<IManejadorUsuarios, ManejadorUsuarios>();
+            services.AddScoped<IRepositorioUsuarios, RepositorioUsuariosADO>();
 
+            services.AddScoped<IRepositorioIluminaciones, RepositorioIluminacionADO>();
+            services.AddScoped<IRepositorioAmbientes, RepositorioAmbientesADO>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,12 +51,11 @@ namespace ObligatorioP3
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseRouting();
 
             app.UseAuthorization();
@@ -59,7 +64,8 @@ namespace ObligatorioP3
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Plantas}/{action=Index}/{id?}");
+
+                    pattern: "{controller=Plantas}/{action=Create}/");
             });
         }
     }

@@ -9,6 +9,12 @@ namespace CasosUso
     {
         bool AgregarNuevaPlanta(Planta p, int idTipo, int idAmbiente, int idIluminacion);
 
+        IEnumerable<Tipo> TraerTodosLosTipos();
+
+        IEnumerable<Ambiente> TraerTodosLosAmbientes();
+
+        IEnumerable<Iluminacion> TraerTodasLasIluminaciones();
+
         bool DarDeBajaPlanta(int idPlanta);
 
         IEnumerable<Planta> TraerTodasLasPlantas();
@@ -16,5 +22,7 @@ namespace CasosUso
         Planta BuscarPlantaPorId(int idPlanta);
 
         bool ActualizarPlanta(Planta p);
+
+        public IEnumerable<Planta> BuscarPlantasPorTexto(string texto);
     }
 }

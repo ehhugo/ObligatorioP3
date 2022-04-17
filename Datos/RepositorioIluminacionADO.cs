@@ -10,7 +10,7 @@ using Microsoft.Data.SqlClient;
 
 namespace Datos
 {
-    class RepositorioIluminacionADO : IRepositorio<Iluminacion>
+    public class RepositorioIluminacionADO : IRepositorioIluminaciones
     {
         #region Add/Delete
         public bool Add(Iluminacion obj)
