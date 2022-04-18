@@ -324,9 +324,9 @@ namespace Datos
             if (texto != null)
             {
                 SqlConnection con = Conexion.ObtenerConexion();
-                string sql = $"SELECT P.*, TP.Nombre AS TipoDePlanta, TP.Descripcion AS DescripcionDeTipo, A.TipoAmbiente, TI.TipoIluminacion FROM Plantas P " +
-                    $"LEFT JOIN TiposDePlanta TP ON P.TipoPlanta = TP.idTipo  " +
-                    $"LEFT JOIN Ambientes A ON P.Ambiente = A.idAmbiente " +
+                string sql = "SELECT P.*, TP.Nombre AS TipoDePlanta, TP.Descripcion AS DescripcionDeTipo, A.TipoAmbiente, TI.TipoIluminacion FROM Plantas P " +
+                    "LEFT JOIN TiposDePlanta TP ON P.TipoPlanta = TP.idTipo  " +
+                    "LEFT JOIN Ambientes A ON P.Ambiente = A.idAmbiente " +
                     $"LEFT JOIN TiposDeIluminacion TI on P.Iluminacion = TI.idIluminacion WHERE NombreCientifico LIKE '%{texto}%'";
                 SqlCommand SQLCom = new SqlCommand(sql, con);
 
@@ -428,37 +428,6 @@ namespace Datos
             }
 
             return nombresVulgares;
-        }
-
-        private Tipo TraerTipoPlanta(int id)
-        {
-            Tipo tipoBuscado = new Tipo();
-
-            SqlConnection con = Conexion.ObtenerConexion();
-            string SQL = $"SELECT * FROM TiposDePlanta WHERE idTipo={id}";
-            SqlCommand SQLcom = new SqlCommand(SQL, con);
-
-            try
-            {
-                Conexion.AbrirConexion(con);
-                SqlDataReader reader = SQLcom.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    tipoBuscado.IdTipo = reader.GetInt32(reader.GetOrdinal("idTipo"));
-                    tipoBuscado.Nombre = reader.GetString(reader.GetOrdinal("Nombre"));
-                    tipoBuscado.Descripcion = reader.GetString(reader.GetOrdinal("Descripcion"));
-                }
-            }
-            catch
-            {
-                throw;
-            }
-            finally
-            {
-                Conexion.CerrarYTerminarConexion(con);
-            }
-            return tipoBuscado;
         }
 
         private Tipo CrearTipo(SqlDataReader reader)
