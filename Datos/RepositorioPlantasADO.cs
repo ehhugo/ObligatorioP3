@@ -98,9 +98,12 @@ namespace Datos
         public Planta FindById(int id)
         {
             Planta buscada = null;
-           
+
             SqlConnection con = Conexion.ObtenerConexion();
-            string sql = $"SELECT * FROM Plantas WHERE idPlanta = {id};";
+            string sql = "SELECT P.*, TP.Nombre AS TipoDePlanta, TP.Descripcion AS DescripcionDeTipo, A.TipoAmbiente, TI.TipoIluminacion FROM Plantas P" +
+                         "LEFT JOIN TiposDePlanta TP ON P.TipoPlanta = TP.idTipo" +
+                         "LEFT JOIN Ambientes A ON P.Ambiente = A.idAmbiente" +
+                         $"LEFT JOIN TiposDeIluminacion TI on P.Iluminacion = TI.idIluminacion WHERE idPlanta = {id};";
             SqlCommand SQLCom = new SqlCommand(sql, con);
 
             try
@@ -263,7 +266,7 @@ namespace Datos
                         p.TipoIluminacion = CrearIluminacion(reader);
 
                         plantasMasBajas.Add(p);
-                    }   
+                    }
                 }
                 catch
                 {
@@ -365,7 +368,10 @@ namespace Datos
             if (tipoPlanta != 0)
             {
                 SqlConnection con = Conexion.ObtenerConexion();
-                string sql = $"SELECT * FROM Plantas WHERE tipoPlanta ={tipoPlanta}";
+                string sql = "SELECT P.*, TP.Nombre AS TipoDePlanta, TP.Descripcion AS DescripcionDeTipo, A.TipoAmbiente, TI.TipoIluminacion FROM Plantas P" +
+                             "LEFT JOIN TiposDePlanta TP ON P.TipoPlanta = TP.idTipo" +
+                             "LEFT JOIN Ambientes A ON P.Ambiente = A.idAmbiente" +
+                            $"LEFT JOIN TiposDeIluminacion TI on P.Iluminacion = TI.idIluminacion WHERE tipoPlanta = {tipoPlanta};";
                 SqlCommand SQLCom = new SqlCommand(sql, con);
 
                 try
@@ -476,7 +482,7 @@ namespace Datos
             };
 
             return p;
-            
+
         }
         #endregion
     }
