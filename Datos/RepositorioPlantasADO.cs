@@ -20,7 +20,7 @@ namespace Datos
                 SqlConnection con = Conexion.ObtenerConexion();
 
                 string sql = "INSERT INTO Plantas VALUES " +
-                    "(@tipoPlanta, @nomCientifico, @descripcion, @ambiente, @alturaMaxima, @foto, @tipoIluminacion, @frecuenciaRiego, @tempMantenimiento); " +
+                    "(@tipoPlanta, @nomCientifico, @descripcion, @ambiente, @alturaMaxima, @foto, @frecuenciaRiego, @tipoIluminacion, @tempMantenimiento); " +
                     "SELECT CAST (SCOPE_IDENTITY() AS INT);";
 
                 SqlCommand SQLcom = new SqlCommand(sql, con);
@@ -31,8 +31,8 @@ namespace Datos
                 SQLcom.Parameters.AddWithValue("@ambiente", obj.Ambiente.IdAmbiente);
                 SQLcom.Parameters.AddWithValue("@alturaMaxima", obj.AlturaMaxima);
                 SQLcom.Parameters.AddWithValue("@foto", obj.Foto);
-                SQLcom.Parameters.AddWithValue("@tipoIluminacion", obj.TipoIluminacion.IdIluminacion);
                 SQLcom.Parameters.AddWithValue("@frecuenciaRiego", obj.FrecuenciaRiego);
+                SQLcom.Parameters.AddWithValue("@tipoIluminacion", obj.TipoIluminacion.IdIluminacion);
                 SQLcom.Parameters.AddWithValue("@tempMantenimiento", obj.TemperaturaMantenimiento);
 
                 try
@@ -324,7 +324,7 @@ namespace Datos
             if (texto != null)
             {
                 SqlConnection con = Conexion.ObtenerConexion();
-                string sql = $"SELECT * FROM Plantas WHERE nombreVulgar LIKE {texto} OR nombreCientifico LIKE {texto};";// armar consulta bien
+                string sql = $"SELECT * FROM Plantas WHERE nombreCientifico LIKE '%{texto}%';";
                 SqlCommand SQLCom = new SqlCommand(sql, con);
 
                 try
@@ -355,11 +355,11 @@ namespace Datos
             return plantasConTextoEnNombre;
         }
 
-        public IEnumerable<Planta> BuscarPorTipo(string tipoPlanta)
+        public IEnumerable<Planta> BuscarPorTipo(int tipoPlanta)
         {
             List<Planta> plantasPorTipo = new List<Planta>();
 
-            if (tipoPlanta != null)
+            if (tipoPlanta != 0)
             {
                 SqlConnection con = Conexion.ObtenerConexion();
                 string sql = $"SELECT * FROM Plantas WHERE tipoPlanta ={tipoPlanta}";

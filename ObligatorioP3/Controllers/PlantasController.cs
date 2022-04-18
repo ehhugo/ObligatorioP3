@@ -17,8 +17,7 @@ namespace ObligatorioP3.Controllers
         public IManejadorPlantas ManejadorPlantas { get; set; }
         public IWebHostEnvironment WebHostEnvironment { get; set; }
 
-        public PlantasController (IManejadorPlantas manejador, IWebHostEnvironment whenv)
-
+        public PlantasController(IManejadorPlantas manejador, IWebHostEnvironment whenv)
         {
             ManejadorPlantas = manejador;
             WebHostEnvironment = whenv;
@@ -76,28 +75,37 @@ namespace ObligatorioP3.Controllers
         {
             if (HttpContext.Session.GetString("UL") != null)
             {
-                //string nombreArchivo = vmp.Imagen.FileName;
-                string nombreArchivo = vmp.Planta.NombreCientifico + "001.jpg";
-               
-                if (nombreArchivo.Contains(" "))
+                try
                 {
-                    nombreArchivo = nombreArchivo.Replace(" ", "_");
-                }
-                vmp.Planta.Foto = nombreArchivo;
-                
-                bool creadaOK = ManejadorPlantas.AgregarNuevaPlanta(vmp.Planta, vmp.IdTipoSeleccionado, vmp.IdAmbienteSeleccionado, vmp.IdIluminacionSeleccionada);
-                if (creadaOK)
-                {
-                   
-                    string rutaRaizApp = WebHostEnvironment.WebRootPath;
-                    rutaRaizApp = Path.Combine(rutaRaizApp, "imagenes");
-                    string rutaCompleta = Path.Combine(rutaRaizApp, nombreArchivo);
-                    FileStream stream = new FileStream(rutaCompleta, FileMode.Create);
-                    vmp.Imagen.CopyTo(stream);
+                    //string nombreArchivo = vmp.Imagen.FileName;
+                    string nombreArchivo = vmp.Planta.NombreCientifico + "001.jpg";
 
-                    //ViewBag.Resultado = "Planta dada de alta correctamente";
-                    return RedirectToAction(nameof(Index));
+                    if (nombreArchivo.Contains(" "))
+                    {
+                        nombreArchivo = nombreArchivo.Replace(" ", "_");
+                    }
 
+                    vmp.Planta.Foto = nombreArchivo;
+
+                    bool creadaOK = ManejadorPlantas.AgregarNuevaPlanta(vmp.Planta, vmp.IdTipoSeleccionado, vmp.IdAmbienteSeleccionado, vmp.IdIluminacionSeleccionada);
+                    if (creadaOK)
+                    {
+
+                        string rutaRaizApp = WebHostEnvironment.WebRootPath;
+                        rutaRaizApp = Path.Combine(rutaRaizApp, "imagenes");
+                        string rutaCompleta = Path.Combine(rutaRaizApp, nombreArchivo);
+                        FileStream stream = new FileStream(rutaCompleta, FileMode.Create);
+                        vmp.Imagen.CopyTo(stream);
+
+                        ViewBag.Resultado = "Planta dada de alta correctamente";
+                        return RedirectToAction(nameof(Index));
+
+                    }
+                    else
+                    {
+                        ViewBag.Resultado = "Error al dar el alta";
+                        return View(vmp);
+                    }
                 }
                 catch
                 {
@@ -187,6 +195,95 @@ namespace ObligatorioP3.Controllers
                     else
                     {
                         ViewBag.Error = "No se pudo eliminar la planta";
+                        return View();
+                    }
+                }
+                catch
+                {
+                    return View();
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
+
+        public ActionResult BuscarPorTexto()
+        {
+            if (HttpContext.Session.GetString("UL") != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
+
+        // POST: PlantasController/BuscarPorTexto
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult BuscarPorTexto(string textoBuscado)
+        {
+            if (HttpContext.Session.GetString("UL") != null)
+            {
+                try
+                {
+                    IEnumerable<Planta> plantasBuscadas = ManejadorPlantas.BuscarPlantasPorTexto(textoBuscado);
+                    if (plantasBuscadas != null)
+                    {
+                        return View(plantasBuscadas);
+                    }
+                    else
+                    {
+                        ViewBag.Error = "No se encontraron plantas";
+                        return View();
+                    }
+                }
+                catch
+                {
+                    return View();
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
+
+        public ActionResult BuscarPorTipo()
+        {
+            if (HttpContext.Session.GetString("UL") != null)
+            {
+                ViewModelPlanta vmp = new ViewModelPlanta();
+                vmp.Tipos = ManejadorPlantas.TraerTodosLosTipos();
+                return View(vmp);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
+
+
+        // POST: PlantasController/BuscarPorTexto
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult BuscarPorTipo(int IdTipoSeleccionado)
+        {
+            if (HttpContext.Session.GetString("UL") != null)
+            {
+                try
+                {
+                    IEnumerable<Planta> plantasBuscadas = ManejadorPlantas.BuscarPlantasPorTipo(IdTipoSeleccionado);
+                    if (plantasBuscadas != null)
+                    {
+                        return View(plantasBuscadas);
+                    }
+                    else
+                    {
+                        ViewBag.Error = "No se encontraron plantas";
                         return View();
                     }
                 }

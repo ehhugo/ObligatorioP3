@@ -76,5 +76,15 @@ namespace CasosUso
         {
             return RepoIluminacion.FindAll();
         }
+
+        public IEnumerable<Planta> BuscarPlantasPorTexto(string texto)
+        {
+            return RepoPlantas.BuscarPorTexto(texto);
+        }
+
+        public IEnumerable<Planta> BuscarPlantasPorTipo(int tipo)
+        {
+            return RepoPlantas.BuscarPorTipo(tipo); 
+        }
     }
 }

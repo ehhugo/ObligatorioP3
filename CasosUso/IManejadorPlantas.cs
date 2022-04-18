@@ -22,5 +22,9 @@ namespace CasosUso
         Planta BuscarPlantaPorId(int idPlanta);
 
         bool ActualizarPlanta(Planta p);
+
+        public IEnumerable<Planta> BuscarPlantasPorTexto(string texto);
+
+        public IEnumerable<Planta> BuscarPlantasPorTipo(int tipo);
     }
 }
