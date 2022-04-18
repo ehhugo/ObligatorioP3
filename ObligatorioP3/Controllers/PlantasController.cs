@@ -23,7 +23,7 @@ namespace ObligatorioP3.Controllers
             WebHostEnvironment = whenv;
         }
 
-        // GET: PlantasController
+        
         public ActionResult Index()
         {
             if (HttpContext.Session.GetString("UL") != null)
@@ -37,7 +37,6 @@ namespace ObligatorioP3.Controllers
             }
         }
 
-        // GET: PlantasController/Details/5
         public ActionResult Details(int idPlanta)
         {
             if (HttpContext.Session.GetString("UL") != null)
@@ -50,7 +49,8 @@ namespace ObligatorioP3.Controllers
                 return RedirectToAction("Login", "Home");
             }
         }
-
+        
+        #region Create
         // GET: PlantasController/Create
         public ActionResult Create()
         {
@@ -118,7 +118,9 @@ namespace ObligatorioP3.Controllers
                 return RedirectToAction("Login", "Home");
             }
         }
+        #endregion
 
+        #region Edit
         // GET: PlantasController/Edit/5
         public ActionResult Edit(int id)
         {
@@ -163,7 +165,9 @@ namespace ObligatorioP3.Controllers
                 return RedirectToAction("Login", "Home");
             }
         }
+        #endregion
 
+        #region Delete
         // GET: PlantasController/Delete/5
         public ActionResult Delete(int id)
         {
@@ -209,6 +213,9 @@ namespace ObligatorioP3.Controllers
             }
         }
 
+        #endregion
+
+        #region Buscar
         public ActionResult BuscarPorTexto()
         {
             if (HttpContext.Session.GetString("UL") != null)
@@ -221,7 +228,6 @@ namespace ObligatorioP3.Controllers
             }
         }
 
-        // POST: PlantasController/BuscarPorTexto
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult BuscarPorTexto(string textoBuscado)
@@ -297,5 +303,6 @@ namespace ObligatorioP3.Controllers
                 return RedirectToAction("Login", "Home");
             }
         }
+        #endregion
     }
 }

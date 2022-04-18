@@ -324,7 +324,10 @@ namespace Datos
             if (texto != null)
             {
                 SqlConnection con = Conexion.ObtenerConexion();
-                string sql = $"SELECT * FROM Plantas WHERE nombreCientifico LIKE '%{texto}%';";
+                string sql = "SELECT P.*, TP.Nombre AS TipoDePlanta, TP.Descripcion AS DescripcionDeTipo, A.TipoAmbiente, TI.TipoIluminacion FROM Plantas P " +
+                    "LEFT JOIN TiposDePlanta TP ON P.TipoPlanta = TP.idTipo  " +
+                    "LEFT JOIN Ambientes A ON P.Ambiente = A.idAmbiente " +
+                    $"LEFT JOIN TiposDeIluminacion TI on P.Iluminacion = TI.idIluminacion WHERE NombreCientifico LIKE '%{texto}%'";
                 SqlCommand SQLCom = new SqlCommand(sql, con);
 
                 try
@@ -335,8 +338,8 @@ namespace Datos
                     while (reader.Read())
                     {
                         Planta p = CrearPlanta(reader);
-                        p.TipoPlanta = CrearTipo(reader);
                         p.NombreVulgar = TraerNombresVulgaresDePlantas(p.IdPlanta);
+                        p.TipoPlanta = CrearTipo(reader);
                         p.Ambiente = CrearAmbiente(reader);
                         p.TipoIluminacion = CrearIluminacion(reader);
 
