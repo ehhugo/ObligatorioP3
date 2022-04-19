@@ -1,6 +1,6 @@
 USE [master]
 GO
-/****** Object:  Database [ObligatorioP3]    Script Date: 17/04/2022 16:20:51 ******/
+/****** Object:  Database [ObligatorioP3]    Script Date: 18/04/2022 20:12:29 ******/
 CREATE DATABASE [ObligatorioP3]
  CONTAINMENT = NONE
  ON  PRIMARY 
@@ -78,7 +78,7 @@ ALTER DATABASE [ObligatorioP3] SET QUERY_STORE = OFF
 GO
 USE [ObligatorioP3]
 GO
-/****** Object:  Table [dbo].[Ambientes]    Script Date: 17/04/2022 16:20:52 ******/
+/****** Object:  Table [dbo].[Ambientes]    Script Date: 18/04/2022 20:12:29 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -92,7 +92,7 @@ CREATE TABLE [dbo].[Ambientes](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[NombresVulgares]    Script Date: 17/04/2022 16:20:52 ******/
+/****** Object:  Table [dbo].[NombresVulgares]    Script Date: 18/04/2022 20:12:29 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -107,7 +107,7 @@ CREATE TABLE [dbo].[NombresVulgares](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Plantas]    Script Date: 17/04/2022 16:20:52 ******/
+/****** Object:  Table [dbo].[Plantas]    Script Date: 18/04/2022 20:12:29 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -120,16 +120,20 @@ CREATE TABLE [dbo].[Plantas](
 	[Ambiente] [int] NOT NULL,
 	[Altura] [decimal](5, 2) NOT NULL,
 	[Foto] [varchar](50) NOT NULL,
-	[Iluminacion] [int] NOT NULL,
 	[FrecuenciaDeRiego] [varchar](20) NOT NULL,
+	[Iluminacion] [int] NOT NULL,
 	[TempMantenimiento] [int] NOT NULL,
  CONSTRAINT [PK_Plantas] PRIMARY KEY CLUSTERED 
 (
 	[idPlanta] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+ CONSTRAINT [CK_NombreCientifico_Unique] UNIQUE NONCLUSTERED 
+(
+	[NombreCientifico] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[TiposDeIluminacion]    Script Date: 17/04/2022 16:20:52 ******/
+/****** Object:  Table [dbo].[TiposDeIluminacion]    Script Date: 18/04/2022 20:12:29 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -143,7 +147,7 @@ CREATE TABLE [dbo].[TiposDeIluminacion](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[TiposDePlanta]    Script Date: 17/04/2022 16:20:52 ******/
+/****** Object:  Table [dbo].[TiposDePlanta]    Script Date: 18/04/2022 20:12:29 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -155,6 +159,21 @@ CREATE TABLE [dbo].[TiposDePlanta](
  CONSTRAINT [PK_Tipo] PRIMARY KEY CLUSTERED 
 (
 	[idTipo] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Usuarios]    Script Date: 18/04/2022 20:12:29 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Usuarios](
+	[idUsuario] [int] IDENTITY(1,1) NOT NULL,
+	[Mail] [varchar](40) NOT NULL,
+	[Pass] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_Usuarios] PRIMARY KEY CLUSTERED 
+(
+	[idUsuario] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO

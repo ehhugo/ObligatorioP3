@@ -264,7 +264,8 @@ namespace ObligatorioP3.Controllers
             {
                 ViewModelPlanta vmp = new ViewModelPlanta();
                 vmp.Tipos = ManejadorPlantas.TraerTodosLosTipos();
-                return View(vmp);
+                ViewBag.Tipos = vmp.Tipos;
+                return View();
             }
             else
             {
@@ -285,7 +286,11 @@ namespace ObligatorioP3.Controllers
                     IEnumerable<Planta> plantasBuscadas = ManejadorPlantas.BuscarPlantasPorTipo(IdTipoSeleccionado);
                     if (plantasBuscadas != null)
                     {
-                        return View(plantasBuscadas);
+                        ViewModelPlanta vmp = new ViewModelPlanta();
+                        vmp.Tipos = ManejadorPlantas.TraerTodosLosTipos();
+                        ViewBag.Tipos = vmp.Tipos;
+                        ViewBag.Plantas = plantasBuscadas;
+                        return View(ViewBag.Plantas, ViewBag.Tipos);
                     }
                     else
                     {

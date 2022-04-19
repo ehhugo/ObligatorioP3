@@ -100,10 +100,10 @@ namespace Datos
             Planta buscada = null;
 
             SqlConnection con = Conexion.ObtenerConexion();
-            string sql = "SELECT P.*, TP.Nombre AS TipoDePlanta, TP.Descripcion AS DescripcionDeTipo, A.TipoAmbiente, TI.TipoIluminacion FROM Plantas P" +
-                         "LEFT JOIN TiposDePlanta TP ON P.TipoPlanta = TP.idTipo" +
-                         "LEFT JOIN Ambientes A ON P.Ambiente = A.idAmbiente" +
-                         $"LEFT JOIN TiposDeIluminacion TI on P.Iluminacion = TI.idIluminacion WHERE idPlanta = {id};";
+            string sql = "SELECT P.*, TP.Nombre AS TipoDePlanta, TP.Descripcion AS DescripcionDeTipo, A.TipoAmbiente, TI.TipoIluminacion FROM Plantas P " +
+                         "LEFT JOIN TiposDePlanta TP ON P.TipoPlanta = TP.idTipo " +
+                         "LEFT JOIN Ambientes A ON P.Ambiente = A.idAmbiente " +
+                        $"LEFT JOIN TiposDeIluminacion TI on P.Iluminacion = TI.idIluminacion WHERE idPlanta = {id};";
             SqlCommand SQLCom = new SqlCommand(sql, con);
 
             try
@@ -211,7 +211,10 @@ namespace Datos
             if (alturaCm > 0)
             {
                 SqlConnection con = Conexion.ObtenerConexion();
-                string sql = @"SELECT * FROM Plantas WHERE alturaMaxima >= " + alturaCm;
+                string sql = "SELECT P.*, TP.Nombre AS TipoDePlanta, TP.Descripcion AS DescripcionDeTipo, A.TipoAmbiente, TI.TipoIluminacion FROM Plantas P" +
+                             "LEFT JOIN TiposDePlanta TP ON P.TipoPlanta = TP.idTipo" +
+                             "LEFT JOIN Ambientes A ON P.Ambiente = A.idAmbiente" +
+                            $"LEFT JOIN TiposDeIluminacion TI on P.Iluminacion = TI.idIluminacion WWHERE Altura >= {alturaCm};";
                 SqlCommand SQLCom = new SqlCommand(sql, con);
 
                 try
@@ -249,7 +252,10 @@ namespace Datos
             if (alturaCm > 0)
             {
                 SqlConnection con = Conexion.ObtenerConexion();
-                string sql = $"SELECT * FROM Plantas WHERE alturaMaxima < {alturaCm}";
+                string sql = "SELECT P.*, TP.Nombre AS TipoDePlanta, TP.Descripcion AS DescripcionDeTipo, A.TipoAmbiente, TI.TipoIluminacion FROM Plantas P" +
+                             "LEFT JOIN TiposDePlanta TP ON P.TipoPlanta = TP.idTipo" +
+                             "LEFT JOIN Ambientes A ON P.Ambiente = A.idAmbiente" +
+                            $"LEFT JOIN TiposDeIluminacion TI on P.Iluminacion = TI.idIluminacion WWHERE Altura < {alturaCm};";
                 SqlCommand SQLCom = new SqlCommand(sql, con);
 
                 try
@@ -289,7 +295,10 @@ namespace Datos
             if (ambiente != null)
             {
                 SqlConnection con = Conexion.ObtenerConexion();
-                string sql = $"SELECT * FROM Plantas WHERE ambiente = {ambiente};";
+                string sql = "SELECT P.*, TP.Nombre AS TipoDePlanta, TP.Descripcion AS DescripcionDeTipo, A.TipoAmbiente, TI.TipoIluminacion FROM Plantas P " +
+                             "LEFT JOIN TiposDePlanta TP ON P.TipoPlanta = TP.idTipo " +
+                             "LEFT JOIN Ambientes A ON P.Ambiente = A.idAmbiente " +
+                            $"LEFT JOIN TiposDeIluminacion TI on P.Iluminacion = TI.idIluminacion WHERE Ambiente = {ambiente};";
                 SqlCommand SQLCom = new SqlCommand(sql, con);
 
                 try
@@ -328,9 +337,9 @@ namespace Datos
             {
                 SqlConnection con = Conexion.ObtenerConexion();
                 string sql = "SELECT P.*, TP.Nombre AS TipoDePlanta, TP.Descripcion AS DescripcionDeTipo, A.TipoAmbiente, TI.TipoIluminacion FROM Plantas P " +
-                    "LEFT JOIN TiposDePlanta TP ON P.TipoPlanta = TP.idTipo  " +
-                    "LEFT JOIN Ambientes A ON P.Ambiente = A.idAmbiente " +
-                    $"LEFT JOIN TiposDeIluminacion TI on P.Iluminacion = TI.idIluminacion WHERE NombreCientifico LIKE '%{texto}%'";
+                             "LEFT JOIN TiposDePlanta TP ON P.TipoPlanta = TP.idTipo  " +
+                             "LEFT JOIN Ambientes A ON P.Ambiente = A.idAmbiente " +
+                            $"LEFT JOIN TiposDeIluminacion TI on P.Iluminacion = TI.idIluminacion WHERE NombreCientifico LIKE '%{texto}%'";
                 SqlCommand SQLCom = new SqlCommand(sql, con);
 
                 try
@@ -368,10 +377,10 @@ namespace Datos
             if (tipoPlanta != 0)
             {
                 SqlConnection con = Conexion.ObtenerConexion();
-                string sql = "SELECT P.*, TP.Nombre AS TipoDePlanta, TP.Descripcion AS DescripcionDeTipo, A.TipoAmbiente, TI.TipoIluminacion FROM Plantas P" +
-                             "LEFT JOIN TiposDePlanta TP ON P.TipoPlanta = TP.idTipo" +
-                             "LEFT JOIN Ambientes A ON P.Ambiente = A.idAmbiente" +
-                            $"LEFT JOIN TiposDeIluminacion TI on P.Iluminacion = TI.idIluminacion WHERE tipoPlanta = {tipoPlanta};";
+                string sql = "SELECT P.*, TP.Nombre AS TipoDePlanta, TP.Descripcion AS DescripcionDeTipo, A.TipoAmbiente, TI.TipoIluminacion FROM Plantas P " +
+                             "LEFT JOIN TiposDePlanta TP ON P.TipoPlanta = TP.idTipo " +
+                             "LEFT JOIN Ambientes A ON P.Ambiente = A.idAmbiente " +
+                            $"LEFT JOIN TiposDeIluminacion TI on P.Iluminacion = TI.idIluminacion WHERE TipoPlanta = {tipoPlanta};";
                 SqlCommand SQLCom = new SqlCommand(sql, con);
 
                 try
