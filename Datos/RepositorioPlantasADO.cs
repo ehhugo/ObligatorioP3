@@ -288,11 +288,11 @@ namespace Datos
         #endregion
 
         #region Buscar por Ambiente, Texto y Por Tipo
-        public IEnumerable<Planta> BuscarPorAmbiente(string ambiente)
+        public IEnumerable<Planta> BuscarPorAmbiente(int ambiente)
         {
             List<Planta> plantasPorMabiente = new List<Planta>();
 
-            if (ambiente != null)
+            if (ambiente != 0)
             {
                 SqlConnection con = Conexion.ObtenerConexion();
                 string sql = "SELECT P.*, TP.Nombre AS TipoDePlanta, TP.Descripcion AS DescripcionDeTipo, A.TipoAmbiente, TI.TipoIluminacion FROM Plantas P " +

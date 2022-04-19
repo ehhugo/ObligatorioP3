@@ -26,5 +26,7 @@ namespace CasosUso
         public IEnumerable<Planta> BuscarPlantasPorTexto(string texto);
 
         public IEnumerable<Planta> BuscarPlantasPorTipo(int tipo);
+
+        public IEnumerable<Planta> BuscarPlantasPorAmbiente(int ambiente);
     }
 }

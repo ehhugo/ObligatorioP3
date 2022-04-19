@@ -215,7 +215,7 @@ namespace ObligatorioP3.Controllers
 
         #endregion
 
-        #region Buscar
+        #region Buscar por Texto, Tipo y Ambiente
         public ActionResult BuscarPorTexto()
         {
             if (HttpContext.Session.GetString("UL") != null)
@@ -273,7 +273,6 @@ namespace ObligatorioP3.Controllers
             }
         }
 
-
         // POST: PlantasController/BuscarPorTexto
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -308,6 +307,57 @@ namespace ObligatorioP3.Controllers
                 return RedirectToAction("Login", "Home");
             }
         }
+
+        public ActionResult BuscarPorAmbiente()
+        {
+            if (HttpContext.Session.GetString("UL") != null)
+            {
+                ViewModelPlanta vmp = new ViewModelPlanta();
+                vmp.Ambientes = ManejadorPlantas.TraerTodosLosAmbientes();
+                ViewBag.Ambientes = vmp.Ambientes;
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
+
+        // POST: PlantasController/BuscarPorTexto
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult BuscarPorAmbiente(int IdAmbienteSeleccionado)
+        {
+            if (HttpContext.Session.GetString("UL") != null)
+            {
+                try
+                {
+                    IEnumerable<Planta> plantasBuscadas = ManejadorPlantas.BuscarPlantasPorAmbiente(IdAmbienteSeleccionado);
+                    if (plantasBuscadas != null)
+                    {
+                        ViewModelPlanta vmp = new ViewModelPlanta();
+                        vmp.Ambientes = ManejadorPlantas.TraerTodosLosAmbientes();
+                        ViewBag.Ambientes = vmp.Ambientes;
+                        ViewBag.Plantas = plantasBuscadas;
+                        return View(ViewBag.Plantas, ViewBag.Ambientes);
+                    }
+                    else
+                    {
+                        ViewBag.Error = "No se encontraron plantas";
+                        return View();
+                    }
+                }
+                catch
+                {
+                    return View();
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
+
         #endregion
     }
 }
