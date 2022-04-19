@@ -91,5 +91,10 @@ namespace CasosUso
         {
             return RepoPlantas.BuscarPorAmbiente(ambiente);
         }
+
+        public IEnumerable<Planta> BuscarPlantasMasAltas(double centimetros)
+        {
+            return RepoPlantas.BuscarPlantasMasAltas(centimetros);
+        }
     }
 }

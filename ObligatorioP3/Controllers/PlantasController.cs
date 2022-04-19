@@ -357,7 +357,51 @@ namespace ObligatorioP3.Controllers
                 return RedirectToAction("Login", "Home");
             }
         }
-
         #endregion
+
+        #region Plantas mas alta y Planta mas baja
+        public ActionResult BuscarPlantasMasAltas()
+        {
+            if (HttpContext.Session.GetString("UL") != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult BuscarPlantasMasAltas(double centimetros)
+        {
+            if (HttpContext.Session.GetString("UL") != null)
+            {
+                try
+                {
+                    IEnumerable<Planta> plantasBuscadas = ManejadorPlantas.BuscarPlantasMasAltas(centimetros);
+                    if (plantasBuscadas != null)
+                    {
+                        return View(plantasBuscadas);
+                    }
+                    else
+                    {
+                        ViewBag.Error = "No se encontraron plantas";
+                        return View();
+                    }
+                }
+                catch
+                {
+                    return View();
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
+        #endregion
+
     }
 }
