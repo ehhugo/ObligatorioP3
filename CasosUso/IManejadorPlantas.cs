@@ -29,6 +29,8 @@ namespace CasosUso
 
         public IEnumerable<Planta> BuscarPlantasPorAmbiente(int ambiente);
 
+        public IEnumerable<Planta> BuscarPlantasMasBajas(double centimetros);
+
         public IEnumerable<Planta> BuscarPlantasMasAltas(double centimetros);
     }
 }
