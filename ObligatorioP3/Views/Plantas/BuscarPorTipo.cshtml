@@ -1,4 +1,4 @@
-﻿@model ObligatorioP3.Models.ViewModelPlanta
+﻿@model IEnumerable<Dominio.Entidades.Planta>
 @using Dominio.Entidades
 
 @{
@@ -13,9 +13,11 @@
             <div class="form-group">
                 <label class="control-label">Tipo:</label>
                 <select name="IdTipoSeleccionado">
-                    @foreach (Tipo t in Model.Tipos)
-                    {
-                        <option value="@t.IdTipo">@t.Nombre</option>
+                    @if (ViewBag.Tipos != null)
+                        @foreach (var tipo in ViewBag.Tipos)
+                        {
+                            <option value="@tipo.IdTipo">@tipo.Nombre</option>
+                        }
                     }
                 </select>
                 <div class="form-group">
@@ -25,5 +27,84 @@
         </form>
     </div>
 
-   
+    @if (ViewBag.Plantas != null)
+    {
+
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Nombre Científico
+                    </th>
+                    <th>
+                        Tipo de Planta
+                    </th>
+                    <th>
+                        Descripción
+                    </th>
+                    <th>
+                        Altura Máxima
+                    </th>
+                    <th>
+                        Frecuencia de Riego
+                    </th>
+                    <th>
+                        Temp. De Mantenimiento
+                    </th>
+                    <th>
+                        Tipo de Iluminación
+                    </th>
+                    <th>
+                        Tipo de Ambiente
+                    </th>
+                    <th>
+                        Nombres Vulgares
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in ViewBag.Plantas)
+                {
+                    <tr>
+                        <td>
+                            @item.NombreCientifico
+                        </td>
+                        <td>
+                            @item.TipoPlanta.Nombre
+                        </td>
+                        <td>
+                            @item.Descripcion
+                        </td>
+                        <td>
+                            @item.AlturaMaxima
+                        </td>
+                        <td>
+                            @item.FrecuenciaRiego
+                        </td>
+                        <td>
+                            @item.TemperaturaMantenimiento
+                        </td>
+                        <td>
+                            @item.TipoIluminacion.Tipo
+                        </td>
+                        <td>
+                            @item.Ambiente.TipoAmbiente
+                        </td>
+                        <td>
+                            @item.NombreVulgar
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    }
+
+    <span class="text-danger">@ViewBag.Resultado</span>
+
+
+
 </div>

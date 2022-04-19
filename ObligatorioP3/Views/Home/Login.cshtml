@@ -18,12 +18,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Mail" class="control-label"></label>
-                <input asp-for="Mail" class="form-control" />
+                <input asp-for="Mail" value="hugo@mail.com"class="form-control" />
                 <span asp-validation-for="Mail" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Contrasenia" class="control-label"></label>
-                <input asp-for="Contrasenia" class="form-control" />
+                <label asp-for="Contrasenia" class="control-label">Contraseña</label>
+                <input type="password" value="PassHugo123" asp-for="Contrasenia" class="form-control" />
                 <span asp-validation-for="Contrasenia" class="text-danger"></span>
             </div>
             <div class="form-group">
