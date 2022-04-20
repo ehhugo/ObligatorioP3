@@ -23,7 +23,7 @@ namespace ObligatorioP3.Controllers
             WebHostEnvironment = whenv;
         }
 
-        
+
         public ActionResult Index()
         {
             if (HttpContext.Session.GetString("UL") != null)
@@ -49,7 +49,7 @@ namespace ObligatorioP3.Controllers
                 return RedirectToAction("Login", "Home");
             }
         }
-        
+
         #region Create
         // GET: PlantasController/Create
         public ActionResult Create()
@@ -283,19 +283,17 @@ namespace ObligatorioP3.Controllers
             {
                 try
                 {
+                    ViewBag.Tipos = ManejadorPlantas.TraerTodosLosTipos();
                     IEnumerable<Planta> plantasBuscadas = ManejadorPlantas.BuscarPlantasPorTipo(IdTipoSeleccionado);
                     if (plantasBuscadas != null)
                     {
-                        ViewModelPlanta vmp = new ViewModelPlanta();
-                        vmp.Tipos = ManejadorPlantas.TraerTodosLosTipos();
-                        ViewBag.Tipos = vmp.Tipos;
                         ViewBag.Plantas = plantasBuscadas;
                         return View(ViewBag.Plantas, ViewBag.Tipos);
                     }
                     else
                     {
                         ViewBag.Error = "No se encontraron plantas";
-                        return View();
+                        return View(ViewBag.Tipos);
                     }
                 }
                 catch
