@@ -1,0 +1,99 @@
+﻿@model IEnumerable<Dominio.Entidades.Planta>
+
+@{
+    ViewData["Title"] = "BuscarPlantasMasBajas";
+}
+
+<h1>BuscarPlantasMasBajas</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="BuscarPlantasMasBajas">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">Ingresar centímetros</label>
+                <input name="centimetros" type="search" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Buscar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (Model != null)
+{
+    @if (Model.Count() > 0)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Nombre Científico
+                    </th>
+                    <th>
+                        Tipo de Planta
+                    </th>
+                    <th>
+                        Descripción
+                    </th>
+                    <th>
+                        Altura Máxima
+                    </th>
+                    <th>
+                        Frecuencia de Riego
+                    </th>
+                    <th>
+                        Temp. De Mantenimiento
+                    </th>
+                    <th>
+                        Tipo de Iluminación
+                    </th>
+                    <th>
+                        Tipo de Ambiente
+                    </th>
+                    <th>
+                        Nombres Vulgares
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NombreCientifico)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TipoPlanta.Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Descripcion)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AlturaMaxima)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FrecuenciaRiego)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TemperaturaMantenimiento)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TipoIluminacion.Tipo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Ambiente.TipoAmbiente)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NombreVulgar)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+
+<span class="text-danger">@ViewBag.Resultado</span>
