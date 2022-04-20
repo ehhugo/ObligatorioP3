@@ -1,0 +1,43 @@
+﻿@model Dominio.Entidades.Planta
+
+@{
+    ViewData["Title"] = "Cuidados";
+}
+
+<h1>Cuidados de Plantas</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Frecuencia de Riego
+            </th>
+            <th>
+                Iluminación
+            </th>
+            <th>
+                Temp. Manteniento (c)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Model.FrecuenciaRiego
+            </td>
+            <td>
+                @Model.TipoIluminacion.Tipo
+            </td>
+            <td>
+                @Model.TemperaturaMantenimiento
+            </td>
+            
+        </tr>
+    </tbody>
+</table>
+
+<div>
+    <a asp-action="Index">Volver a la lista</a>
+</div>
+

@@ -442,5 +442,19 @@ namespace ObligatorioP3.Controllers
         }
         #endregion
 
-    }
+
+
+        public ActionResult Cuidados(int id)
+        {
+            if (HttpContext.Session.GetString("UL") != null)
+            {
+                Planta plantaCuidados = ManejadorPlantas.BuscarPlantaPorId(id);
+                return View(plantaCuidados);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
+    }    
 }

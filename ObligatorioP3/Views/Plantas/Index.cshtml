@@ -39,6 +39,9 @@
             <th>
                 Nombre Vulgar
             </th>
+            <th>
+                Foto
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -70,6 +73,12 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NombreVulgar)
+            </td>
+            <td>
+                <img src="~/imagenes/@item.Foto" height="60" />
+            </td>
+            <td>               
+                @Html.ActionLink("Cuidados", "Cuidados", new { id = item.IdPlanta })
             </td>
         </tr>}
     </tbody>
