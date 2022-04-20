@@ -262,9 +262,7 @@ namespace ObligatorioP3.Controllers
         {
             if (HttpContext.Session.GetString("UL") != null)
             {
-                ViewModelPlanta vmp = new ViewModelPlanta();
-                vmp.Tipos = ManejadorPlantas.TraerTodosLosTipos();
-                ViewBag.Tipos = vmp.Tipos;
+                ViewBag.Tipos = ManejadorPlantas.TraerTodosLosTipos();
                 return View();
             }
             else
