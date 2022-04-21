@@ -77,7 +77,7 @@ namespace ObligatorioP3.Controllers
             {
                 try
                 {
-                    if(ManejadorPlantas.BuscarPlantasPorTexto(vmp.Planta.NombreCientifico).Count() == 0)
+                    if(ManejadorPlantas.BuscarPlantasPorTexto(vmp.Planta.NombreCientifico).Count() == 0) ////ESTA MAL, SI COINCIDE UNA PARTE DEL TEXTO DE DESCRIPCION LO DA COMO OK
                     {
                         //string nombreArchivo = vmp.Imagen.FileName;
                         string nombreArchivo = vmp.Planta.NombreCientifico + "001.jpg";

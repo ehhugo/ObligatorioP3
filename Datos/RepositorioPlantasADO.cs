@@ -380,7 +380,7 @@ namespace Datos
                 string sql = "SELECT P.*, TP.Nombre AS TipoDePlanta, TP.Descripcion AS DescripcionDeTipo, A.TipoAmbiente, TI.TipoIluminacion FROM Plantas P " +
                              "LEFT JOIN TiposDePlanta TP ON P.TipoPlanta = TP.idTipo  " +
                              "LEFT JOIN Ambientes A ON P.Ambiente = A.idAmbiente " +
-                            $"LEFT JOIN TiposDeIluminacion TI on P.Iluminacion = TI.idIluminacion WHERE NombreCientifico LIKE '%{texto}%'";
+                            $"LEFT JOIN TiposDeIluminacion TI on P.Iluminacion = TI.idIluminacion WHERE NombreCientifico LIKE '%{texto}%'"; ///FALTA AGREGAR QUE BUSQUE EN LOS NOMBRES VULGARES, REVISAR PUNTO 6-1
                 SqlCommand SQLCom = new SqlCommand(sql, con);
 
                 try
