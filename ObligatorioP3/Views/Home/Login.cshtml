@@ -18,12 +18,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Mail" class="control-label"></label>
-                <input id="txtMail" asp-for="Mail"  class="form-control" />
+                <input id="txtMail" asp-for="Mail" class="form-control" />
                 <span asp-validation-for="Mail" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Contrasenia" class="control-label">Contraseña</label>
-                <input id="txtContrasenia"type="password" asp-for="Contrasenia" class="form-control" />
+                <input id="txtContrasenia" type="password" asp-for="Contrasenia" class="form-control" />
                 <span asp-validation-for="Contrasenia" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -37,11 +37,14 @@
 </div>
 
 @section Scripts{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
     <script>
         document.querySelector("#formLogin").addEventListener('submit', validarDatos);
 
         function validarDatos(evento) {
-            evento.preventDefault();
+            event.preventDefault();
+
             let nomUsu = document.querySelector("#txtMail").value;
             let pass = document.querySelector("#txtContrasenia").value;
 
