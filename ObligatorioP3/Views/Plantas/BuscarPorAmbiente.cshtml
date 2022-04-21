@@ -1,29 +1,33 @@
 ﻿@model IEnumerable<Dominio.Entidades.Planta>
+@using Dominio.Entidades
 
 @{
-    ViewData["Title"] = "BuscarPorTexto";
+    ViewData["Title"] = "BuscarPorAmbiente";
 }
 
-<h1>Buscar planta por texto</h1>
+<h1>Buscar por ambiente</h1>
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="BuscarPorTexto">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form asp-action="BuscarPorAmbiente">
             <div class="form-group">
-                <label class="control-label">Ingresar texto</label>
-                <input name="textoBuscado" type="search" class="form-control" />
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Buscar" class="btn btn-primary" />
+                <label class="control-label">Ambiente:</label>
+                <select name="IdAmbienteSeleccionado">
+                    @if (ViewBag.Ambientes != null)
+                        @foreach (var ambientes in ViewBag.Ambientes)
+                        {
+                            <option value="@ambientes.IdAmbiente">@ambientes.TipoAmbiente</option>
+                        }
+                    }
+                </select>
+                <div class="form-group">
+                    <input type="submit" value="Buscar" class="btn btn-primary" />
+                </div>
             </div>
         </form>
     </div>
-</div>
 
-@if (Model != null)
-{
-    @if (Model.Count() > 0)
+    @if (ViewBag.Plantas != null)
     {
         <table class="table">
             <thead>
@@ -62,35 +66,40 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+
+                @foreach (var item in ViewBag.Plantas)
                 {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.NombreCientifico)
+                        @item.NombreCientifico
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.TipoPlanta.Nombre)
+                        @item.TipoPlanta.Nombre
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Descripcion)
+                        @item.Descripcion
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.AlturaMaxima)
+                        @item.AlturaMaxima
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.FrecuenciaRiego)
+                        @item.FrecuenciaRiego
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.TemperaturaMantenimiento)
+                        @item.TemperaturaMantenimiento
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.TipoIluminacion.Tipo)
+                        @item.TipoIluminacion.Tipo
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Ambiente.TipoAmbiente)
+                        @item.Ambiente.TipoAmbiente
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.NombreVulgar)
+                        @foreach (var nombre in @item.NombreVulgar)
+                        {
+                            @nombre;
+                        }
+
                     </td>
                     <td>
                         <img src="~/imagenes/@item.Foto" height="60" />
@@ -102,8 +111,7 @@
                 }
             </tbody>
         </table>
-     }
- }
 
-<span class="text-danger">@ViewBag.Resultado</span>
-
+    }
+    <span class="text-danger">@ViewBag.Resultado</span>
+</div>

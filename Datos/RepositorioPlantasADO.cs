@@ -5,6 +5,7 @@ using Dominio.Entidades;
 using Dominio.InterfacesRepositorio;
 using Microsoft.Data.SqlClient;
 using Datos;
+using System.Linq;
 
 namespace Datos
 {
@@ -40,6 +41,7 @@ namespace Datos
                     Conexion.AbrirConexion(con);
                     int id = (int)SQLcom.ExecuteScalar();
                     obj.IdPlanta = id;
+                    AddNombresVulgares(obj.NombreVulgar, id);
                     altaOK = true;
                 }
                 catch
@@ -53,6 +55,45 @@ namespace Datos
             }
             return altaOK;
         }
+
+        private void AddNombresVulgares(List<string> nombreVulgar, int id)
+        {
+            string stringNombres = nombreVulgar[0];            
+            List<string> list = new List<string>();
+            list = stringNombres.Split(',').ToList();
+            foreach (var nombre in list)
+            {
+                if (nombre != null)
+                {
+                    SqlConnection con = Conexion.ObtenerConexion();
+
+                    string sql = "INSERT INTO NombresVulgares VALUES " +
+                        "(@NombreVulgar, @idPlanta); " +
+                        "SELECT CAST (SCOPE_IDENTITY() AS INT);";
+
+                    SqlCommand SQLcom = new SqlCommand(sql, con);
+
+                    SQLcom.Parameters.AddWithValue("@NombreVulgar", nombre);
+                    SQLcom.Parameters.AddWithValue("@idPlanta", id);                    
+
+                    try
+                    {
+                        Conexion.AbrirConexion(con);
+                        SQLcom.ExecuteScalar();              
+                    }
+                    catch
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        Conexion.CerrarYTerminarConexion(con);
+                    }
+                }
+            }
+        }
+
+
         #endregion
 
         #region FindAll y FindById
@@ -211,10 +252,10 @@ namespace Datos
             if (alturaCm > 0)
             {
                 SqlConnection con = Conexion.ObtenerConexion();
-                string sql = "SELECT P.*, TP.Nombre AS TipoDePlanta, TP.Descripcion AS DescripcionDeTipo, A.TipoAmbiente, TI.TipoIluminacion FROM Plantas P" +
-                             "LEFT JOIN TiposDePlanta TP ON P.TipoPlanta = TP.idTipo" +
-                             "LEFT JOIN Ambientes A ON P.Ambiente = A.idAmbiente" +
-                            $"LEFT JOIN TiposDeIluminacion TI on P.Iluminacion = TI.idIluminacion WWHERE Altura >= {alturaCm};";
+                string sql = "SELECT P.*, TP.Nombre AS TipoDePlanta, TP.Descripcion AS DescripcionDeTipo, A.TipoAmbiente, TI.TipoIluminacion FROM Plantas P " +
+                             "LEFT JOIN TiposDePlanta TP ON P.TipoPlanta = TP.idTipo " +
+                             "LEFT JOIN Ambientes A ON P.Ambiente = A.idAmbiente " +
+                            $"LEFT JOIN TiposDeIluminacion TI on P.Iluminacion = TI.idIluminacion WHERE Altura >= {alturaCm};";
                 SqlCommand SQLCom = new SqlCommand(sql, con);
 
                 try
@@ -252,10 +293,10 @@ namespace Datos
             if (alturaCm > 0)
             {
                 SqlConnection con = Conexion.ObtenerConexion();
-                string sql = "SELECT P.*, TP.Nombre AS TipoDePlanta, TP.Descripcion AS DescripcionDeTipo, A.TipoAmbiente, TI.TipoIluminacion FROM Plantas P" +
-                             "LEFT JOIN TiposDePlanta TP ON P.TipoPlanta = TP.idTipo" +
-                             "LEFT JOIN Ambientes A ON P.Ambiente = A.idAmbiente" +
-                            $"LEFT JOIN TiposDeIluminacion TI on P.Iluminacion = TI.idIluminacion WWHERE Altura < {alturaCm};";
+                string sql = "SELECT P.*, TP.Nombre AS TipoDePlanta, TP.Descripcion AS DescripcionDeTipo, A.TipoAmbiente, TI.TipoIluminacion FROM Plantas P " +
+                             "LEFT JOIN TiposDePlanta TP ON P.TipoPlanta = TP.idTipo " +
+                             "LEFT JOIN Ambientes A ON P.Ambiente = A.idAmbiente " +
+                            $"LEFT JOIN TiposDeIluminacion TI on P.Iluminacion = TI.idIluminacion WHERE Altura < {alturaCm};";
                 SqlCommand SQLCom = new SqlCommand(sql, con);
 
                 try
@@ -288,11 +329,11 @@ namespace Datos
         #endregion
 
         #region Buscar por Ambiente, Texto y Por Tipo
-        public IEnumerable<Planta> BuscarPorAmbiente(string ambiente)
+        public IEnumerable<Planta> BuscarPorAmbiente(int ambiente)
         {
             List<Planta> plantasPorMabiente = new List<Planta>();
 
-            if (ambiente != null)
+            if (ambiente != 0)
             {
                 SqlConnection con = Conexion.ObtenerConexion();
                 string sql = "SELECT P.*, TP.Nombre AS TipoDePlanta, TP.Descripcion AS DescripcionDeTipo, A.TipoAmbiente, TI.TipoIluminacion FROM Plantas P " +
@@ -339,7 +380,7 @@ namespace Datos
                 string sql = "SELECT P.*, TP.Nombre AS TipoDePlanta, TP.Descripcion AS DescripcionDeTipo, A.TipoAmbiente, TI.TipoIluminacion FROM Plantas P " +
                              "LEFT JOIN TiposDePlanta TP ON P.TipoPlanta = TP.idTipo  " +
                              "LEFT JOIN Ambientes A ON P.Ambiente = A.idAmbiente " +
-                            $"LEFT JOIN TiposDeIluminacion TI on P.Iluminacion = TI.idIluminacion WHERE NombreCientifico LIKE '%{texto}%'";
+                            $"LEFT JOIN TiposDeIluminacion TI on P.Iluminacion = TI.idIluminacion WHERE NombreCientifico LIKE '%{texto}%'"; ///FALTA AGREGAR QUE BUSQUE EN LOS NOMBRES VULGARES, REVISAR PUNTO 6-1
                 SqlCommand SQLCom = new SqlCommand(sql, con);
 
                 try

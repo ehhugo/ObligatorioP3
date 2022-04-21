@@ -87,7 +87,7 @@ namespace Datos
             }
             catch
             {
-                throw;
+                ok = false;
             }
             finally
             {

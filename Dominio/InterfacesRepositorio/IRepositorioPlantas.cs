@@ -11,11 +11,10 @@ namespace Dominio.InterfacesRepositorio
 
         IEnumerable<Planta> BuscarPorTipo(int tipoPlanta);
 
-        IEnumerable<Planta> BuscarPorAmbiente(string ambiente);
+        IEnumerable<Planta> BuscarPorAmbiente(int ambiente);
 
         IEnumerable<Planta> BuscarPlantasMasBajas(double alturaCm);
 
         IEnumerable<Planta> BuscarPlantasMasAltas(double alturaCm);
-
     }
 }

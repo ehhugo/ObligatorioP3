@@ -6,56 +6,71 @@
 
 <h1>Eliminar tipo</h1>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Tipo</h4>
-    <hr />
-    
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="Delete">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group" hidden>
-                    <label asp-for="IdTipo" class="control-label"></label>
-                    <input asp-for="IdTipo" class="form-control" />
-                    <span asp-validation-for="IdTipo" class="text-danger"></span>
-                </div>
-                <div class="form-group " hidden>
-                    <label asp-for="Nombre" class="control-label"></label>
-                    <input asp-for="Nombre" class="form-control" readonly />
-                    <span asp-validation-for="Nombre" class="text-danger"></span>
-                </div>
-                <div class="form-group" hidden>
-                    <label asp-for="Descripcion" class="control-label"></label>
-                    <input asp-for="Descripcion" class="form-control" />
-                    <span asp-validation-for="Descripcion" class="text-danger"></span>
-                </div>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.IdTipo)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.IdTipo)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Nombre)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Nombre)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Descripcion)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Descripcion)
-                </dd>
-                <div class="form-group">
-                    <input type="submit" value="Delete" class="btn btn-danger" /> |
-                    <a asp-action="Index">Back to List</a>
-                </div>
-                <span class="text-danger">@ViewBag.Error</span>
-            </form>
-        </div>
-    </div>
 
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Delete" method="get">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">Ingresar texto</label>
+                <input name="nombre" type="search" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Buscar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
 </div>
+
+@if (Model != null)
+{
+
+    <h3>¿Está seguro que desea eliminar el tipo de planta?</h3>
+    <div>
+        <hr />
+
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="Delete" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group" hidden>
+                        <label asp-for="IdTipo" class="control-label"></label>
+                        <input asp-for="IdTipo" class="form-control" />
+                        <span asp-validation-for="IdTipo" class="text-danger"></span>
+                    </div>
+                    <div class="form-group " hidden>
+                        <label asp-for="Nombre" class="control-label"></label>
+                        <input asp-for="Nombre" class="form-control" readonly />
+                        <span asp-validation-for="Nombre" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" hidden>
+                        <label asp-for="Descripcion" class="control-label"></label>
+                        <input asp-for="Descripcion" class="form-control" />
+                        <span asp-validation-for="Descripcion" class="text-danger"></span>
+                    </div>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Nombre)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Nombre)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Descripcion)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Descripcion)
+                    </dd>
+                    <div class="form-group">
+                        <input type="submit" value="Delete" class="btn btn-danger" /> |
+                        <a asp-action="Index">Volver al listado</a>
+                    </div>
+                    <span class="text-danger">@ViewBag.Error</span>
+                </form>
+            </div>
+        </div>
+        
+    </div>
+}
+
+<span class="text-danger">@ViewBag.Resultado</span>
 
