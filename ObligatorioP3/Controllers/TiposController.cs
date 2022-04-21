@@ -67,16 +67,23 @@ namespace ObligatorioP3.Controllers
             {
                 try
                 {
-                    bool ok = ManejadorTipos.AgregarNuevoTipo(tipo);
-
-                    if (ok)
+                    if (ManejadorTipos.BuscarTipoPorNombre(tipo.Nombre)== null)
                     {
-                        return RedirectToAction(nameof(Index));
+                        bool ok = ManejadorTipos.AgregarNuevoTipo(tipo);
+
+                        if (ok)
+                        {
+                            return RedirectToAction(nameof(Index));
+                        }
+                        else
+                        {
+                            ViewBag.Resultado = "No se pudo ingresar el tipo.";
+                            return View(tipo);
+                        }
                     }
                     else
                     {
-                        ViewBag.Resultado = "No se pudo ingresar el tipo.";
-                        return View(tipo);
+                        return ViewBag.Resultado = "El tipo de planta ingresado ya existe";
                     }
                 }
                 catch
@@ -88,7 +95,6 @@ namespace ObligatorioP3.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-
         }
 
         // GET: TipoController/Edit/5
