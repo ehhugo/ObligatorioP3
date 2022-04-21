@@ -5,6 +5,7 @@ using Dominio.Entidades;
 using Dominio.InterfacesRepositorio;
 using Microsoft.Data.SqlClient;
 using Datos;
+using System.Linq;
 
 namespace Datos
 {
@@ -40,6 +41,7 @@ namespace Datos
                     Conexion.AbrirConexion(con);
                     int id = (int)SQLcom.ExecuteScalar();
                     obj.IdPlanta = id;
+                    AddNombresVulgares(obj.NombreVulgar, id);
                     altaOK = true;
                 }
                 catch
@@ -53,6 +55,45 @@ namespace Datos
             }
             return altaOK;
         }
+
+        private void AddNombresVulgares(List<string> nombreVulgar, int id)
+        {
+            string stringNombres = nombreVulgar[0];            
+            List<string> list = new List<string>();
+            list = stringNombres.Split(',').ToList();
+            foreach (var nombre in list)
+            {
+                if (nombre != null)
+                {
+                    SqlConnection con = Conexion.ObtenerConexion();
+
+                    string sql = "INSERT INTO NombresVulgares VALUES " +
+                        "(@NombreVulgar, @idPlanta); " +
+                        "SELECT CAST (SCOPE_IDENTITY() AS INT);";
+
+                    SqlCommand SQLcom = new SqlCommand(sql, con);
+
+                    SQLcom.Parameters.AddWithValue("@NombreVulgar", nombre);
+                    SQLcom.Parameters.AddWithValue("@idPlanta", id);                    
+
+                    try
+                    {
+                        Conexion.AbrirConexion(con);
+                        SQLcom.ExecuteScalar();              
+                    }
+                    catch
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        Conexion.CerrarYTerminarConexion(con);
+                    }
+                }
+            }
+        }
+
+
         #endregion
 
         #region FindAll y FindById

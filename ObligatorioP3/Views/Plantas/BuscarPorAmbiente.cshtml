@@ -95,7 +95,11 @@
                         @item.Ambiente.TipoAmbiente
                     </td>
                     <td>
-                        @item.NombreVulgar
+                        @foreach (var nombre in @item.NombreVulgar)
+                        {
+                            @nombre;
+                        }
+
                     </td>
                     <td>
                         <img src="~/imagenes/@item.Foto" height="60" />

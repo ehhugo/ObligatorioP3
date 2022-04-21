@@ -97,7 +97,44 @@ namespace ObligatorioP3.Controllers
             if (HttpContext.Session.GetString("UL") != null)
             {
                 Tipo tipo = ManejadorTipos.BuscarTipoPorNombre(nombre);
-                return View(tipo);
+                if (tipo != null)
+                {
+                    return View(tipo);
+                }
+                else if (nombre != null)
+                {
+                    ViewBag.Resultado = "No se encontró el tipo buscado";
+                    return View();
+                }
+                else
+                {
+                    return View();
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
+
+        public ActionResult Delete(string nombre)
+        {
+            if (HttpContext.Session.GetString("UL") != null)
+            {
+                Tipo tipo = ManejadorTipos.BuscarTipoPorNombre(nombre);
+                if (tipo != null)
+                {
+                    return View(tipo);
+                }
+                else if (nombre != null)
+                {
+                    ViewBag.Resultado = "No se encontró el tipo buscado";
+                    return View();
+                }
+                else
+                {
+                    return View();
+                }
             }
             else
             {
@@ -136,32 +173,6 @@ namespace ObligatorioP3.Controllers
             }
         }
 
-
-        // GET: TipoController/Delete/5
-        public ActionResult Delete(string nombre)
-        {
-            if (HttpContext.Session.GetString("UL") != null)
-            {
-                Tipo tipo = ManejadorTipos.BuscarTipoPorNombre(nombre);
-                if (tipo != null)
-                {
-                    return View(tipo);
-                }
-                else if(nombre != null)
-                {
-                    ViewBag.Resultado = "No se encontró el tipo buscado";
-                    return View();
-                }
-                else
-                {
-                    return View();
-                }
-            }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
-        }
 
         // POST: TipoController/Delete/5
         [HttpPost]
