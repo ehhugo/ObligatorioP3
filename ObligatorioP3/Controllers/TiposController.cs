@@ -97,7 +97,44 @@ namespace ObligatorioP3.Controllers
             if (HttpContext.Session.GetString("UL") != null)
             {
                 Tipo tipo = ManejadorTipos.BuscarTipoPorNombre(nombre);
-                return View(tipo);
+                if (tipo != null)
+                {
+                    return View(tipo);
+                }
+                else if (nombre != null)
+                {
+                    ViewBag.Resultado = "No se encontró el tipo buscado";
+                    return View();
+                }
+                else
+                {
+                    return View();
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
+
+        public ActionResult Delete(string nombre)
+        {
+            if (HttpContext.Session.GetString("UL") != null)
+            {
+                Tipo tipo = ManejadorTipos.BuscarTipoPorNombre(nombre);
+                if (tipo != null)
+                {
+                    return View(tipo);
+                }
+                else if (nombre != null)
+                {
+                    ViewBag.Resultado = "No se encontró el tipo buscado";
+                    return View();
+                }
+                else
+                {
+                    return View();
+                }
             }
             else
             {
@@ -137,20 +174,6 @@ namespace ObligatorioP3.Controllers
         }
 
 
-        // GET: TipoController/Delete/5
-        public ActionResult Delete(string nombre)
-        {
-            if (HttpContext.Session.GetString("UL") != null)
-            {
-                Tipo tipo = ManejadorTipos.BuscarTipoPorNombre(nombre);
-                return View(tipo);
-            }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
-        }
-
         // POST: TipoController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -167,8 +190,50 @@ namespace ObligatorioP3.Controllers
                     }
                     else
                     {
-                        ViewBag.Resultado = "No se pudo eliminar el tipo";
+                        ViewBag.Resultado = "No se pudo eliminar el tipo, el mismo se encuentra en uso.";
                         return View(tipo);
+                    }
+                }
+                catch
+                {
+                    return View();
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
+
+        public ActionResult buscarPorNombre()
+        {
+            if (HttpContext.Session.GetString("UL") != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult buscarPorNombre(string textoBuscado)
+        {
+            if (HttpContext.Session.GetString("UL") != null)
+            {
+                try
+                {
+                    Tipo tipobuscado = ManejadorTipos.BuscarTipoPorNombre(textoBuscado);
+                    if (tipobuscado != null)
+                    {
+                        return View(tipobuscado);
+                    }
+                    else
+                    {
+                        ViewBag.Resultado = "No se encontró el tipo buscado";
+                        return View();
                     }
                 }
                 catch
