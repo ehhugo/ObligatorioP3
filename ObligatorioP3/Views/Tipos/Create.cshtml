@@ -10,16 +10,16 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" id="formAltaTipo">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>            
             <div class="form-group">
                 <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
+                <input asp-for="Nombre" id="nombre" class="form-control" />
                 <span asp-validation-for="Nombre" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Descripcion" class="control-label"></label>
-                <input asp-for="Descripcion" class="form-control" />
+                <input asp-for="Descripcion" id="descripcion" class="form-control" />
                 <span asp-validation-for="Descripcion" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -30,11 +30,36 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Volver al listado</a>
 </div>
 
-<span class="text-danger">@ViewBag.Resultado</span>
+<span class="text-danger" id="pMensaje">@ViewBag.Resultado</span>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        document.querySelector("#formAltaTipo").addEventListener('submit', validarDatos);
+
+
+        function validarDatos(evento) {
+            evento.preventDefault();
+
+            let tipoNombre = document.querySelector("#nombre").value;
+            let tipoDescripcion = document.querySelector("#descripcion").value;
+
+            if (validarTexto(tipoNombre) && validarTexto(tipoDescripcion)) {
+                this.submit();
+            } else {
+                document.querySelector("#pMensaje").value = "Por favor indique un Tipo y una descripción";
+            }
+        }
+
+
+        function validarTexto(value) {
+            ret = false;
+            if (value != null && isNaN(value) && value.trim().length > 0) {
+                ret = true;
+            }
+            return ret;
+        }
+    </script>
 }

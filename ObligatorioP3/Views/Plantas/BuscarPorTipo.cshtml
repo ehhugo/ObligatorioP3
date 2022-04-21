@@ -71,41 +71,44 @@
 
                 @foreach (var item in ViewBag.Plantas)
                 {
-                <tr>
-                    <td>
-                        @item.NombreCientifico
-                    </td>
-                    <td>
-                        @item.TipoPlanta.Nombre
-                    </td>
-                    <td>
-                        @item.Descripcion
-                    </td>
-                    <td>
-                        @item.AlturaMaxima
-                    </td>
-                    <td>
-                        @item.FrecuenciaRiego
-                    </td>
-                    <td>
-                        @item.TemperaturaMantenimiento
-                    </td>
-                    <td>
-                        @item.TipoIluminacion.Tipo
-                    </td>
-                    <td>
-                        @item.Ambiente.TipoAmbiente
-                    </td>
-                    <td>
-                        @item.NombreVulgar
-                    </td>
-                    <td>
-                        <img src="~/imagenes/@item.Foto" height="60" />
-                    </td>
-                    <td>
-                        @Html.ActionLink("Cuidados", "Cuidados", new { id = item.IdPlanta })
-                    </td>
-                </tr>
+                    <tr>
+                        <td>
+                            @item.NombreCientifico
+                        </td>
+                        <td>
+                            @item.TipoPlanta.Nombre
+                        </td>
+                        <td>
+                            @item.Descripcion
+                        </td>
+                        <td>
+                            @item.AlturaMaxima
+                        </td>
+                        <td>
+                            @item.FrecuenciaRiego
+                        </td>
+                        <td>
+                            @item.TemperaturaMantenimiento
+                        </td>
+                        <td>
+                            @item.TipoIluminacion.Tipo
+                        </td>
+                        <td>
+                            @item.Ambiente.TipoAmbiente
+                        </td>
+                        <td>
+                            @foreach (var nombre in @item.NombreVulgar)
+                            {
+                                @nombre;
+                            }
+                        </td>
+                        <td>
+                            <img src="~/imagenes/@item.Foto" height="60" />
+                        </td>
+                        <td>
+                            @Html.ActionLink("Cuidados", "Cuidados", new { id = item.IdPlanta })
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>

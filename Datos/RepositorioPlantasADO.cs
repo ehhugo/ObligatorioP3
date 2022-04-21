@@ -5,6 +5,7 @@ using Dominio.Entidades;
 using Dominio.InterfacesRepositorio;
 using Microsoft.Data.SqlClient;
 using Datos;
+using System.Linq;
 
 namespace Datos
 {
@@ -40,6 +41,7 @@ namespace Datos
                     Conexion.AbrirConexion(con);
                     int id = (int)SQLcom.ExecuteScalar();
                     obj.IdPlanta = id;
+                    AddNombresVulgares(obj.NombreVulgar, id);
                     altaOK = true;
                 }
                 catch
@@ -53,6 +55,45 @@ namespace Datos
             }
             return altaOK;
         }
+
+        private void AddNombresVulgares(List<string> nombreVulgar, int id)
+        {
+            string stringNombres = nombreVulgar[0];            
+            List<string> list = new List<string>();
+            list = stringNombres.Split(',').ToList();
+            foreach (var nombre in list)
+            {
+                if (nombre != null)
+                {
+                    SqlConnection con = Conexion.ObtenerConexion();
+
+                    string sql = "INSERT INTO NombresVulgares VALUES " +
+                        "(@NombreVulgar, @idPlanta); " +
+                        "SELECT CAST (SCOPE_IDENTITY() AS INT);";
+
+                    SqlCommand SQLcom = new SqlCommand(sql, con);
+
+                    SQLcom.Parameters.AddWithValue("@NombreVulgar", nombre);
+                    SQLcom.Parameters.AddWithValue("@idPlanta", id);                    
+
+                    try
+                    {
+                        Conexion.AbrirConexion(con);
+                        SQLcom.ExecuteScalar();              
+                    }
+                    catch
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        Conexion.CerrarYTerminarConexion(con);
+                    }
+                }
+            }
+        }
+
+
         #endregion
 
         #region FindAll y FindById
@@ -336,10 +377,11 @@ namespace Datos
             if (texto != null)
             {
                 SqlConnection con = Conexion.ObtenerConexion();
-                string sql = "SELECT P.*, TP.Nombre AS TipoDePlanta, TP.Descripcion AS DescripcionDeTipo, A.TipoAmbiente, TI.TipoIluminacion FROM Plantas P " +
+                string sql = "SELECT P.*, TP.Nombre AS TipoDePlanta, TP.Descripcion AS DescripcionDeTipo, NV.NombreVulgar, A.TipoAmbiente, TI.TipoIluminacion FROM Plantas P " +
                              "LEFT JOIN TiposDePlanta TP ON P.TipoPlanta = TP.idTipo  " +
                              "LEFT JOIN Ambientes A ON P.Ambiente = A.idAmbiente " +
-                            $"LEFT JOIN TiposDeIluminacion TI on P.Iluminacion = TI.idIluminacion WHERE NombreCientifico LIKE '%{texto}%'";
+                             "LEFT JOIN NombresVulgares NV ON P.idPlanta = NV.idPlanta "+
+                            $"LEFT JOIN TiposDeIluminacion TI on P.Iluminacion = TI.idIluminacion WHERE NombreCientifico LIKE '%{texto}%' OR NombreVulgar LIKE '%{texto}%'";
                 SqlCommand SQLCom = new SqlCommand(sql, con);
 
                 try
@@ -368,6 +410,41 @@ namespace Datos
                 }
             }
             return plantasConTextoEnNombre;
+        }
+        public bool BuscarPorNombreCientifico(string nomCientifico)
+        {
+            bool existeNomCientifico = false;
+
+            if (nomCientifico != null)
+            {
+                SqlConnection con = Conexion.ObtenerConexion();
+                string sql = "SELECT P.*, TP.Nombre AS TipoDePlanta, TP.Descripcion AS DescripcionDeTipo, A.TipoAmbiente, TI.TipoIluminacion FROM Plantas P " +
+                             "LEFT JOIN TiposDePlanta TP ON P.TipoPlanta = TP.idTipo  " +
+                             "LEFT JOIN Ambientes A ON P.Ambiente = A.idAmbiente " +
+                            $"LEFT JOIN TiposDeIluminacion TI on P.Iluminacion = TI.idIluminacion WHERE NombreCientifico = '{nomCientifico}'";
+
+                SqlCommand SQLCom = new SqlCommand(sql, con);
+
+                try
+                {
+                    Conexion.AbrirConexion(con);
+                    SqlDataReader reader = SQLCom.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        existeNomCientifico = true;
+                    }
+                }
+                catch
+                {
+                    throw;
+                }
+                finally
+                {
+                    Conexion.CerrarYTerminarConexion(con);
+                }
+            }
+            return existeNomCientifico;
         }
 
         public IEnumerable<Planta> BuscarPorTipo(int tipoPlanta)
@@ -430,6 +507,7 @@ namespace Datos
                 while (reader.Read())
                 {
                     string nombreVulgar = reader.GetString(reader.GetOrdinal("NombreVulgar"));
+                    nombreVulgar += " ";
                     nombresVulgares.Add(nombreVulgar);
                 }
             }
