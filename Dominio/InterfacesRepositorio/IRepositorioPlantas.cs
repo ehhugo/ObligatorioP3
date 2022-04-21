@@ -16,5 +16,7 @@ namespace Dominio.InterfacesRepositorio
         IEnumerable<Planta> BuscarPlantasMasBajas(double alturaCm);
 
         IEnumerable<Planta> BuscarPlantasMasAltas(double alturaCm);
+
+        bool BuscarPorNombreCientifico(string nombreCientifico);
     }
 }
