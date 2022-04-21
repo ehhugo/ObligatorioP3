@@ -46,5 +46,10 @@ namespace CasosUso
         {
             return RepoTipos.FindById(id);
         }
+
+        public bool TipoExiste(string nombreTipo)
+        {
+            return RepoTipos.TipoExiste(nombreTipo);
+        }
     }
 }

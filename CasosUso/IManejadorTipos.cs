@@ -13,5 +13,6 @@ namespace CasosUso
         Tipo BuscarTipoPorNombre(string nombre);
         bool ActualizarDescripcionTipo(Tipo tipo);
         Tipo buscarPorId(int id);
+        bool TipoExiste(string nombreTipo);
     }
 }

@@ -173,6 +173,40 @@ namespace Datos
         }
 
 
+        public bool TipoExiste(string nombreTipo)
+        {
+            bool existeTipo = false;
+
+            if (nombreTipo != null)
+            {
+                SqlConnection con = Conexion.ObtenerConexion();
+                string sql = $"SELECT * FROM TiposDePlanta WHERE Nombre = '{nombreTipo}';";
+
+                SqlCommand SQLCom = new SqlCommand(sql, con);
+
+                try
+                {
+                    Conexion.AbrirConexion(con);
+                    SqlDataReader reader = SQLCom.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        existeTipo = true;
+                    }
+                }
+                catch
+                {
+                    throw;
+                }
+                finally
+                {
+                    Conexion.CerrarYTerminarConexion(con);
+                }
+            }
+            return existeTipo;
+        }
+
+
         public Tipo BuscarPorNombre(string nombre)
         {
             Tipo buscado = null;
@@ -251,7 +285,7 @@ namespace Datos
             bool ok = false;
             SqlConnection con = Conexion.ObtenerConexion();
 
-            if (obj.Descripcion.Length >=10 && obj.Descripcion.Length <= 200)
+            if (obj.Descripcion.Length >= 10 && obj.Descripcion.Length <= 200)
             {
                 string sql = $"UPDATE TiposDePlanta SET Descripcion=@des WHERE idTipo =@IdTipo";
                 SqlCommand SQLCom = new SqlCommand(sql, con);
