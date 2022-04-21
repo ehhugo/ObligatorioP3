@@ -13,6 +13,7 @@
             <div class="form-group">
                 <label class="control-label">Ambiente:</label>
                 <select name="IdAmbienteSeleccionado">
+                    <option value="0" disabled selected>Seleccione ambiente</option>
                     @if (ViewBag.Ambientes != null)
                         @foreach (var ambientes in ViewBag.Ambientes)
                         {

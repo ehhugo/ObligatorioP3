@@ -13,6 +13,7 @@
             <div class="form-group">
                 <label class="control-label">Tipo:</label>
                 <select name="IdTipoSeleccionado">
+                    <option value="0" disabled selected>Seleccione tipo</option>
                     @if (ViewBag.Tipos != null)
                         @foreach (var tipo in ViewBag.Tipos)
                         {
@@ -26,6 +27,8 @@
             </div>
         </form>
     </div>
+
+    <span class="text-danger">@ViewBag.Resultado</span>
 
     @if (ViewBag.Plantas != null)
     {
@@ -115,7 +118,7 @@
 
     }
 
-    <span class="text-danger">@ViewBag.Resultado</span>
+
 
 
 

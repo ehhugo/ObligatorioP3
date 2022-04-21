@@ -77,7 +77,7 @@ namespace ObligatorioP3.Controllers
             {
                 try
                 {
-                    if(!ManejadorPlantas.BuscarPlantaPorNombreCientifico(vmp.Planta.NombreCientifico))
+                    if (!ManejadorPlantas.BuscarPlantaPorNombreCientifico(vmp.Planta.NombreCientifico))
                     {
                         //string nombreArchivo = vmp.Imagen.FileName;
                         string nombreArchivo = vmp.Planta.NombreCientifico + "001.jpg";
@@ -117,7 +117,7 @@ namespace ObligatorioP3.Controllers
                         vmp.Iluminaciones = ManejadorPlantas.TraerTodasLasIluminaciones();
                         return View(vmp);
                     }
-                    
+
                 }
                 catch
                 {
@@ -246,21 +246,29 @@ namespace ObligatorioP3.Controllers
         {
             if (HttpContext.Session.GetString("UL") != null)
             {
-                try
+                if (textoBuscado != null)
                 {
-                    IEnumerable<Planta> plantasBuscadas = ManejadorPlantas.BuscarPlantasPorTexto(textoBuscado);
-                    if (plantasBuscadas != null)
+                    try
                     {
-                        return View(plantasBuscadas);
+                        IEnumerable<Planta> plantasBuscadas = ManejadorPlantas.BuscarPlantasPorTexto(textoBuscado);
+                        if (plantasBuscadas.Count() > 0)
+                        {
+                            return View(plantasBuscadas);
+                        }
+                        else
+                        {
+                            ViewBag.Resultado = "No se encontraron plantas";
+                            return View();
+                        }
                     }
-                    else
+                    catch
                     {
-                        ViewBag.Error = "No se encontraron plantas";
                         return View();
                     }
                 }
-                catch
+                else
                 {
+                    ViewBag.Resultado = "Ingrese texto.";
                     return View();
                 }
             }
@@ -283,27 +291,36 @@ namespace ObligatorioP3.Controllers
             }
         }
 
-        // POST: PlantasController/BuscarPorTexto
+        // POST: PlantasController/BuscarPorTipo
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult BuscarPorTipo(int IdTipoSeleccionado)
         {
             if (HttpContext.Session.GetString("UL") != null)
             {
+                ViewBag.Tipos = ManejadorPlantas.TraerTodosLosTipos();
                 try
                 {
-                    ViewBag.Tipos = ManejadorPlantas.TraerTodosLosTipos();
-                    IEnumerable<Planta> plantasBuscadas = ManejadorPlantas.BuscarPlantasPorTipo(IdTipoSeleccionado);
-                    if (plantasBuscadas != null)
+                    if (IdTipoSeleccionado != 0)
                     {
-                        ViewBag.Plantas = plantasBuscadas;
-                        return View(ViewBag.Plantas, ViewBag.Tipos);
+                        IEnumerable<Planta> plantasBuscadas = ManejadorPlantas.BuscarPlantasPorTipo(IdTipoSeleccionado);
+                        if (plantasBuscadas.Count() > 0)
+                        {
+                            ViewBag.Plantas = plantasBuscadas;
+                            return View(ViewBag.Plantas, ViewBag.Tipos);
+                        }
+                        else
+                        {
+                            ViewBag.Resultado = "No se encontraron plantas";
+                            return View();
+                        }
                     }
                     else
                     {
-                        ViewBag.Error = "No se encontraron plantas";
-                        return View(ViewBag.Tipos);
+                        ViewBag.Resultado = "Seleccione un tipo";
+                        return View();
                     }
+
                 }
                 catch
                 {
@@ -320,9 +337,7 @@ namespace ObligatorioP3.Controllers
         {
             if (HttpContext.Session.GetString("UL") != null)
             {
-                ViewModelPlanta vmp = new ViewModelPlanta();
-                vmp.Ambientes = ManejadorPlantas.TraerTodosLosAmbientes();
-                ViewBag.Ambientes = vmp.Ambientes;
+                ViewBag.Ambientes = ManejadorPlantas.TraerTodosLosAmbientes();
                 return View();
             }
             else
@@ -338,20 +353,29 @@ namespace ObligatorioP3.Controllers
         {
             if (HttpContext.Session.GetString("UL") != null)
             {
+                ViewBag.Ambientes = ManejadorPlantas.TraerTodosLosAmbientes();
                 try
                 {
-                    IEnumerable<Planta> plantasBuscadas = ManejadorPlantas.BuscarPlantasPorAmbiente(IdAmbienteSeleccionado);
-                    if (plantasBuscadas != null)
+                    if (IdAmbienteSeleccionado != 0)
                     {
-                        ViewModelPlanta vmp = new ViewModelPlanta();
-                        vmp.Ambientes = ManejadorPlantas.TraerTodosLosAmbientes();
-                        ViewBag.Ambientes = vmp.Ambientes;
-                        ViewBag.Plantas = plantasBuscadas;
-                        return View(ViewBag.Plantas, ViewBag.Ambientes);
+                        IEnumerable<Planta> plantasBuscadas = ManejadorPlantas.BuscarPlantasPorAmbiente(IdAmbienteSeleccionado);
+                        if (plantasBuscadas.Count() > 0)
+                        {
+                            ViewModelPlanta vmp = new ViewModelPlanta();
+                            vmp.Ambientes = ManejadorPlantas.TraerTodosLosAmbientes();
+                            ViewBag.Ambientes = vmp.Ambientes;
+                            ViewBag.Plantas = plantasBuscadas;
+                            return View(ViewBag.Plantas, ViewBag.Ambientes);
+                        }
+                        else
+                        {
+                            ViewBag.Resultado = "No se encontraron plantas";
+                            return View();
+                        }
                     }
                     else
                     {
-                        ViewBag.Error = "No se encontraron plantas";
+                        ViewBag.Resultado = "Seleccione un ambiente";
                         return View();
                     }
                 }
@@ -386,21 +410,29 @@ namespace ObligatorioP3.Controllers
         {
             if (HttpContext.Session.GetString("UL") != null)
             {
-                try
+                if (centimetros > 0)
                 {
-                    IEnumerable<Planta> plantasBuscadas = ManejadorPlantas.BuscarPlantasMasBajas(centimetros);
-                    if (plantasBuscadas != null)
+                    try
                     {
-                        return View(plantasBuscadas);
+                        IEnumerable<Planta> plantasBuscadas = ManejadorPlantas.BuscarPlantasMasBajas(centimetros);
+                        if (plantasBuscadas.Count() > 0)
+                        {
+                            return View(plantasBuscadas);
+                        }
+                        else
+                        {
+                            ViewBag.Resultado = "No se encontraron plantas";
+                            return View();
+                        }
                     }
-                    else
+                    catch
                     {
-                        ViewBag.Error = "No se encontraron plantas";
                         return View();
                     }
                 }
-                catch
+                else
                 {
+                    ViewBag.Resultado = "Ingrese un número válido";
                     return View();
                 }
             }
@@ -429,21 +461,29 @@ namespace ObligatorioP3.Controllers
         {
             if (HttpContext.Session.GetString("UL") != null)
             {
-                try
+                if (centimetros > 0)
                 {
-                    IEnumerable<Planta> plantasBuscadas = ManejadorPlantas.BuscarPlantasMasAltas(centimetros);
-                    if (plantasBuscadas != null)
+                    try
                     {
-                        return View(plantasBuscadas);
+                        IEnumerable<Planta> plantasBuscadas = ManejadorPlantas.BuscarPlantasMasAltas(centimetros);
+                        if (plantasBuscadas.Count() > 0)
+                        {
+                            return View(plantasBuscadas);
+                        }
+                        else
+                        {
+                            ViewBag.Resultado = "No se encontraron plantas";
+                            return View();
+                        }
                     }
-                    else
+                    catch
                     {
-                        ViewBag.Error = "No se encontraron plantas";
                         return View();
                     }
                 }
-                catch
+                else
                 {
+                    ViewBag.Resultado = "Ingrese un número válido";
                     return View();
                 }
             }
@@ -468,5 +508,5 @@ namespace ObligatorioP3.Controllers
                 return RedirectToAction("Login", "Home");
             }
         }
-    }    
+    }
 }

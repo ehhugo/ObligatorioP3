@@ -123,6 +123,37 @@ namespace ObligatorioP3.Controllers
             }
         }
 
+        // POST: TipoController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(Tipo tipo)
+        {
+            if (HttpContext.Session.GetString("UL") != null)
+            {
+                try
+                {
+                    bool ok = ManejadorTipos.ActualizarDescripcionTipo(tipo);
+                    if (ok)
+                    {
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        ViewBag.Resultado = "No se pudo realizar la actualización de la descripción. Ingrese un texto de mas de diez caracteres.";
+                        return View(tipo);
+                    }
+                }
+                catch
+                {
+                    return View();
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
+
         public ActionResult Delete(string nombre)
         {
             if (HttpContext.Session.GetString("UL") != null)
@@ -146,38 +177,7 @@ namespace ObligatorioP3.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-        }
-
-        // POST: TipoController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(Tipo tipo)
-        {
-            if (HttpContext.Session.GetString("UL") != null)
-            {
-                try
-                {
-                    bool ok = ManejadorTipos.ActualizarDescripcionTipo(tipo);
-                    if (ok)
-                    {
-                        return RedirectToAction(nameof(Index));
-                    }
-                    else
-                    {
-                        ViewBag.Resultado = "No se pudo realizar la actualización de la descripción.";
-                        return View(tipo);
-                    }
-                }
-                catch
-                {
-                    return View();
-                }
-            }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
-        }
+        }        
 
 
         // POST: TipoController/Delete/5
@@ -229,6 +229,8 @@ namespace ObligatorioP3.Controllers
         {
             if (HttpContext.Session.GetString("UL") != null)
             {
+                if(textoBuscado != null)
+                {                
                 try
                 {
                     Tipo tipobuscado = ManejadorTipos.BuscarTipoPorNombre(textoBuscado);
@@ -244,6 +246,12 @@ namespace ObligatorioP3.Controllers
                 }
                 catch
                 {
+                    return View();
+                }
+                }
+                else
+                {
+                    ViewBag.Resultado = "Ingrese texto.";
                     return View();
                 }
             }
