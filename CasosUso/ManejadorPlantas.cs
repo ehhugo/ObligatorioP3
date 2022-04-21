@@ -100,6 +100,11 @@ namespace CasosUso
         public IEnumerable<Planta> BuscarPlantasMasAltas(double centimetros)
         {
             return RepoPlantas.BuscarPlantasMasAltas(centimetros);
-        }        
+        }
+
+        public bool BuscarPlantaPorNombreCientifico(string nombreCientifico)
+        {
+            return RepoPlantas.BuscarPorNombreCientifico(nombreCientifico);
+        }
     }
 }

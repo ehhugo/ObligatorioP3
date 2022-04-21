@@ -45,41 +45,43 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NombreCientifico)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TipoPlanta.Nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Descripcion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AlturaMaxima)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FrecuenciaRiego)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TemperaturaMantenimiento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TipoIluminacion.Tipo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ambiente.TipoAmbiente)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NombreVulgar)
-            </td>
-            <td>
-                <img src="~/imagenes/@item.Foto" height="60" />
-            </td>
-            <td>               
-                @Html.ActionLink("Cuidados", "Cuidados", new { id = item.IdPlanta })
-            </td>
-        </tr>}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NombreCientifico)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TipoPlanta.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descripcion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AlturaMaxima)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FrecuenciaRiego)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TemperaturaMantenimiento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TipoIluminacion.Tipo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ambiente.TipoAmbiente)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NombreVulgar)
+                </td>
+                <td>
+                    <img src="~/imagenes/@item.Foto" height="60" />
+                </td>
+                <td>
+                    @Html.ActionLink("Cuidados", "Cuidados", new { id = item.IdPlanta })
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

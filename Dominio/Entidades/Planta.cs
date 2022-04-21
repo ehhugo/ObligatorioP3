@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dominio.InterfacesRepositorio;
 
+
 namespace Dominio.Entidades
 {
     public class Planta : IValidate<Planta>
@@ -16,9 +17,9 @@ namespace Dominio.Entidades
         public string NombreCientifico { get; set; }
 
         public List<string> NombreVulgar { get; set; }
-        
+
         public string Descripcion { get; set; }
-        
+
         public Ambiente Ambiente { get; set; }
 
         public decimal AlturaMaxima { get; set; }
@@ -37,10 +38,32 @@ namespace Dominio.Entidades
             {
                 if (obj.NombreCientifico.Trim().Length > 0 && contieneSoloLetras(obj.NombreCientifico))
                 {
-                    return true;
+                    if (validarAtributo(obj.Descripcion))
+                    {
+                        if (obj.AlturaMaxima > 0)
+                        {
+                            if (validarAtributo(obj.Foto))
+                            {
+                                if (validarAtributo(obj.FrecuenciaRiego))
+                                {
+                                    if (obj.TemperaturaMantenimiento > 0)
+                                    {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
             return false;
+        }
+
+        private bool validarAtributo(string atributo)
+        {
+            bool validado = false;
+            if (atributo != null && atributo.Trim().Length > 0) validado = true;
+            return validado;
         }
 
         public bool contieneSoloLetras(string cadena)
