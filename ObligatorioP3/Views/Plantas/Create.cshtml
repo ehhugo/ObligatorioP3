@@ -85,7 +85,7 @@
             </div>
         </form>
         <div class="form-group">
-            <span class="text-danger" id="s">@ViewBag.Resultado</span>
+            <span class="text-danger" id="pMensaje">@ViewBag.Resultado</span>
         </div>
     </div>
 </div>
@@ -123,9 +123,9 @@
 
             if (validarTexto(NomCientifico)) {
 
-                if (validarTexto(NomVulgar)) {
+                if (validarTexto(NomVulgar) && descripcion.trim().length <= 700) {
 
-                    if (validarTexto(descripcion)) {
+                    if (validarTexto(descripcion) && descripcion.trim().length >= 10 && descripcion.trim().length <= 500) {
 
                         if (validarNumero(altura)) {
 

@@ -10,8 +10,8 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create" id="formAltaTipo">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>            
+        <form enctype="multipart/form-data" asp-action="Create" id="formAltaTipo">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Nombre" class="control-label"></label>
                 <input asp-for="Nombre" id="nombre" class="form-control" />
@@ -35,24 +35,27 @@
 
 <span class="text-danger" id="pMensaje">@ViewBag.Resultado</span>
 
-@section Scripts {
+
+
+@section Scripts{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
     <script>
         document.querySelector("#formAltaTipo").addEventListener('submit', validarDatos);
 
-
         function validarDatos(evento) {
-            evento.preventDefault();
+            event.preventDefault();
 
             let tipoNombre = document.querySelector("#nombre").value;
             let tipoDescripcion = document.querySelector("#descripcion").value;
 
             if (validarTexto(tipoNombre) && validarTexto(tipoDescripcion)) {
-                this.submit();
+                this.submit()
+
             } else {
-                document.querySelector("#pMensaje").value = "Por favor indique un Tipo y una descripción";
+                document.querySelector("#pMensaje").innerHTML = "Por favor indique un Tipo y una descripción";
             }
         }
-
 
         function validarTexto(value) {
             ret = false;
