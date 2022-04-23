@@ -135,7 +135,10 @@
 
             if (validarTexto(NomCientifico)) {
 
-                if (validarTexto(NomVulgar) && descripcion.trim().length <= 700) {
+
+               if (validarTexto(NomVulgar) && descripcion.trim().length <= 700) {
+
+                  if (Imagen !== "" && validarFoto(Imagen)) {
 
                     if (validarTexto(descripcion) && descripcion.trim().length >= 10 && descripcion.trim().length <= 500) {
 
@@ -175,10 +178,10 @@
                                             document.querySelector("#pMensaje").innerHTML = "Errores en el formulario. Verifique imagen.";
                                         }
                                     }
-                                    else {
-                                        document.querySelector("#pMensaje").innerHTML = "Errores en el formulario. Verifique temperatura.";
-                                    }
-                                }
+                                    else {   document.querySelector("#pMensaje").innerHTML = "Errores en el formulario. Verifique temperatura.";}}
+                                  
+else { document.querySelector("#pMensaje").innerHTML = "Errores en el formulario. Solo se aceptan Archivos .jpg o .png"; }}                                    
+                                
                                 else {
                                     document.querySelector("#pMensaje").innerHTML = "Errores en el formulario. Verifique frecuencia riego (tiempo).";
                                 }
@@ -202,6 +205,15 @@
             else {
                 document.querySelector("#pMensaje").innerHTML = "Errores en el formulario. Verifique nombre cientifico.";
             }
+        }
+
+        function validarFoto(value) {
+            ret = false;
+
+            if (value.includes("jpg", value.length - 3) || value.includes("png", value.length - 3)) {
+                ret = true;
+            }
+            return ret;
         }
 
         function validarNumero(value) {
