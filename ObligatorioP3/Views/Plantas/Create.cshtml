@@ -42,7 +42,7 @@
             <div class="form-group">
                 <label class="control-label">Frecuencia de riego (tiempo)</label>
                 <select id="RiegoUnidad" name="RiegoUnidad">
-                    <option value="0" disabled>Seleccione Frecuencia</option>
+                    <option value="0" disabled selected>Seleccione Frecuencia</option>
                     <option value="1">Hora/s</option>
                     <option value="2">Día/s</option>
                     <option value="3">Semana/s</option>
@@ -63,7 +63,7 @@
             <div class="form-group">
                 <label class="control-label">Tipo:</label>
                 <select id="selTipoPlanta" name="IdTipoSeleccionado">
-                    <option value="0" disabled>Seleccione Tipo</option>
+                    <option value="0" disabled selected>Seleccione Tipo</option>
                     @foreach (Tipo t in Model.Tipos)
                     {
                         <option value="@t.IdTipo">@t.Nombre</option>
@@ -73,7 +73,7 @@
             <div class="form-group">
                 <label class="control-label">Ambiente:</label>
                 <select id="selAmbiente" name="IdAmbienteSeleccionado">
-                    <option value="0" disabled>Seleccione Ambiente</option>
+                    <option value="0" disabled selected>Seleccione Ambiente</option>
                     @foreach (Ambiente am in Model.Ambientes)
                     {
                         <option value="@am.IdAmbiente">@am.TipoAmbiente</option>
@@ -83,7 +83,7 @@
             <div class="form-group">
                 <label class="control-label">Iluminación:</label>
                 <select id="selIluminacion" name="IdIluminacionSeleccionada">
-                    <option value="0" disabled>Seleccione Iluminación</option>
+                    <option value="0" disabled selected>Seleccione Iluminación</option>
                     @foreach (Iluminacion il in Model.Iluminaciones)
                     {
                         <option value="@il.IdIluminacion">@il.Tipo</option>
@@ -136,9 +136,7 @@
             if (validarTexto(NomCientifico)) {
 
 
-               if (validarTexto(NomVulgar) && descripcion.trim().length <= 700) {
-
-                  if (Imagen !== "" && validarFoto(Imagen)) {
+                if (validarTexto(NomVulgar) && descripcion.trim().length <= 700) {
 
                     if (validarTexto(descripcion) && descripcion.trim().length >= 10 && descripcion.trim().length <= 500) {
 
@@ -150,7 +148,7 @@
 
                                     if (validarNumero(tempMantenimiento)) {
 
-                                        if (Imagen !== "") {
+                                        if (Imagen !== "" && validarFoto(Imagen)) {
                                             let numTipoPlanta = Number(tipoPlanta);
                                             if (numTipoPlanta !== 0) {
                                                 let numAmbiente = Number(ambiente);
@@ -175,13 +173,14 @@
                                             }
                                         }
                                         else {
-                                            document.querySelector("#pMensaje").innerHTML = "Errores en el formulario. Verifique imagen.";
+                                            document.querySelector("#pMensaje").innerHTML = "Errores en el formulario. Solo se aceptan Archivos .jpg o .png.";
                                         }
                                     }
-                                    else {   document.querySelector("#pMensaje").innerHTML = "Errores en el formulario. Verifique temperatura.";}}
-                                  
-else { document.querySelector("#pMensaje").innerHTML = "Errores en el formulario. Solo se aceptan Archivos .jpg o .png"; }}                                    
-                                
+                                    else {
+                                        document.querySelector("#pMensaje").innerHTML = "Errores en el formulario. Verifique temperatura.";
+                                    }
+                                }
+
                                 else {
                                     document.querySelector("#pMensaje").innerHTML = "Errores en el formulario. Verifique frecuencia riego (tiempo).";
                                 }
