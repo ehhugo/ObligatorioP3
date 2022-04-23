@@ -102,7 +102,7 @@
     <script>
         document.querySelector("#formAltaPlanta").addEventListener('submit', validarDatos);
 
-      
+
         function validarDatos(evento) {
             evento.preventDefault();
 
@@ -133,7 +133,7 @@
 
                                 if (validarNumero(tempMantenimiento)) {
 
-                                    if (Imagen !== "") {
+                                    if (Imagen !== "" && validarFoto(Imagen)) {
 
                                         if (numTipoPlanta !== -1) {
 
@@ -155,7 +155,7 @@
                                         }
                                     }
                                     else {
-                                        document.querySelector("#pMensaje").innerHTML = "Errores en el formulario. Verifique imagen.";
+                                        document.querySelector("#pMensaje").innerHTML = "Errores en el formulario. Solo se aceptan Archivos .jpg o .png";
                                     }
                                 }
                                 else {
@@ -181,6 +181,15 @@
             else {
                 document.querySelector("#pMensaje").innerHTML = "Errores en el formulario. Verifique nombre cientifico.";
             }
+        }
+
+        function validarFoto(value) {
+            ret = false;
+
+            if (value.includes("jpg", value.length - 3) || value.includes("png", value.length - 3)) {
+                ret = true;
+            }
+            return ret;
         }
 
         function validarNumero(value) {

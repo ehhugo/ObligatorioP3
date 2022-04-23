@@ -80,7 +80,13 @@ namespace ObligatorioP3.Controllers
                     if (!ManejadorPlantas.BuscarPlantaPorNombreCientifico(vmp.Planta.NombreCientifico))
                     {
                         //string nombreArchivo = vmp.Imagen.FileName;
-                        string nombreArchivo = vmp.Planta.NombreCientifico + "001.jpg";
+                        string extension = Path.GetExtension(vmp.Imagen.FileName);
+                        string nombreArchivo="";
+
+                        if (extension.Contains("jpg") || extension.Contains("png"))
+                        {
+                        nombreArchivo = vmp.Planta.NombreCientifico + $"001{extension}";
+                        }
 
                         if (nombreArchivo.Contains(" "))
                         {
