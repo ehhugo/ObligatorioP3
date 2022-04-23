@@ -26,7 +26,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Planta.Descripcion" class="control-label">Descripción</label>
-                <input id="Descripcion" asp-for="Planta.Descripcion" value= "Descripción Prueba Unique Nombre Científico" class="form-control" />
+                <input id="Descripcion" asp-for="Planta.Descripcion" value="Descripción Prueba Unique Nombre Científico" class="form-control" />
                 <span asp-validation-for="Planta.Descripcion" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -35,9 +35,19 @@
                 <span asp-validation-for="Planta.AlturaMaxima" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Planta.FrecuenciaRiego" class="control-label">Frecuencia de riego</label>
-                <input id="FrecuenciaRiego" asp-for="Planta.FrecuenciaRiego" value="2 días" class="form-control" />
+                <label asp-for="Planta.FrecuenciaRiego" class="control-label">Frecuencia de riego (unidad)</label>
+                <input id="FrecuenciaRiego" type="number" asp-for="Planta.FrecuenciaRiego" value="2 días" class="form-control" />
                 <span asp-validation-for="Planta.FrecuenciaRiego" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Frecuencia de riego (tiempo)</label>
+                <select id="RiegoUnidad" name="RiegoUnidad">
+                    <option value="0" disabled>Seleccione Frecuencia</option>
+                    <option value="1">Hora/s</option>
+                    <option value="2">Día/s</option>
+                    <option value="3">Semana/s</option>
+                    <option value="4">Mes/es</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="Planta.TemperaturaMantenimiento" class="control-label">Temperatura de Mantenimiento</label>
@@ -53,7 +63,7 @@
             <div class="form-group">
                 <label class="control-label">Tipo:</label>
                 <select id="selTipoPlanta" name="IdTipoSeleccionado">
-                    <option value="-1">Seleccione Tipo</option>
+                    <option value="0" disabled>Seleccione Tipo</option>
                     @foreach (Tipo t in Model.Tipos)
                     {
                         <option value="@t.IdTipo">@t.Nombre</option>
@@ -63,7 +73,7 @@
             <div class="form-group">
                 <label class="control-label">Ambiente:</label>
                 <select id="selAmbiente" name="IdAmbienteSeleccionado">
-                    <option value="-1">Seleccione Ambiente</option>
+                    <option value="0" disabled>Seleccione Ambiente</option>
                     @foreach (Ambiente am in Model.Ambientes)
                     {
                         <option value="@am.IdAmbiente">@am.TipoAmbiente</option>
@@ -73,7 +83,7 @@
             <div class="form-group">
                 <label class="control-label">Iluminación:</label>
                 <select id="selIluminacion" name="IdIluminacionSeleccionada">
-                    <option value="-1">Seleccione Iluminación</option>
+                    <option value="0" disabled>Seleccione Iluminación</option>
                     @foreach (Iluminacion il in Model.Iluminaciones)
                     {
                         <option value="@il.IdIluminacion">@il.Tipo</option>
@@ -111,59 +121,73 @@
             let descripcion = document.querySelector("#Descripcion").value;
             let altura = document.querySelector("#AlturaMaxima").value;
             let frecuenciaRiego = document.querySelector("#FrecuenciaRiego").value;
+            let unidadRiego = document.querySelector("#RiegoUnidad").value;
             let tempMantenimiento = document.querySelector("#TemperaturaMantenimiento").value;
             let Imagen = document.querySelector("#txtImagen").value;
             let tipoPlanta = document.querySelector("#selTipoPlanta").value;
             let ambiente = document.querySelector("#selAmbiente").value;
             let iluminacion = document.querySelector("#selIluminacion").value;
 
-            let numTipoPlanta = Number(tipoPlanta);
-            let numAmbiente = Number(ambiente);
-            let numIluminacion = Number(iluminacion);
+
+
+
+
 
             if (validarTexto(NomCientifico)) {
 
-                if (validarTexto(NomVulgar) && descripcion.trim().length <= 700) {
+
+               if (validarTexto(NomVulgar) && descripcion.trim().length <= 700) {
+
+                  if (Imagen !== "" && validarFoto(Imagen)) {
 
                     if (validarTexto(descripcion) && descripcion.trim().length >= 10 && descripcion.trim().length <= 500) {
 
                         if (validarNumero(altura)) {
 
-                            if (validarTexto(frecuenciaRiego)) {
+                            if (validarNumero(frecuenciaRiego)) {
+                                let numunidadRiego = Number(unidadRiego);
+                                if (numunidadRiego !== 0) {
 
-                                if (validarNumero(tempMantenimiento)) {
+                                    if (validarNumero(tempMantenimiento)) {
 
-                                    if (Imagen !== "" && validarFoto(Imagen)) {
+                                        if (Imagen !== "") {
+                                            let numTipoPlanta = Number(tipoPlanta);
+                                            if (numTipoPlanta !== 0) {
+                                                let numAmbiente = Number(ambiente);
+                                                if (numAmbiente !== 0) {
+                                                    let numIluminacion = Number(iluminacion);
+                                                    if (numIluminacion !== 0) {
 
-                                        if (numTipoPlanta !== -1) {
-
-                                            if (numAmbiente !== -1) {
-
-                                                if (numIluminacion !== -1) {
-                                                    this.submit();
+                                                        document.querySelector("#FrecuenciaRiego").removeAttribute("type");
+                                                        document.querySelector("#FrecuenciaRiego").value = frecuenciaRiego + " " + switchFrecuencias(unidadRiego);
+                                                        this.submit();
+                                                    }
+                                                    else {
+                                                        document.querySelector("#pMensaje").innerHTML = "Errores en el formulario. Verifique iluminacion.";
+                                                    }
                                                 }
                                                 else {
-                                                    document.querySelector("#pMensaje").innerHTML = "Errores en el formulario. Verifique iluminacion.";
+                                                    document.querySelector("#pMensaje").innerHTML = "Errores en el formulario. Verifique ambiente.";
                                                 }
                                             }
                                             else {
-                                                document.querySelector("#pMensaje").innerHTML = "Errores en el formulario. Verifique ambiente.";
+                                                document.querySelector("#pMensaje").innerHTML = "Errores en el formulario. Verifique tipo planta.";
                                             }
                                         }
                                         else {
-                                            document.querySelector("#pMensaje").innerHTML = "Errores en el formulario. Verifique tipo planta.";
+                                            document.querySelector("#pMensaje").innerHTML = "Errores en el formulario. Verifique imagen.";
                                         }
                                     }
-                                    else {
-                                        document.querySelector("#pMensaje").innerHTML = "Errores en el formulario. Solo se aceptan Archivos .jpg o .png";
-                                    }
-                                }
+                                    else {   document.querySelector("#pMensaje").innerHTML = "Errores en el formulario. Verifique temperatura.";}}
+                                  
+else { document.querySelector("#pMensaje").innerHTML = "Errores en el formulario. Solo se aceptan Archivos .jpg o .png"; }}                                    
+                                
                                 else {
-                                    document.querySelector("#pMensaje").innerHTML = "Errores en el formulario. Verifique temperatura.";
+                                    document.querySelector("#pMensaje").innerHTML = "Errores en el formulario. Verifique frecuencia riego (tiempo).";
                                 }
                             }
                             else {
-                                document.querySelector("#pMensaje").innerHTML = "Errores en el formulario. Verifique frecuencia riego.";
+                                document.querySelector("#pMensaje").innerHTML = "Errores en el formulario. Verifique frecuencia riego (unidad).";
                             }
                         }
                         else {
@@ -207,5 +231,33 @@
             }
             return ret;
         }
+
+        function switchFrecuencias(valor) {
+            let mensaje = "";
+            switch (valor) {
+                case "1": {
+                    mensaje = "Hora/s";
+                    break;
+                }
+                case "2": {
+                    mensaje = "Día/s";
+                    break;
+                }
+                case "3": {
+                    mensaje = "Semana/s";
+                    break;
+                }
+                case "4": {
+                    mensaje = "Mes/es";
+                    break;
+                }
+                default: {
+                    mensaje = "Seleccione un tiempo de frecuencia";
+                }
+
+            }
+            return mensaje;
+        }
+
     </script>
 }
