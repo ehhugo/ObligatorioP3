@@ -24,6 +24,10 @@ namespace Datos
                     "(@tipoPlanta, @nomCientifico, @descripcion, @ambiente, @alturaMaxima, @foto, @frecuenciaRiego, @tipoIluminacion, @tempMantenimiento); " +
                     "SELECT CAST (SCOPE_IDENTITY() AS INT);";
 
+                string nombresVulgares = "INSERT INTO NombresVulgares VALUES " +
+                        "(@NombreVulgar, @idPlanta); " +
+                        "SELECT CAST (SCOPE_IDENTITY() AS INT);";
+
                 SqlCommand SQLcom = new SqlCommand(sql, con);
 
                 SQLcom.Parameters.AddWithValue("@tipoPlanta", obj.TipoPlanta.IdTipo);
@@ -36,16 +40,39 @@ namespace Datos
                 SQLcom.Parameters.AddWithValue("@tipoIluminacion", obj.TipoIluminacion.IdIluminacion);
                 SQLcom.Parameters.AddWithValue("@tempMantenimiento", obj.TemperaturaMantenimiento);
 
+                SqlTransaction tran = null;
+
                 try
                 {
                     Conexion.AbrirConexion(con);
+
+                    tran = con.BeginTransaction();
+                    SQLcom.Transaction = tran;
+
                     int id = (int)SQLcom.ExecuteScalar();
                     obj.IdPlanta = id;
-                    AddNombresVulgares(obj.NombreVulgar, id);
+
+                    SQLcom.Parameters.Clear();                   
+                    SQLcom.CommandText = nombresVulgares;
+
+                    List<string> list = obj.NombreVulgar[0].Split(',').ToList();
+                    foreach (var nombre in list)
+                    {
+                        if (nombre != null)
+                        {
+                            SQLcom.Parameters.AddWithValue("@NombreVulgar", nombre);
+                            SQLcom.Parameters.AddWithValue("@idPlanta", id);
+                            SQLcom.ExecuteNonQuery();
+                            SQLcom.Parameters.Clear();
+
+                        }
+                    }
+                    tran.Commit();
                     altaOK = true;
                 }
                 catch
                 {
+                    if (tran != null) tran.Rollback();
                     throw;
                 }
                 finally
@@ -55,45 +82,6 @@ namespace Datos
             }
             return altaOK;
         }
-
-        private void AddNombresVulgares(List<string> nombreVulgar, int id)
-        {
-            string stringNombres = nombreVulgar[0];            
-            List<string> list = new List<string>();
-            list = stringNombres.Split(',').ToList();
-            foreach (var nombre in list)
-            {
-                if (nombre != null)
-                {
-                    SqlConnection con = Conexion.ObtenerConexion();
-
-                    string sql = "INSERT INTO NombresVulgares VALUES " +
-                        "(@NombreVulgar, @idPlanta); " +
-                        "SELECT CAST (SCOPE_IDENTITY() AS INT);";
-
-                    SqlCommand SQLcom = new SqlCommand(sql, con);
-
-                    SQLcom.Parameters.AddWithValue("@NombreVulgar", nombre);
-                    SQLcom.Parameters.AddWithValue("@idPlanta", id);                    
-
-                    try
-                    {
-                        Conexion.AbrirConexion(con);
-                        SQLcom.ExecuteScalar();              
-                    }
-                    catch
-                    {
-                        throw;
-                    }
-                    finally
-                    {
-                        Conexion.CerrarYTerminarConexion(con);
-                    }
-                }
-            }
-        }
-
-
         #endregion
 
         #region FindAll y FindById
@@ -380,7 +368,7 @@ namespace Datos
                 string sql = "SELECT P.*, TP.Nombre AS TipoDePlanta, TP.Descripcion AS DescripcionDeTipo, NV.NombreVulgar, A.TipoAmbiente, TI.TipoIluminacion FROM Plantas P " +
                              "LEFT JOIN TiposDePlanta TP ON P.TipoPlanta = TP.idTipo  " +
                              "LEFT JOIN Ambientes A ON P.Ambiente = A.idAmbiente " +
-                             "LEFT JOIN NombresVulgares NV ON P.idPlanta = NV.idPlanta "+
+                             "LEFT JOIN NombresVulgares NV ON P.idPlanta = NV.idPlanta " +
                             $"LEFT JOIN TiposDeIluminacion TI on P.Iluminacion = TI.idIluminacion WHERE NombreCientifico LIKE '%{texto}%' OR NombreVulgar LIKE '%{texto}%'";
                 SqlCommand SQLCom = new SqlCommand(sql, con);
 
