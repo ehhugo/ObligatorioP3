@@ -92,6 +92,7 @@ namespace ObligatorioP3.Controllers
                         {
                             nombreArchivo = nombreArchivo.Replace(" ", "_");
                         }
+                        vmp.Planta.FrecuenciaRiego += " días";
 
                         vmp.Planta.Foto = nombreArchivo;
 

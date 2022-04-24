@@ -26,7 +26,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Planta.Descripcion" class="control-label">Descripción</label>
-                <input id="Descripcion" asp-for="Planta.Descripcion" value= "Descripción Prueba Unique Nombre Científico" class="form-control" />
+                <input id="Descripcion" asp-for="Planta.Descripcion" value="Descripción Prueba Unique Nombre Científico" class="form-control" />
                 <span asp-validation-for="Planta.Descripcion" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -36,7 +36,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="Planta.FrecuenciaRiego" class="control-label">Frecuencia de riego</label>
-                <input id="FrecuenciaRiego" asp-for="Planta.FrecuenciaRiego" value="2 días" class="form-control" />
+                <input type="number" id="FrecuenciaRiego" asp-for="Planta.FrecuenciaRiego" value="2 días" class="form-control" />
+                <span class="text-danger">* Cada cuantos días se riega la planta</span>
                 <span asp-validation-for="Planta.FrecuenciaRiego" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -121,7 +122,7 @@
             let numAmbiente = Number(ambiente);
             let numIluminacion = Number(iluminacion);
 
-            if (validarTexto(NomCientifico)) {
+            if (validarTexto(NomCientifico) && !TextoContieneNumeros(NomCientifico) {
 
                 if (validarTexto(NomVulgar) && descripcion.trim().length <= 700) {
 
@@ -129,7 +130,7 @@
 
                         if (validarNumero(altura)) {
 
-                            if (validarTexto(frecuenciaRiego)) {
+                            if (validarNumero(frecuenciaRiego)) {
 
                                 if (validarNumero(tempMantenimiento)) {
 
@@ -184,7 +185,7 @@
         }
 
         function validarFoto(value) {
-            ret = false;
+            let ret = false;
 
             if (value.includes("jpg", value.length - 3) || value.includes("png", value.length - 3)) {
                 ret = true;
@@ -193,7 +194,7 @@
         }
 
         function validarNumero(value) {
-            ret = false;
+            let ret = false;
             if (!isNaN(value) && value.trim().length > 0 && value !== "" && value > 0) {
                 ret = true;
             }
@@ -201,9 +202,22 @@
         }
 
         function validarTexto(value) {
-            ret = false;
+            let ret = false;
             if (value != null && isNaN(value) && value.trim().length > 0) {
                 ret = true;
+            }
+            return ret;
+        }
+
+        function TextoContieneNumeros(value) {
+            let ret = false;
+            let x = 0;
+            while (x < value.length && !ret) {
+                let caracter = value.charCodeAt(x);
+                if (caracter >= 48 && letter <= 57) {
+                    ret = true;
+                }
+                x++;
             }
             return ret;
         }

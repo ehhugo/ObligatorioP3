@@ -30,12 +30,26 @@ namespace ObligatorioP3.Controllers
         */
         public IActionResult Index()
         {
-            return View();
+            if (HttpContext.Session.GetString("UL") != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
         }
 
         public IActionResult Privacy()
         {
-            return View();
+            if (HttpContext.Session.GetString("UL") != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
