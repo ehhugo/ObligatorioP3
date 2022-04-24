@@ -141,6 +141,7 @@ namespace Datos
             return buscada;
         }
         #endregion
+
         #region Update
         public bool update(Iluminacion obj)
         {

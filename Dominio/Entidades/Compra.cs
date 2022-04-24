@@ -12,7 +12,7 @@ namespace Dominio.Entidades
         public  DateTime FechaCompra { get; set; }
 
         public List<Item> Items { get; set; }
-    public abstract double CalcularPrecioCompra();
 
+        public abstract double CalcularPrecioCompra();
     }
 }

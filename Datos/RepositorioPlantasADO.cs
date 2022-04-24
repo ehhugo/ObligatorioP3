@@ -122,8 +122,6 @@ namespace Datos
             return plantas;
         }
 
-
-
         public Planta FindById(int id)
         {
             Planta buscada = null;
@@ -160,7 +158,6 @@ namespace Datos
 
             return buscada;
         }
-
         #endregion
 
         #region Remove
@@ -399,6 +396,7 @@ namespace Datos
             }
             return plantasConTextoEnNombre;
         }
+
         public bool BuscarPorNombreCientifico(string nomCientifico)
         {
             bool existeNomCientifico = false;
@@ -477,7 +475,7 @@ namespace Datos
         }
         #endregion
 
-        #region Métodos para Crear Ambiente, NombreVulgar, iluminación, Tipo y Planta
+        #region Métodos para Crear Ambiente, NombreVulgar, Iluminación, Tipo y Planta
         private List<string> TraerNombresVulgaresDePlantas(int id)
         {
             List<string> nombresVulgares = new List<String>();
@@ -541,7 +539,6 @@ namespace Datos
             };
             return iluminacionBuscada;
         }
-
 
         private Planta CrearPlanta(SqlDataReader reader)
         {

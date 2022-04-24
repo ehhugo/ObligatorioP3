@@ -15,7 +15,6 @@ namespace Dominio.Entidades
 
         public string MedidasSantiarias { get; set; }
 
-
         public override double CalcularPrecioCompra()
         {
             throw new NotImplementedException();

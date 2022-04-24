@@ -66,7 +66,6 @@ namespace Datos
             }
             return eliminarOK;
         }
-
         #endregion
 
         #region Find
@@ -104,7 +103,6 @@ namespace Datos
             }
             return ambientes;
         }
-
         public Ambiente FindById(int id)
         {
             Ambiente buscado = null;

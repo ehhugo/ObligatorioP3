@@ -12,7 +12,6 @@ namespace Dominio.Entidades
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
 
-
         public bool Validar()
         {
             if (Nombre != null && Descripcion != null && contieneSoloLetras(Nombre))
