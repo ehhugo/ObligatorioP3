@@ -72,7 +72,10 @@
                             @Html.DisplayFor(modelItem => item.Ambiente.TipoAmbiente)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.NombreVulgar)
+                            @foreach (var nombre in item.NombreVulgar)
+                            {
+                                @nombre <br>
+                            }
                         </td>
                         <td>
                             <img src="~/imagenes/@item.Foto" height="60" />
