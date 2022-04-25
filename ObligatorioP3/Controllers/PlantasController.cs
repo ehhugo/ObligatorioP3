@@ -75,15 +75,16 @@ namespace ObligatorioP3.Controllers
             {
                 try
                 {
+
                     if (!ManejadorPlantas.BuscarPlantaPorNombreCientifico(vmp.Planta.NombreCientifico))
                     {
-                        //string nombreArchivo = vmp.Imagen.FileName;
+
                         string extension = Path.GetExtension(vmp.Imagen.FileName);
-                        string nombreArchivo="";
+                        string nombreArchivo = "";
 
                         if (extension.Contains("jpg") || extension.Contains("png"))
                         {
-                        nombreArchivo = vmp.Planta.NombreCientifico + $"001{extension}";
+                            nombreArchivo = vmp.Planta.NombreCientifico + $"001{extension}";
                         }
 
                         if (nombreArchivo.Contains(" "))
@@ -110,16 +111,17 @@ namespace ObligatorioP3.Controllers
                         }
                         else
                         {
-                            CargarMensajeYSelects("Error al dar el alta. No se pudo crear la planta", vmp);                            
+                            CargarMensajeYSelects("Error al dar el alta. No se pudo crear la planta", vmp);
                             return View(vmp);
                         }
                     }
                     else
                     {
-                        CargarMensajeYSelects("Error al dar el alta, el nombre científico ya existe.", vmp);                        
+                        CargarMensajeYSelects("Error al dar el alta, el nombre científico ya existe.", vmp);
                         return View(vmp);
                     }
                 }
+
                 catch
                 {
                     CargarMensajeYSelects("Error al dar el alta. Problema interno.", vmp);
@@ -132,6 +134,20 @@ namespace ObligatorioP3.Controllers
             }
         }
         #endregion
+
+        private bool NombreCientificoContieneNumeros(string NombreCientifico)
+        {
+            bool ret = false;
+            foreach (char letra in NombreCientifico)
+            {
+                if (letra >= 48 && letra <= 57)
+                {
+                    ret = true;
+                }
+            }
+            return ret;
+        }
+
 
         private ViewModelPlanta CargarMensajeYSelects(string mensaje, ViewModelPlanta vmp)
         {

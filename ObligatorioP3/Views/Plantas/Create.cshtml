@@ -129,8 +129,7 @@
             let iluminacion = document.querySelector("#selIluminacion").value;
 
 
-            if (validarTexto(NomCientifico) && !TextoContieneNumeros(NomCientifico) {
-
+            if (validarTexto(NomCientifico) && !TextoContieneNumeros(NomCientifico)) {
 
                 if (validarTexto(NomVulgar) && descripcion.trim().length <= 700) {
 
@@ -201,6 +200,7 @@
                 document.querySelector("#pMensaje").innerHTML = "Errores en el formulario. Verifique nombre cientifico.";
             }
         }
+           
 
         function validarFoto(value) {
             let ret = false;
@@ -232,7 +232,7 @@
             let x = 0;
             while (x < value.length && !ret) {
                 let caracter = value.charCodeAt(x);
-                if (caracter >= 48 && letter <= 57) {
+                if (caracter >= 48 && caracter <= 57) {
                     ret = true;
                 }
                 x++;
