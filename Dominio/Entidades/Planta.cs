@@ -8,7 +8,6 @@ using Dominio.InterfacesRepositorio;
 namespace Dominio.Entidades
 {
     public class Planta : IValidate<Planta>
-
     {
         public int IdPlanta { get; set; }
 

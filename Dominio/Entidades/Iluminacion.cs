@@ -23,5 +23,4 @@ namespace Dominio.Entidades
             return false;
         }
     }
-
 }

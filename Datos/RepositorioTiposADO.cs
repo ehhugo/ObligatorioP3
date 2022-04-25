@@ -12,7 +12,6 @@ using Microsoft.Data.SqlClient;
 namespace Datos
 {
     public class RepositorioTiposADO : IRepositorioTipos
-
     {
         #region Add/Delete
         public bool Add(Tipo obj)
@@ -72,6 +71,7 @@ namespace Datos
             }
             return ok;
         }
+
         public bool EliminarPorNombre(string name)
         {
             bool ok = false;
@@ -172,7 +172,6 @@ namespace Datos
 
         }
 
-
         public bool TipoExiste(string nombreTipo)
         {
             bool existeTipo = false;
@@ -205,7 +204,6 @@ namespace Datos
             }
             return existeTipo;
         }
-
 
         public Tipo BuscarPorNombre(string nombre)
         {
@@ -243,11 +241,9 @@ namespace Datos
             return buscado;
 
         }
-
         #endregion
 
         #region Update
-
         public bool update(Tipo obj)
         {
             bool ok = false;

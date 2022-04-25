@@ -52,7 +52,7 @@ namespace Datos
                     int id = (int)SQLcom.ExecuteScalar();
                     obj.IdPlanta = id;
 
-                    SQLcom.Parameters.Clear();                   
+                    SQLcom.Parameters.Clear();
                     SQLcom.CommandText = nombresVulgares;
 
                     List<string> list = obj.NombreVulgar[0].Split(',').ToList();
@@ -122,8 +122,6 @@ namespace Datos
             return plantas;
         }
 
-
-
         public Planta FindById(int id)
         {
             Planta buscada = null;
@@ -160,7 +158,6 @@ namespace Datos
 
             return buscada;
         }
-
         #endregion
 
         #region Remove
@@ -365,11 +362,11 @@ namespace Datos
             if (texto != null)
             {
                 SqlConnection con = Conexion.ObtenerConexion();
-                string sql = "SELECT P.*, TP.Nombre AS TipoDePlanta, TP.Descripcion AS DescripcionDeTipo, NV.NombreVulgar, A.TipoAmbiente, TI.TipoIluminacion FROM Plantas P " +
-                             "LEFT JOIN TiposDePlanta TP ON P.TipoPlanta = TP.idTipo  " +
+                string sql = "SELECT distinct P.*, TP.Nombre AS TipoDePlanta, TP.Descripcion AS DescripcionDeTipo, A.TipoAmbiente, TI.TipoIluminacion FROM Plantas P " +
+                            "LEFT JOIN TiposDePlanta TP ON P.TipoPlanta = TP.idTipo " +
                              "LEFT JOIN Ambientes A ON P.Ambiente = A.idAmbiente " +
                              "LEFT JOIN NombresVulgares NV ON P.idPlanta = NV.idPlanta " +
-                            $"LEFT JOIN TiposDeIluminacion TI on P.Iluminacion = TI.idIluminacion WHERE NombreCientifico LIKE '%{texto}%' OR NombreVulgar LIKE '%{texto}%'";
+                            $"LEFT JOIN TiposDeIluminacion TI on P.Iluminacion = TI.idIluminacion WHERE NombreCientifico LIKE '%{texto}%' or  NombreVulgar LIKE '%{texto}%';";
                 SqlCommand SQLCom = new SqlCommand(sql, con);
 
                 try
@@ -399,7 +396,7 @@ namespace Datos
             }
             return plantasConTextoEnNombre;
         }
-       
+
         public bool BuscarPorNombreCientifico(string nomCientifico)
         {
             bool existeNomCientifico = false;
@@ -478,9 +475,7 @@ namespace Datos
         }
         #endregion
 
-
-
-        #region Métodos para Crear Ambiente, NombreVulgar, iluminación, Tipo y Planta
+        #region Métodos para Crear Ambiente, NombreVulgar, Iluminación, Tipo y Planta
         private List<string> TraerNombresVulgaresDePlantas(int id)
         {
             List<string> nombresVulgares = new List<String>();
