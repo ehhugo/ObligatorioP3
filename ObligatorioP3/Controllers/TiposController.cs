@@ -67,7 +67,9 @@ namespace ObligatorioP3.Controllers
             {
                 try
                 {
-                    if (ManejadorTipos.BuscarTipoPorNombre(tipo.Nombre)== null)
+
+
+                    if (ManejadorTipos.BuscarTipoPorNombre(tipo.Nombre) == null)
                     {
                         bool ok = ManejadorTipos.AgregarNuevoTipo(tipo);
 
@@ -86,6 +88,7 @@ namespace ObligatorioP3.Controllers
                         return ViewBag.Resultado = "El tipo de planta ingresado ya existe";
                     }
                 }
+
                 catch
                 {
                     return View(tipo);
@@ -132,15 +135,18 @@ namespace ObligatorioP3.Controllers
             {
                 try
                 {
-                    bool ok = ManejadorTipos.ActualizarDescripcionTipo(tipo);
-                    if (ok)
                     {
-                        return RedirectToAction(nameof(Index));
-                    }
-                    else
-                    {
-                        ViewBag.Resultado = "No se pudo realizar la actualización de la descripción. Ingrese un texto de mas de diez caracteres.";
-                        return View(tipo);
+
+                        bool ok = ManejadorTipos.ActualizarDescripcionTipo(tipo);
+                        if (ok)
+                        {
+                            return RedirectToAction(nameof(Index));
+                        }
+                        else
+                        {
+                            ViewBag.Resultado = "No se pudo realizar la actualización de la descripción. Ingrese un texto de mas de diez caracteres.";
+                            return View(tipo);
+                        }
                     }
                 }
                 catch
@@ -177,7 +183,7 @@ namespace ObligatorioP3.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-        }        
+        }
 
 
         // POST: TipoController/Delete/5
@@ -229,25 +235,25 @@ namespace ObligatorioP3.Controllers
         {
             if (HttpContext.Session.GetString("UL") != null)
             {
-                if(textoBuscado != null)
-                {                
-                try
+                if (textoBuscado != null)
                 {
-                    Tipo tipobuscado = ManejadorTipos.BuscarTipoPorNombre(textoBuscado);
-                    if (tipobuscado != null)
+                    try
                     {
-                        return View(tipobuscado);
+                        Tipo tipobuscado = ManejadorTipos.BuscarTipoPorNombre(textoBuscado);
+                        if (tipobuscado != null)
+                        {
+                            return View(tipobuscado);
+                        }
+                        else
+                        {
+                            ViewBag.Resultado = "No se encontró el tipo buscado";
+                            return View();
+                        }
                     }
-                    else
+                    catch
                     {
-                        ViewBag.Resultado = "No se encontró el tipo buscado";
                         return View();
                     }
-                }
-                catch
-                {
-                    return View();
-                }
                 }
                 else
                 {

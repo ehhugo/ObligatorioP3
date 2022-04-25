@@ -49,11 +49,15 @@
             let tipoNombre = document.querySelector("#nombre").value;
             let tipoDescripcion = document.querySelector("#descripcion").value;
 
-            if (validarTexto(tipoNombre) && validarTexto(tipoDescripcion)) {
-                this.submit()
+            if (validarTexto(tipoNombre) && !TextoContieneNumeros(tipoNombre)) {
+                if (validarTexto(tipoDescripcion)) {
+                    this.submit();
 
+                } else {
+                    document.querySelector("#pMensaje").innerHTML = "Por favor ingrese una descripción";
+                }
             } else {
-                document.querySelector("#pMensaje").innerHTML = "Por favor indique un Tipo y una descripción";
+                document.querySelector("#pMensaje").innerHTML = "Por favor indique un nombre para el tipo de Planta. No puede contener números";
             }
         }
 
@@ -61,6 +65,20 @@
             ret = false;
             if (value != null && isNaN(value) && value.trim().length > 0) {
                 ret = true;
+            }
+            return ret;
+        }
+
+
+        function TextoContieneNumeros(value) {
+            let ret = false;
+            let x = 0;
+            while (x < value.length && !ret) {
+                let caracter = value.charCodeAt(x);
+                if (caracter >= 48 && caracter <= 57) {
+                    ret = true;
+                }
+                x++;
             }
             return ret;
         }

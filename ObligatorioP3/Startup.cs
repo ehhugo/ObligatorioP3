@@ -64,8 +64,7 @@ namespace ObligatorioP3
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-
-                    pattern: "{controller=Plantas}/{action=Create}/");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

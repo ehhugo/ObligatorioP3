@@ -129,12 +129,7 @@
             let iluminacion = document.querySelector("#selIluminacion").value;
 
 
-
-
-
-
-            if (validarTexto(NomCientifico)) {
-
+            if (validarTexto(NomCientifico) && !TextoContieneNumeros(NomCientifico)) {
 
                 if (validarTexto(NomVulgar) && descripcion.trim().length <= 700) {
 
@@ -205,9 +200,10 @@
                 document.querySelector("#pMensaje").innerHTML = "Errores en el formulario. Verifique nombre cientifico.";
             }
         }
+           
 
         function validarFoto(value) {
-            ret = false;
+            let ret = false;
 
             if (value.includes("jpg", value.length - 3) || value.includes("png", value.length - 3)) {
                 ret = true;
@@ -216,7 +212,7 @@
         }
 
         function validarNumero(value) {
-            ret = false;
+            let ret = false;
             if (!isNaN(value) && value.trim().length > 0 && value !== "" && value > 0) {
                 ret = true;
             }
@@ -224,9 +220,22 @@
         }
 
         function validarTexto(value) {
-            ret = false;
+            let ret = false;
             if (value != null && isNaN(value) && value.trim().length > 0) {
                 ret = true;
+            }
+            return ret;
+        }
+
+        function TextoContieneNumeros(value) {
+            let ret = false;
+            let x = 0;
+            while (x < value.length && !ret) {
+                let caracter = value.charCodeAt(x);
+                if (caracter >= 48 && caracter <= 57) {
+                    ret = true;
+                }
+                x++;
             }
             return ret;
         }

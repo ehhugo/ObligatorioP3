@@ -52,6 +52,39 @@ namespace Datos
 
         }
 
+        public bool UsuarioExiste(string mailUsuario)
+        {
+            bool existeUsuario = false;
+
+            if (mailUsuario != null)
+            {
+                SqlConnection con = Conexion.ObtenerConexion();
+                string sql = $"SELECT * FROM TiposDePlanta WHERE Nombre = '{mailUsuario}';";
+
+                SqlCommand SQLCom = new SqlCommand(sql, con);
+
+                try
+                {
+                    Conexion.AbrirConexion(con);
+                    SqlDataReader reader = SQLCom.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        existeUsuario = true;
+                    }
+                }
+                catch
+                {
+                    throw;
+                }
+                finally
+                {
+                    Conexion.CerrarYTerminarConexion(con);
+                }
+            }
+            return existeUsuario;
+        }
+
         public IEnumerable<Usuario> FindAll()
         {
             throw new NotImplementedException();

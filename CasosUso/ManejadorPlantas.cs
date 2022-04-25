@@ -31,6 +31,8 @@ namespace CasosUso
             bool ok = false;
             Tipo t = RepoTipos.FindById(idTipo);
 
+
+
             if (t != null)
             {
                 Ambiente a = RepoAmbientes.FindById(idAmbiente);
