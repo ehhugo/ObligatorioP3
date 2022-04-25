@@ -57,9 +57,7 @@ namespace ObligatorioP3.Controllers
             if (HttpContext.Session.GetString("UL") != null)
             {
                 ViewModelPlanta vmp = new ViewModelPlanta();
-                vmp.Tipos = ManejadorPlantas.TraerTodosLosTipos();
-                vmp.Ambientes = ManejadorPlantas.TraerTodosLosAmbientes();
-                vmp.Iluminaciones = ManejadorPlantas.TraerTodasLasIluminaciones();
+                CargarMensajeYSelects("", vmp);
                 return View(vmp);
             }
             else
@@ -112,24 +110,20 @@ namespace ObligatorioP3.Controllers
                         }
                         else
                         {
-                            ViewBag.Resultado = "Error al dar el alta";
+                            CargarMensajeYSelects("Error al dar el alta. No se pudo crear la planta", vmp);                            
                             return View(vmp);
                         }
                     }
                     else
                     {
-                        ViewBag.Resultado = "Error al dar el alta, el nombre científico ya existe.";
-                        vmp.Tipos = ManejadorPlantas.TraerTodosLosTipos();
-                        vmp.Ambientes = ManejadorPlantas.TraerTodosLosAmbientes();
-                        vmp.Iluminaciones = ManejadorPlantas.TraerTodasLasIluminaciones();
+                        CargarMensajeYSelects("Error al dar el alta, el nombre científico ya existe.", vmp);                        
                         return View(vmp);
                     }
-
                 }
                 catch
                 {
+                    CargarMensajeYSelects("Error al dar el alta. Problema interno.", vmp);
                     return View(vmp);
-
                 }
             }
             else
@@ -138,6 +132,15 @@ namespace ObligatorioP3.Controllers
             }
         }
         #endregion
+
+        private ViewModelPlanta CargarMensajeYSelects(string mensaje, ViewModelPlanta vmp)
+        {
+            ViewBag.Resultado = mensaje;
+            vmp.Tipos = ManejadorPlantas.TraerTodosLosTipos();
+            vmp.Ambientes = ManejadorPlantas.TraerTodosLosAmbientes();
+            vmp.Iluminaciones = ManejadorPlantas.TraerTodasLasIluminaciones();
+            return vmp;
+        }
 
         #region Edit
         // GET: PlantasController/Edit/5
