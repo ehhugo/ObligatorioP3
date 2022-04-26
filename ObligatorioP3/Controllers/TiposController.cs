@@ -135,19 +135,17 @@ namespace ObligatorioP3.Controllers
             {
                 try
                 {
+                    bool ok = ManejadorTipos.ActualizarDescripcionTipo(tipo);
+                    if (ok)
                     {
-
-                        bool ok = ManejadorTipos.ActualizarDescripcionTipo(tipo);
-                        if (ok)
-                        {
-                            return RedirectToAction(nameof(Index));
-                        }
-                        else
-                        {
-                            ViewBag.Resultado = "No se pudo realizar la actualización de la descripción. Ingrese un texto de mas de diez caracteres.";
-                            return View(tipo);
-                        }
+                        return RedirectToAction(nameof(Index));
                     }
+                    else
+                    {
+                        ViewBag.Resultado = "No se pudo realizar la actualización de la descripción. Ingrese un texto de mas de diez caracteres.";
+                        return View(tipo);
+                    }
+
                 }
                 catch
                 {
@@ -198,7 +196,8 @@ namespace ObligatorioP3.Controllers
                     bool ok = ManejadorTipos.DarDeBajaTipo(tipo.Nombre);
                     if (ok)
                     {
-                        return RedirectToAction(nameof(Index));
+                        return ViewBag.ResultadoSatisfactorio = "Tipo eliminado satisfactoriamente";
+                        //return RedirectToAction(nameof(Index);
                     }
                     else
                     {

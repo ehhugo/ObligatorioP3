@@ -17,7 +17,7 @@ namespace Datos
         {
             bool altaOK = false;
 
-            if (obj != null && obj.Validar() && FindById(obj.IdIluminacion) == null)
+            if (obj != null && obj.Validar(obj) && FindById(obj.IdIluminacion) == null)
             {
                 SqlConnection con = Conexion.ObtenerConexion();
                 
@@ -148,7 +148,7 @@ namespace Datos
             bool ok = false;
             SqlConnection con = Conexion.ObtenerConexion();
 
-            if (obj.Validar())
+            if (obj.Validar(obj))
             {
                 string sql = "UPDATE TiposDeIluminacion SET TipoIluminacion = @TipoIluminacion WHERE idIluminacion =@idIluminacion";
                 SqlCommand SQLCom = new SqlCommand(sql, con);

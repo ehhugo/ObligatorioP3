@@ -6,17 +6,17 @@ using Dominio.InterfacesRepositorio;
 
 namespace Dominio.Entidades
 {
-    public class Tipo
+    public class Tipo : IValidate<Tipo>
     {
         public int IdTipo { get; set; }
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
 
-        public bool Validar()
+        public bool Validar(Tipo obj)
         {
-            if (Nombre != null && Descripcion != null && contieneSoloLetras(Nombre))
+            if (obj.Nombre != null && obj.Descripcion != null && contieneSoloLetras(obj.Nombre))
             {
-                if (Nombre.Trim().Length > 0 && Descripcion.Trim().Length >=10 && Descripcion.Trim().Length <=200)
+                if (obj.Nombre.Trim().Length > 0 && obj.Descripcion.Trim().Length >= 10 && obj.Descripcion.Trim().Length <= 200)
                 {
                     return true;
                 }
@@ -24,7 +24,7 @@ namespace Dominio.Entidades
             return false;
         }
 
-        public bool contieneSoloLetras(string cadena)
+        private bool contieneSoloLetras(string cadena)
         {
             for (int i = 0; i < cadena.Length; i++)
             {

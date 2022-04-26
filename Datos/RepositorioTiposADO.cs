@@ -18,7 +18,7 @@ namespace Datos
         {
             bool ok = false;
 
-            if (obj != null && obj.Validar() && BuscarPorNombre(obj.Nombre) == null)
+            if (obj != null && obj.Validar(obj) && BuscarPorNombre(obj.Nombre) == null)
             {
                 SqlConnection con = Conexion.ObtenerConexion();
 
@@ -249,7 +249,7 @@ namespace Datos
             bool ok = false;
             SqlConnection con = Conexion.ObtenerConexion();
 
-            if (obj.Validar())
+            if (obj.Validar(obj))
             {
                 string sql = "UPDATE TiposDePlanta SET Nombre=@nom, Descripcion=@des WHERE idTipo =@IdTipo";
                 SqlCommand SQLCom = new SqlCommand(sql, con);

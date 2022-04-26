@@ -1,22 +1,36 @@
-﻿using System;
+﻿using Dominio.InterfacesRepositorio;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Dominio.Entidades
 {
-    public class Usuario
+    public class Usuario : IValidate<Usuario>
     {
         public int idUsuario { get; set; }
         public string Mail { get; set; }
         public string Contrasenia { get; set; }
 
 
-        public bool VerificarMail()
+
+
+        public bool Validar(Usuario obj) {
+            bool validado = false;
+
+            if (VerificarMail(obj.Mail) && VerificarPass(obj.Contrasenia))
+            {
+                validado = true;
+            }
+            return validado;
+        }
+
+
+        private bool VerificarMail(string mail)
         {
             bool validado = false;
            
-            if (Mail.Contains("@"))
+            if (mail.Contains("@"))
             {
                 string[] emailArray = Mail.Split("@");
 
@@ -28,14 +42,14 @@ namespace Dominio.Entidades
             return validado;
         }
         
-        public bool VerificarPass()
+        private bool VerificarPass(string pass)
         {
             bool ret = false;
             bool banderaMayuscula = false;
             bool banderaNumero = false;
             bool banderaMinuscula = false;
 
-            if (Contrasenia.Length >= 6)
+            if (pass.Length >= 6)
             {
                 foreach (char letter in Contrasenia)
                 {

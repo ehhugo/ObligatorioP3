@@ -37,7 +37,7 @@ namespace Dominio.Entidades
             {
                 if (obj.NombreCientifico.Trim().Length > 0 && contieneSoloLetras(obj.NombreCientifico))
                 {
-                    if (validarAtributo(obj.Descripcion))
+                    if (obj.Descripcion != null && obj.Descripcion.Trim().Length>=10 && obj.Descripcion.Trim().Length <= 500)
                     {
                         if (obj.AlturaMaxima > 0)
                         {

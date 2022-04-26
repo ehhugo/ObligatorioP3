@@ -85,11 +85,11 @@
             let txtDescEdit = document.querySelector("#txtDescripcionEdit").value;
 
 
-            if (validarTexto(txtDescEdit)) {
+            if (validarTexto(txtDescEdit) && txtDescEdit.trim().length > 10 && txtDescEdit.trim().length <= 200) {
                 this.submit()
 
             } else {
-                document.querySelector("#pMensaje").innerHTML = "Ingrese una descripción.";
+                document.querySelector("#pMensaje").innerHTML = "La descripción debe tener al menos 10 caracteres";
             }
         }
 
