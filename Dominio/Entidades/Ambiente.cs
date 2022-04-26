@@ -6,17 +6,17 @@ using Dominio.InterfacesRepositorio;
 
 namespace Dominio.Entidades
 {
-    public class Ambiente { 
+    public class Ambiente : IValidate<Ambiente> { 
 
         public int IdAmbiente { get; set; }
 
         public string TipoAmbiente { get; set; }
 
-        public bool Validar()
+        public bool Validar(Ambiente obj)
         {
-            if (TipoAmbiente != null)
+            if (obj.TipoAmbiente != null)
             {
-                if (TipoAmbiente.Trim().Length > 0)
+                if (obj.TipoAmbiente.Trim().Length > 0)
                 {
                     return true;
                 }

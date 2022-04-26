@@ -59,7 +59,7 @@ namespace Datos
             if (mailUsuario != null)
             {
                 SqlConnection con = Conexion.ObtenerConexion();
-                string sql = $"SELECT * FROM TiposDePlanta WHERE Nombre = '{mailUsuario}';";
+                string sql = $"SELECT * FROM Usuarios WHERE Mail = '{mailUsuario}';";
 
                 SqlCommand SQLCom = new SqlCommand(sql, con);
 

@@ -50,11 +50,11 @@
             let tipoDescripcion = document.querySelector("#descripcion").value;
 
             if (validarTexto(tipoNombre) && !TextoContieneNumeros(tipoNombre)) {
-                if (validarTexto(tipoDescripcion)) {
+                if (tipoDescripcion !== null && tipoDescripcion.trim().length >= 10 && tipoDescripcion.trim().length <= 200) {
                     this.submit();
 
                 } else {
-                    document.querySelector("#pMensaje").innerHTML = "Por favor ingrese una descripción";
+                    document.querySelector("#pMensaje").innerHTML = "La descripción debe tener al menos 10 caracteres";
                 }
             } else {
                 document.querySelector("#pMensaje").innerHTML = "Por favor indique un nombre para el tipo de Planta. No puede contener números";
